@@ -1,0 +1,32 @@
+- name: infra-role-bootstrap-linux
+  src: git@github.com:status-im/infra-role-bootstrap-linux.git
+
+- name: infra-role-wireguard
+  src: git@github.com:status-im/infra-role-wireguard.git
+
+- name: infra-role-open-ports
+  src: git@github.com:status-im/infra-role-open-ports.git
+
+- name: infra-role-swap-file
+  src: git@github.com:status-im/infra-role-swap-file.git
+
+- name: infra-role-consul-service
+  src: git@github.com:status-im/infra-role-consul-service.git
+
+- name: infra-role-systemd-timer
+  src: git@github.com:status-im/infra-role-systemd-timer.git
+
+- name: infra-role-certbot
+  src: git@github.com:status-im/infra-role-certbot.git
+  version: 324e2241a6e19c6fe90bf2b827103eb3e1ddf23a
+
+- name: infra-role-nim-waku
+  src: git@github.com:status-im/infra-role-nim-waku.git
+  version: 440d6ea6a0cc9d5a9e04ce2d7491757e00b02db2
+
+- name: infra-role-postgres-ha
+  src: git@github.com:status-im/infra-role-postgres-ha.git
+  version: 06f5042bae5c37dfa74694b69ba2f541ebbc3159
+
+- name: infra-role-wazuh-agent
+  src: git@github.com:status-im/infra-role-wazuh-agent.git

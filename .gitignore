@@ -1,0 +1,10 @@
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.d/
+*.tfstate.backup
+*.retry
+.direnv/
+
+ansible/files/*
+__pycache__
