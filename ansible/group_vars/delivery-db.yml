@@ -1,0 +1,43 @@
+---
+postgres_ha_service_name: 'delivery-db'
+postgres_ha_cont_image: 'postgres:15.1-alpine'
+
+postgres_ha_is_master: true
+postgres_ha_replica_enabled: false
+postgres_ha_replica_allowed_addresses: []
+
+postgres_ha_admin_user: 'postgres'
+postgres_ha_admin_pass: '{{lookup("vault", "delivery/database", field="db-admin-password")}}'
+
+postgres_ha_databases:
+  - name: 'delivery'
+    user: 'delivery'
+    pass: '{{lookup("vault", "delivery/database", field="db-password")}}'
+
+
+postgres_ha_backup: false
+postgres_ha_backup_enabled: false
+
+postgres_ha_alter_system_settings:
+  checkpoint_timeout: '5min'
+  max_locks_per_transaction: '2160'
+
+# Use 30% of RAM for shared memory
+postgres_ha_share_memory: '{{ (ansible_memtotal_mb * 0.3) | int }}m'
+
+# Consul
+postgres_ha_consul_check_interval: '60s'
+postgres_ha_consul_check_timeout: '5s'
+postgres_ha_consul_success_before_passing: 1
+postgres_ha_consul_failures_before_warning: 5
+postgres_ha_consul_failures_before_critical: 10
+
+# Metrics
+postgres_ha_metrics_exporter_cont_port: 9187
+
+# Open PostgreSQL Port
+open_ports_default_comment: '{{ postgres_ha_service_name }}'
+open_ports_list:
+  postgres:
+    - { port: '{{ postgres_ha_cont_port }}',                  ipset: '{{ env }}.{{ stage }}', iifname: 'wg0' }
+    - { port: '{{ postgres_ha_metrics_exporter_cont_port }}', ipset: 'hq.metrics',            iifname: 'wg0' }
