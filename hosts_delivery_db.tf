@@ -13,9 +13,9 @@ module "delivery-db" {
   gc_count = local.ws["gc_db_count"]
 
   /* instance sizes */
-  do_type = local.ws["do_db_type"]
-  ac_type = local.ws["ac_db_type"]
-  gc_type = local.ws["gc_db_type"]
+  do_type = local.ws["db_do_type"]
+  ac_type = local.ws["db_ac_type"]
+  gc_type = local.ws["db_gc_type"]
 
   /* data volumes */
   ac_data_vol_size = local.ws["db_data_vol_size"]
