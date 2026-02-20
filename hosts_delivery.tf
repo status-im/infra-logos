@@ -13,9 +13,9 @@ module "delivery" {
   gc_count = local.ws["gc_delivery_count"]
 
   /* instance sizes */
-  do_type = local.ws["do_delivery_type"]
-  ac_type = local.ws["ac_delivery_type"]
-  gc_type = local.ws["gc_delivery_type"]
+  do_type = local.ws["delivery_do_type"]
+  ac_type = local.ws["delivery_ac_type"]
+  gc_type = local.ws["delivery_gc_type"]
 
   /* data volumes */
   ac_data_vol_size = local.ws["delivery_data_vol_size"]
