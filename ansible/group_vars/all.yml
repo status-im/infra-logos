@@ -31,3 +31,10 @@ bootstrap__docker_registries:
   - url:      'https://harbor.status.im'
     username: 'robot$wakuorg+infra-waku'
     password: '{{ lookup("vault", "robot", field="robot$wakuorg+infra-waku", env="ci", stage="harbor")}}'
+
+# Custom SSH accounts, should start from UID 8000.
+bootstrap__active_extra_users:
+  - { name: ivan,    uid: 8000, admin: true, key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJBdm8y1PfWjT1pioaWJSZ2ETrUySb+dS/ifDg+VIpLY ivansete@status.im', pass: '$y$j9T$6d3ZQNLzh7Yb/787cDugT1$NxgTUW46/uCGyT/h3mOayfhYAxdb77Or./RV0o4d6h8' }
+  - { name: darshan, uid: 8001, admin: true, key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN7aTt99jB/cSjxt6hsIJFcC4MTNWyu/L28jQTSZcebD darshan@status.im',  pass: '$6$dcyKfNntqUwRGqFo$u1fcjl3SOgm7ntPQZxhHdOBgVg2OAG5lDg7U4Ml.Dd7g18OB4yuKTKuN5fyeGNAgCdSAY69wwWkRZJnN50tsB/' }
+  - { name: zoltan,  uid: 8002, admin: true, key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFNYe8dLIGTTrTYgKfaXhai6uQmJfewJPi3MXwIeM2Zk zoltan@status.im', pass: '$y$j9T$mDPUq.x9/dZqypIV9.VZa/$w/MxJ/Qlsq9kZwjJCdA/9dhN0go/58rmD1cM07IQsc2' }
+  - { name: fabiana, uid: 8003, admin: true, key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFzQ3/t6ZKOjkBsph7672fziIIYFmzO2yOMoOP7BO5d3 fabiana@waku.org', pass: '$y$j9T$cFmwJBqZGJWR4qDVueTIp.$cIP2m3WtfxDqkfNG72LexFHQ4Yg4qTiKx5n03TD92yC' }
