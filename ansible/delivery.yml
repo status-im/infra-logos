@@ -24,3 +24,20 @@
     - { role: infra-role-open-ports,  tags: open-ports  }
     - { role: infra-role-swap-file,   tags: swap-file   }
     - { role: infra-role-postgres-ha, tags: postgres-ha }
+
+- name: Configure Delivery Nodes
+  serial: '{{ serial|default(1) }}'
+  hosts: delivery
+  pre_tasks:
+    - name: Enable Maintenance Mode
+      command: 'maintenance Ansible run by {{ lookup("env", "USER") }}'
+      tags: always
+  post_tasks:
+    - name: Disable Maintenance Mode
+      command: 'maintenance disable'
+      tags: always
+  roles:
+    - { role: infra-role-open-ports,  tags: open-ports  }
+    - { role: infra-role-swap-file,   tags: swap-file   }
+    - { role: infra-role-certbot,     tags: certbot     }
+    - { role: infra-role-logos-node,  tags: logos-node  }
