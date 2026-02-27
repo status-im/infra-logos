@@ -31,9 +31,20 @@ locals {
       db_ac_type = "ecs.t5-lc1m2.small" /* Alibaba Cloud */
       db_gc_type = "g1-small"           /* Google Cloud */
 
+      /* Number of storage hosts per data center */
+      ac_storage_count = 1
+      do_storage_count = 1
+      gc_storage_count = 1
+
+      /* Storage host sizes */
+      storage_do_type = "s-2vcpu-4gb"        /* DigitalOcean */
+      storage_ac_type = "ecs.t5-lc1m2.large" /* Alibaba Cloud */
+      storage_gc_type = "e2-medium"           /* Google Cloud */
+
       /* Data volumes */
       delivery_data_vol_size = 40
       db_data_vol_size       = 100
+      storage_data_vol_size  = 40
     }
 
     /* Settings specific to the fleet/workspace. */

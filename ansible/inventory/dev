@@ -7,10 +7,14 @@ delivery-01.gc-us-central1-a.logos.dev ansible_host=136.119.156.87 data_center=g
 delivery-db-01.ac-cn-hongkong-c.logos.dev ansible_host=47.242.86.169 data_center=ac-cn-hongkong-c dns_domain=status.im dns_entry=delivery-db-01.ac-cn-hongkong-c.logos.dev.status.im env=logos region=cn-hongkong-c stage=dev
 delivery-db-01.do-ams3.logos.dev ansible_host=209.38.53.240 data_center=do-ams3 dns_domain=status.im dns_entry=delivery-db-01.do-ams3.logos.dev.status.im env=logos region=ams3 stage=dev
 delivery-db-01.gc-us-central1-a.logos.dev ansible_host=136.115.120.136 data_center=gc-us-central1-a dns_entry=delivery-db-01.gc-us-central1-a.logos.dev.status.im env=logos region=us-central1-a stage=dev
+storage-01.ac-cn-hongkong-c.logos.dev ansible_host=47.238.229.111 data_center=ac-cn-hongkong-c dns_domain=status.im dns_entry=storage-01.ac-cn-hongkong-c.logos.dev.status.im env=logos region=cn-hongkong-c stage=dev
+storage-01.do-ams3.logos.dev ansible_host=24.144.78.200 data_center=do-ams3 dns_domain=status.im dns_entry=storage-01.do-ams3.logos.dev.status.im env=logos region=ams3 stage=dev
+storage-01.gc-us-central1-a.logos.dev ansible_host=34.42.230.59 data_center=gc-us-central1-a dns_entry=storage-01.gc-us-central1-a.logos.dev.status.im env=logos region=us-central1-a stage=dev
 
 [ac-cn-hongkong-c]
 delivery-01.ac-cn-hongkong-c.logos.dev
 delivery-db-01.ac-cn-hongkong-c.logos.dev
+storage-01.ac-cn-hongkong-c.logos.dev
 
 [delivery]
 delivery-01.ac-cn-hongkong-c.logos.dev
@@ -25,10 +29,12 @@ delivery-db-01.gc-us-central1-a.logos.dev
 [do-ams3]
 delivery-01.do-ams3.logos.dev
 delivery-db-01.do-ams3.logos.dev
+storage-01.do-ams3.logos.dev
 
 [gc-us-central1-a]
 delivery-01.gc-us-central1-a.logos.dev
 delivery-db-01.gc-us-central1-a.logos.dev
+storage-01.gc-us-central1-a.logos.dev
 
 [logos.dev]
 delivery-01.ac-cn-hongkong-c.logos.dev
@@ -37,4 +43,12 @@ delivery-01.gc-us-central1-a.logos.dev
 delivery-db-01.ac-cn-hongkong-c.logos.dev
 delivery-db-01.do-ams3.logos.dev
 delivery-db-01.gc-us-central1-a.logos.dev
+storage-01.ac-cn-hongkong-c.logos.dev
+storage-01.do-ams3.logos.dev
+storage-01.gc-us-central1-a.logos.dev
+
+[storage]
+storage-01.ac-cn-hongkong-c.logos.dev
+storage-01.do-ams3.logos.dev
+storage-01.gc-us-central1-a.logos.dev
 
