@@ -41,10 +41,21 @@ locals {
       storage_ac_type = "ecs.t5-lc1m2.large" /* Alibaba Cloud */
       storage_gc_type = "e2-medium"           /* Google Cloud */
 
+      /* Number of blockchain hosts per data center */
+      ac_blockchain_count = 1
+      do_blockchain_count = 1
+      gc_blockchain_count = 1
+
+      /* Blockchain host sizes */
+      blockchain_do_type = "s-2vcpu-4gb"        /* DigitalOcean */
+      blockchain_ac_type = "ecs.t5-lc1m2.large" /* Alibaba Cloud */
+      blockchain_gc_type = "e2-medium"           /* Google Cloud */
+
       /* Data volumes */
-      delivery_data_vol_size = 40
-      db_data_vol_size       = 100
-      storage_data_vol_size  = 40
+      delivery_data_vol_size   = 40
+      db_data_vol_size         = 100
+      storage_data_vol_size    = 40
+      blockchain_data_vol_size = 40
     }
 
     /* Settings specific to the fleet/workspace. */
