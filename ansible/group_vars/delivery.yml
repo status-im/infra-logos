@@ -13,8 +13,8 @@ logos_node_conf_path: '{{ logos_node_cont_vol }}/conf'
 logos_node_log_level: 'DEBUG'
 
 # Node identity
-logos_node_key: '{{ lookup("vault", "delivery/nodekeys", field=hostname) }}'
-logos_node_mix_key: '{{ lookup("vault", "delivery/mixkeys", field=hostname) }}'
+logos_node_delivery_key: '{{ lookup("vault", "delivery/nodekeys", field=hostname) }}'
+logos_node_delivery_mix_key: '{{ lookup("vault", "delivery/mixkeys", field=hostname) }}'
 
 # Network
 logos_node_cluster_id: 2
