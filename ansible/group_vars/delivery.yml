@@ -16,6 +16,7 @@ logos_node_log_level: 'DEBUG'
 logos_node_delivery_key: '{{ lookup("vault", "delivery/nodekeys", field=hostname) }}'
 logos_node_delivery_mix_key: '{{ lookup("vault", "delivery/mixkeys", field=hostname) }}'
 
+
 # Network
 logos_node_cluster_id: 2
 logos_node_num_shards_in_network: 8
@@ -29,7 +30,6 @@ logos_node_lightpush: true
 logos_node_mix: true
 logos_node_discv5: true
 logos_node_kad_discovery: true
-logos_node_keep_alive: true
 
 # P2P
 logos_node_p2p_max_connections: 300
