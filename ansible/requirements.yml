@@ -28,5 +28,9 @@
   src: git@github.com:status-im/infra-role-postgres-ha.git
   version: 06f5042bae5c37dfa74694b69ba2f541ebbc3159
 
+- name: infra-role-logos-node
+  src: git@github.com:status-im/infra-role-logos-node.git
+  version: 8cfa4114dbdd0a6a85f4d59e512d89bee0d89c08
+
 - name: infra-role-wazuh-agent
   src: git@github.com:status-im/infra-role-wazuh-agent.git

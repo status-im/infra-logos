@@ -29,7 +29,6 @@ logos_node_lightpush: true
 logos_node_mix: true
 logos_node_discv5: true
 logos_node_kad_discovery: true
-logos_node_keep_alive: true
 
 # P2P
 logos_node_p2p_max_connections: 300
