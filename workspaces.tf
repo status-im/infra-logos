@@ -11,64 +11,115 @@ locals {
     defaults = {
       /* Default settings for all fleets/workspaces. */
 
-      /* Number of delivery hosts per data center */
-      ac_delivery_count = 2
-      do_delivery_count = 2
-      gc_delivery_count = 2
+      ac_delivery_count = 0
+      do_delivery_count = 0
+      gc_delivery_count = 0
 
-      /* Delivery host sizes */
-      delivery_do_type = "s-1vcpu-2gb"        /* DigitalOcean */
-      delivery_ac_type = "ecs.t5-lc1m2.small" /* Alibaba Cloud */
-      delivery_gc_type = "g1-small"           /* Google Cloud */
+      delivery_do_type = "s-2vcpu-4gb"        /* DigitalOcean */
+      delivery_ac_type = "ecs.t5-lc1m2.large" /* Alibaba Cloud */
+      delivery_gc_type = "e2-medium"           /* Google Cloud */
 
-      /* Number of DB hosts per data center */
-      ac_db_count = 1
-      do_db_count = 1
-      gc_db_count = 1
+      delivery_data_vol_size = 40
 
-      /* DB host sizes */
-      db_do_type = "s-1vcpu-2gb"        /* DigitalOcean */
-      db_ac_type = "ecs.t5-lc1m2.small" /* Alibaba Cloud */
-      db_gc_type = "g1-small"           /* Google Cloud */
+      ac_db_count = 0
+      do_db_count = 0
+      gc_db_count = 0
 
-      /* Number of storage hosts per data center */
-      ac_storage_count = 1
-      do_storage_count = 1
-      gc_storage_count = 1
+      db_do_type = "s-2vcpu-4gb"        /* DigitalOcean */
+      db_ac_type = "ecs.t5-lc1m2.large" /* Alibaba Cloud */
+      db_gc_type = "e2-medium"           /* Google Cloud */
 
-      /* Storage host sizes */
+      db_data_vol_size = 100
+
+      ac_storage_count = 0
+      do_storage_count = 0
+      gc_storage_count = 0
+
       storage_do_type = "s-2vcpu-4gb"        /* DigitalOcean */
       storage_ac_type = "ecs.t5-lc1m2.large" /* Alibaba Cloud */
       storage_gc_type = "e2-medium"           /* Google Cloud */
 
-      /* Number of blockchain hosts per data center */
-      ac_blockchain_count = 1
-      do_blockchain_count = 1
-      gc_blockchain_count = 1
+      storage_data_vol_size = 40
 
-      /* Blockchain host sizes */
+      ac_blockchain_count = 0
+      do_blockchain_count = 0
+      gc_blockchain_count = 0
+
       blockchain_do_type = "s-2vcpu-4gb"        /* DigitalOcean */
       blockchain_ac_type = "ecs.t5-lc1m2.large" /* Alibaba Cloud */
       blockchain_gc_type = "e2-medium"           /* Google Cloud */
 
-      /* Data volumes */
-      delivery_data_vol_size   = 40
-      db_data_vol_size         = 100
-      storage_data_vol_size    = 40
       blockchain_data_vol_size = 40
+
+      /* Combined nodes running multiple Logos modules. */
+      ac_node_count = 0
+      do_node_count = 0
+      gc_node_count = 0
+
+      node_do_type = "s-2vcpu-4gb"        /* DigitalOcean */
+      node_ac_type = "ecs.t5-lc1m2.large" /* Alibaba Cloud */
+      node_gc_type = "e2-medium"           /* Google Cloud */
+
+      node_data_vol_size = 40
+
+      ac_node_db_count = 0
+      do_node_db_count = 0
+      gc_node_db_count = 0
+
+      node_db_do_type = "s-2vcpu-4gb"        /* DigitalOcean */
+      node_db_ac_type = "ecs.t5-lc1m2.large" /* Alibaba Cloud */
+      node_db_gc_type = "e2-medium"           /* Google Cloud */
+
+      node_db_data_vol_size = 100
     }
 
-    /* Settings specific to the fleet/workspace. */
     dev = {
+      ac_delivery_count = 2
+      do_delivery_count = 2
+      gc_delivery_count = 2
+
       delivery_do_type = "s-2vcpu-4gb"
       delivery_ac_type = "ecs.t5-lc1m2.large"
       delivery_gc_type = "c2d-highcpu-2"
+
+      ac_db_count = 1
+      do_db_count = 1
+      gc_db_count = 1
 
       db_do_type = "s-2vcpu-4gb"
       db_ac_type = "ecs.t5-lc1m2.large"
       db_gc_type = "c2d-highcpu-2"
 
       db_data_vol_size = 320
+
+      ac_storage_count = 1
+      do_storage_count = 1
+      gc_storage_count = 1
+
+      ac_blockchain_count = 1
+      do_blockchain_count = 1
+      gc_blockchain_count = 1
+    }
+    test = {
+      ac_node_count = 2
+      do_node_count = 2
+      gc_node_count = 2
+
+      node_do_type = "s-4vcpu-8gb"
+      node_ac_type = "ecs.t5-lc1m4.large"
+      node_gc_type = "c2d-standard-4"
+
+      node_data_vol_size = 80
+
+      ac_node_db_count = 1
+      do_node_db_count = 1
+      gc_node_db_count = 1
+
+      node_db_do_type = "s-2vcpu-4gb"
+      node_db_ac_type = "ecs.t5-lc1m2.large"
+      node_db_gc_type = "c2d-highcpu-2"
+
+      node_db_data_vol_size = 320
     }
   }
 }
