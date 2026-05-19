@@ -1,0 +1,130 @@
+---
+bootstrap__logrotate_frequency: 'hourly'
+bootstrap__logrotate_timer_frequency: '*:0/30'
+
+bootstrap__rsyslog_filter_rules:
+  - 'storeMessageDbUrl'
+
+# Container
+logos_node_cont_tag: 'deploy-{{ env }}-{{ stage }}'
+logos_node_cont_name: 'logos-node'
+logos_node_cont_vol: '/docker/{{ logos_node_cont_name }}'
+logos_node_conf_path: '{{ logos_node_cont_vol }}/conf'
+logos_node_log_level: 'DEBUG'
+
+# Blockchain disabled due to upstream bug: liblogos_blockchain_module.start returns error 3
+# ("no http client specified"). Re-enable when fixed upstream.
+logos_node_modules: ['delivery_module', 'storage_module']
+logos_node_module_calls:
+  - 'delivery_module createNode @/conf/waku_config.json'
+  - 'delivery_module start'
+  - 'storage_module init @/conf/storage_config.json'
+  - 'storage_module start'
+  - 'storage_module importFiles /content'
+
+# --- Delivery ---
+
+logos_node_delivery_key: '{{ lookup("vault", "node/delivery/nodekeys", field=hostname) }}'
+logos_node_delivery_mix_key: '{{ lookup("vault", "node/delivery/mixkeys", field=hostname) }}'
+
+logos_node_cluster_id: 2
+logos_node_num_shards_in_network: 8
+logos_node_dns4_domain_name: '{{ dns_entry }}'
+
+logos_node_relay: true
+logos_node_store: true
+logos_node_filter: true
+logos_node_lightpush: true
+logos_node_mix: true
+logos_node_discv5: true
+logos_node_kad_discovery: true
+
+logos_node_p2p_max_connections: 300
+
+logos_node_p2p_tcp_port: 30303
+logos_node_disc_v5_port: 9000
+logos_node_websock_port: 8000
+
+logos_node_websocket_enabled: true
+logos_node_websocket_secure_enabled: true
+logos_node_websocket_domain: '{{ dns_entry }}'
+
+logos_node_store_db_url: 'postgres://node:{{ lookup("vault", "node/delivery/db", field="db-password") }}@node-db-01.{{ ansible_domain }}.wg:5432/node'
+logos_node_store_retention_policy: 'size:1GB'
+
+logos_node_kad_bootstrap_nodes: []
+
+# --- Storage ---
+
+logos_node_storage_key: '{{ lookup("vault", "node/storage/nodekeys", field=hostname) }}'
+
+logos_node_storage_tcp_port: 8070
+logos_node_storage_disc_port: 9090
+logos_node_storage_nat: 'extip:{{ logos_node_public_address }}'
+logos_node_storage_max_peers: 160
+
+logos_node_storage_api_port: 8091
+logos_node_storage_api_bindaddr: '0.0.0.0'
+
+logos_node_storage_metrics_enabled: true
+logos_node_storage_metrics_port: 8008
+
+logos_node_storage_data_dir: '/data'
+logos_node_storage_quota: 21474836480
+logos_node_storage_block_ttl: '4w2d'
+
+logos_node_storage_bootstrap_nodes: []
+
+# --- Blockchain ---
+
+logos_node_blockchain_deployment: 'testnet'
+logos_node_blockchain_peer_response_timeout: 30000
+logos_node_public_address: '{{ ansible_default_ipv4.address }}'
+
+logos_node_blockchain_node_key: '{{ lookup("vault", "node/blockchain/nodekeys", field=hostname) }}'
+logos_node_blockchain_blend_signing_key: '{{ lookup("vault", "node/blockchain/blend-signing", field=hostname) }}'
+logos_node_blockchain_blend_zk_key: '{{ lookup("vault", "node/blockchain/blend-zk", field=hostname) }}'
+logos_node_blockchain_funding_pk: '{{ lookup("vault", "node/blockchain/funding", field=hostname) }}'
+logos_node_blockchain_voucher_master_key: '{{ lookup("vault", "node/blockchain/voucher", field=hostname) }}'
+logos_node_blockchain_kms_blend_signing: '{{ lookup("vault", "node/blockchain/kms-blend-signing", field=hostname) }}'
+logos_node_blockchain_kms_funding: '{{ lookup("vault", "node/blockchain/kms-funding", field=hostname) }}'
+logos_node_blockchain_kms_voucher: '{{ lookup("vault", "node/blockchain/kms-voucher", field=hostname) }}'
+logos_node_blockchain_kms_blend_zk: '{{ lookup("vault", "node/blockchain/kms-blend-zk", field=hostname) }}'
+
+logos_node_blockchain_swarm_port: 3000
+logos_node_blockchain_blend_port: 3400
+logos_node_blockchain_api_port: 8080
+
+logos_node_blockchain_initial_peers: []
+
+# --- Consul ---
+
+logos_node_consul_success_before_passing: 1
+logos_node_consul_failures_before_warning: 2
+logos_node_consul_failures_before_critical: 20
+
+# --- LetsEncrypt via Certbot ---
+
+certbot_docker_enabled: true
+certbot_admin_email: 'devops@status.im'
+certbot_containers_to_stop: ['{{ logos_node_cont_name }}']
+certbot_certs:
+  - domains:
+    - '{{ logos_node_websocket_domain }}'
+
+conn_limit_dport: '{{ logos_node_websock_port }}'
+
+# --- Open Ports ---
+
+open_ports_list:
+  certbot:
+    - { port: '80', comment: 'Certbot' }
+  logos-node:
+    - { port: '{{ logos_node_p2p_tcp_port }}',              comment: 'delivery libp2p' }
+    - { port: '{{ logos_node_disc_v5_port }}',              comment: 'delivery discv5',    protocol: 'udp' }
+    - { port: '{{ logos_node_websock_port }}',              comment: 'delivery WSS' }
+    - { port: '{{ logos_node_storage_tcp_port }}',          comment: 'storage libp2p' }
+    - { port: '{{ logos_node_storage_disc_port }}',         comment: 'storage discovery',  protocol: 'udp' }
+    - { port: '{{ logos_node_storage_metrics_port }}',      comment: 'storage metrics',    ipset: 'hq.metrics', iifname: 'wg0' }
+    - { port: '{{ logos_node_blockchain_swarm_port }}',     comment: 'blockchain swarm',   protocol: 'udp' }
+    - { port: '{{ logos_node_blockchain_blend_port }}',     comment: 'blockchain blend',   protocol: 'udp' }

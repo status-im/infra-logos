@@ -14,10 +14,10 @@ logos_node_storage_key: '{{ lookup("vault", "storage/nodekeys", field=hostname) 
 
 # Modules: storage only
 logos_node_modules: ['storage_module']
-logos_node_module_commands:
-  - 'storage_module.init(@/conf/storage_config.json)'
-  - 'storage_module.start()'
-  - 'storage_module.importFiles(/content)'
+logos_node_module_calls:
+  - 'storage_module init @/conf/storage_config.json'
+  - 'storage_module start'
+  - 'storage_module importFiles /content'
 
 # Network
 logos_node_dns4_domain_name: '{{ dns_entry }}'

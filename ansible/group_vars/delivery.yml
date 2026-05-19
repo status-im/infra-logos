@@ -12,6 +12,12 @@ logos_node_cont_vol: '/docker/{{ logos_node_cont_name }}'
 logos_node_conf_path: '{{ logos_node_cont_vol }}/conf'
 logos_node_log_level: 'DEBUG'
 
+# Modules: delivery only
+logos_node_modules: ['delivery_module']
+logos_node_module_calls:
+  - 'delivery_module createNode @/conf/waku_config.json'
+  - 'delivery_module start'
+
 # Node identity
 logos_node_delivery_key: '{{ lookup("vault", "delivery/nodekeys", field=hostname) }}'
 logos_node_delivery_mix_key: '{{ lookup("vault", "delivery/mixkeys", field=hostname) }}'

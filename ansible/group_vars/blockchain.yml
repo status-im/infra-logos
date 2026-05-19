@@ -11,8 +11,8 @@ logos_node_log_level: 'INFO'
 
 # Modules: blockchain only
 logos_node_modules: ['liblogos_blockchain_module']
-logos_node_module_commands:
-  - "liblogos_blockchain_module.start('/conf/node_config.yaml', '{{ logos_node_blockchain_deployment }}')"
+logos_node_module_calls:
+  - "liblogos_blockchain_module start /conf/node_config.yaml {{ logos_node_blockchain_deployment }}"
 
 # Blockchain
 logos_node_blockchain_deployment: 'devnet'
