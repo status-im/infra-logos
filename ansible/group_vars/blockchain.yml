@@ -3,7 +3,7 @@ bootstrap__logrotate_frequency: 'hourly'
 bootstrap__logrotate_timer_frequency: '*:0/30'
 
 # Container
-logos_node_cont_tag: 'deploy-blockchain-dev'
+logos_node_cont_tag: 'deploy-{{ env }}-{{ stage }}'
 logos_node_cont_name: 'logos-node'
 logos_node_cont_vol: '/docker/{{ logos_node_cont_name }}'
 logos_node_conf_path: '{{ logos_node_cont_vol }}/conf'

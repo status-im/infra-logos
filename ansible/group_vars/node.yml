@@ -27,32 +27,38 @@ logos_node_module_calls:
 logos_node_delivery_key: '{{ lookup("vault", "node/delivery/nodekeys", field=hostname) }}'
 logos_node_delivery_mix_key: '{{ lookup("vault", "node/delivery/mixkeys", field=hostname) }}'
 
-logos_node_cluster_id: 2
-logos_node_num_shards_in_network: 8
-logos_node_dns4_domain_name: '{{ dns_entry }}'
+logos_node_delivery_cluster_id: 2
+logos_node_delivery_num_shards_in_network: 8
+logos_node_delivery_dns4_domain_name: '{{ dns_entry }}'
 
-logos_node_relay: true
-logos_node_store: true
-logos_node_filter: true
-logos_node_lightpush: true
-logos_node_mix: true
-logos_node_discv5: true
-logos_node_kad_discovery: true
+logos_node_delivery_relay: true
+logos_node_delivery_store: true
+logos_node_delivery_filter: true
+logos_node_delivery_lightpush: true
+logos_node_delivery_mix: true
+logos_node_delivery_discv5: true
+logos_node_delivery_kad_discovery: true
 
-logos_node_p2p_max_connections: 300
+logos_node_delivery_max_connections: 300
 
-logos_node_p2p_tcp_port: 30303
-logos_node_disc_v5_port: 9000
-logos_node_websock_port: 8000
+logos_node_delivery_p2p_tcp_port: 30303
+logos_node_delivery_discv5_udp_port: 9000
+logos_node_delivery_websocket_port: 8000
 
-logos_node_websocket_enabled: true
-logos_node_websocket_secure_enabled: true
-logos_node_websocket_domain: '{{ dns_entry }}'
+logos_node_delivery_websocket_enabled: true
+logos_node_delivery_websocket_secure_enabled: true
+logos_node_delivery_websocket_domain: '{{ dns_entry }}'
 
-logos_node_store_db_url: 'postgres://node:{{ lookup("vault", "node/delivery/db", field="db-password") }}@node-db-01.{{ ansible_domain }}.wg:5432/node'
-logos_node_store_retention_policy: 'size:1GB'
+logos_node_delivery_store_db_url: 'postgres://node:{{ lookup("vault", "node/delivery/db", field="db-password") }}@node-db-01.{{ ansible_domain }}.wg:5432/node'
+logos_node_delivery_store_retention_policy: 'size:1GB'
 
-logos_node_kad_bootstrap_nodes: []
+logos_node_delivery_kad_bootstrap_nodes:
+  - '/dns4/node-01.do-ams3.logos.test.status.im/tcp/30303/p2p/16Uiu2HAmQ9X2xDfPG3uL77V9piYDhjq14JhKCtcmNYsTMKNqrKCj'
+  - '/dns4/node-02.do-ams3.logos.test.status.im/tcp/30303/p2p/16Uiu2HAmB8NYprrfQrgWVzsJtYWkfjsXbmJEGNMG6othXsQ53BwG'
+  - '/dns4/node-01.gc-us-central1-a.logos.test.status.im/tcp/30303/p2p/16Uiu2HAmF8WtwGPmeGHgYAX2277jHgy5cW9F7zsB8EqUjBZQAZQ3'
+  - '/dns4/node-02.gc-us-central1-a.logos.test.status.im/tcp/30303/p2p/16Uiu2HAmUuXhUW9bdJpzN1kfDziFiUZo4bszTk66cvr7uuyCHXR7'
+  - '/dns4/node-01.ac-cn-hongkong-c.logos.test.status.im/tcp/30303/p2p/16Uiu2HAmL3oU95jh1BZHozn3uNhx8HEneirgr8M1jEAapzXGDqRF'
+  - '/dns4/node-02.ac-cn-hongkong-c.logos.test.status.im/tcp/30303/p2p/16Uiu2HAm28CoBZjpyxsanC8tQpbvZ7bZJnVYuB1EgFzb571qpWsV'
 
 # --- Storage ---
 
@@ -73,7 +79,13 @@ logos_node_storage_data_dir: '/data'
 logos_node_storage_quota: 21474836480
 logos_node_storage_block_ttl: '4w2d'
 
-logos_node_storage_bootstrap_nodes: []
+logos_node_storage_bootstrap_nodes:
+  - 'spr:CiUIAhIhA6rD-Sa1mJqHOoYMk8yad7B4BYDEI_toNwb1z0cYIRu6EgIDARpJCicAJQgCEiEDqsP5JrWYmoc6hgyTzJp3sHgFgMQj-2g3BvXPRxghG7oQxfm60AYaCwoJBEDhQ42RAiOCGgsKCQRA4UONkQIjgipHMEUCIQDvDWYjtGgocMO1TtfUco_Fua4eE4Xvs49c2JQ5UQWNPAIgQRA4DZVEbXvHYsyTKeJzW2sLX4KTcemE_VcwAEKhyoU'
+  - 'spr:CiUIAhIhAsFwlXD-3VpX-Pa3taM15wdL3DS75l_dpVCIFhdaIKYREgIDARpJCicAJQgCEiECwXCVcP7dWlf49re1ozXnB0vcNLvmX92lUIgWF1ogphEQ5rW30AYaCwoJBI5d6vqRAiOCGgsKCQSOXer6kQIjgipHMEUCIQC9zlsHnbFR-rI4vRutQCSlvYiCtd4adNJHijVGrT5SJAIgHJBXqbq9lPQRkzWzJ73Llxd5-0_D1rEWGjGbUT0bbkc'
+  - 'spr:CiUIAhIhAwSYqf83tfZom9eGFFdXXea-dblO-I7-I8B1kjhfJeEAEgIDARpJCicAJQgCEiEDBJip_ze19mib14YUV1dd5r51uU74jv4jwHWSOF8l4QAQ6K-30AYaCwoJBAqAABKRAiOCGgsKCQQKgAASkQIjgipHMEUCIQCYXIUemKQBPajJtISYbveDG6VPLXft1nWfNlx_UNLODwIgSYSg2Vgrvj2nVEcHz7CoJuL75ODjoq_u2Qsdv3j8S0Q'
+  - 'spr:CiUIAhIhA4T8XrxB6PKor8f7j7eqKxgIXH6mMST0_Uel5hZjSDp2EgIDARpJCicAJQgCEiEDhPxevEHo8qivx_uPt6orGAhcfqYxJPT9R6XmFmNIOnYQy-y60AYaCwoJBAqAAFuRAiOCGgsKCQQKgABbkQIjgipHMEUCIQC5CNvj2oG6nPj3JO6dm8BixqJOD-CFPcYNTRmWBseqsQIgL7bqmZCnQzaOOIpEHjkX0JjAjdbzvJNqgfzl8jjsR8s'
+  - 'spr:CiUIAhIhAqk6NgpRxbKvI02Up24XP3U-dD3TdKRurXpW-ak3Zvh-EgIDARpJCicAJQgCEiECqTo2ClHFsq8jTZSnbhc_dT50PdN0pG6telb5qTdm-H4Q4q230AYaCwoJBKwf79KRAiOCGgsKCQSsH-_SkQIjgipGMEQCIFOdgdffPycoeLaaGjsJEjifpZyD4aSsBVFe1gWG754JAiBDmVRGWJ8OQvuPwkc3E0fKezHr2deFhtaHXqdD2DTFPQ'
+  - 'spr:CiUIAhIhAvSGKPkE3mD7MP-ZCWS5AEvzcDNVsM6XFYeCBXNja7h2EgIDARpJCicAJQgCEiEC9IYo-QTeYPsw_5kJZLkAS_NwM1WwzpcVh4IFc2NruHYQxbS30AYaCwoJBKwf79ORAiOCGgsKCQSsH-_TkQIjgipGMEQCIBJdKxKHG9h39G2FrsJ00oZg8Kv__kVO-sGXNiSxpaP3AiBHtBpvE9Os4hIdcJ2VgKHArfEngKlNGnMw33ig1IDhHw'
 
 # --- Blockchain ---
 
@@ -110,9 +122,9 @@ certbot_admin_email: 'devops@status.im'
 certbot_containers_to_stop: ['{{ logos_node_cont_name }}']
 certbot_certs:
   - domains:
-    - '{{ logos_node_websocket_domain }}'
+    - '{{ logos_node_delivery_websocket_domain }}'
 
-conn_limit_dport: '{{ logos_node_websock_port }}'
+conn_limit_dport: '{{ logos_node_delivery_websocket_port }}'
 
 # --- Open Ports ---
 
@@ -120,11 +132,11 @@ open_ports_list:
   certbot:
     - { port: '80', comment: 'Certbot' }
   logos-node:
-    - { port: '{{ logos_node_p2p_tcp_port }}',              comment: 'delivery libp2p' }
-    - { port: '{{ logos_node_disc_v5_port }}',              comment: 'delivery discv5',    protocol: 'udp' }
-    - { port: '{{ logos_node_websock_port }}',              comment: 'delivery WSS' }
-    - { port: '{{ logos_node_storage_tcp_port }}',          comment: 'storage libp2p' }
-    - { port: '{{ logos_node_storage_disc_port }}',         comment: 'storage discovery',  protocol: 'udp' }
-    - { port: '{{ logos_node_storage_metrics_port }}',      comment: 'storage metrics',    ipset: 'hq.metrics', iifname: 'wg0' }
-    - { port: '{{ logos_node_blockchain_swarm_port }}',     comment: 'blockchain swarm',   protocol: 'udp' }
-    - { port: '{{ logos_node_blockchain_blend_port }}',     comment: 'blockchain blend',   protocol: 'udp' }
+    - { port: '{{ logos_node_delivery_p2p_tcp_port }}',         comment: 'delivery libp2p' }
+    - { port: '{{ logos_node_delivery_discv5_udp_port }}',      comment: 'delivery discv5',    protocol: 'udp' }
+    - { port: '{{ logos_node_delivery_websocket_port }}',       comment: 'delivery WSS' }
+    - { port: '{{ logos_node_storage_tcp_port }}',              comment: 'storage libp2p' }
+    - { port: '{{ logos_node_storage_disc_port }}',             comment: 'storage discovery',  protocol: 'udp' }
+    - { port: '{{ logos_node_storage_metrics_port }}',          comment: 'storage metrics',    ipset: 'hq.metrics', iifname: 'wg0' }
+    - { port: '{{ logos_node_blockchain_swarm_port }}',         comment: 'blockchain swarm',   protocol: 'udp' }
+    - { port: '{{ logos_node_blockchain_blend_port }}',         comment: 'blockchain blend',   protocol: 'udp' }

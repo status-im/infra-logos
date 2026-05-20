@@ -22,40 +22,39 @@ logos_node_module_calls:
 logos_node_delivery_key: '{{ lookup("vault", "delivery/nodekeys", field=hostname) }}'
 logos_node_delivery_mix_key: '{{ lookup("vault", "delivery/mixkeys", field=hostname) }}'
 
-
 # Network
-logos_node_cluster_id: 2
-logos_node_num_shards_in_network: 8
-logos_node_dns4_domain_name: '{{ dns_entry }}'
+logos_node_delivery_cluster_id: 2
+logos_node_delivery_num_shards_in_network: 8
+logos_node_delivery_dns4_domain_name: '{{ dns_entry }}'
 
 # Protocols
-logos_node_relay: true
-logos_node_store: true
-logos_node_filter: true
-logos_node_lightpush: true
-logos_node_mix: true
-logos_node_discv5: true
-logos_node_kad_discovery: true
+logos_node_delivery_relay: true
+logos_node_delivery_store: true
+logos_node_delivery_filter: true
+logos_node_delivery_lightpush: true
+logos_node_delivery_mix: true
+logos_node_delivery_discv5: true
+logos_node_delivery_kad_discovery: true
 
 # P2P
-logos_node_p2p_max_connections: 300
+logos_node_delivery_max_connections: 300
 
 # Ports
-logos_node_p2p_tcp_port: 30303
-logos_node_disc_v5_port: 9000
-logos_node_websock_port: 8000
+logos_node_delivery_p2p_tcp_port: 30303
+logos_node_delivery_discv5_udp_port: 9000
+logos_node_delivery_websocket_port: 8000
 
 # Websocket
-logos_node_websocket_enabled: true
-logos_node_websocket_secure_enabled: true
-logos_node_websocket_domain: '{{ dns_entry }}'
+logos_node_delivery_websocket_enabled: true
+logos_node_delivery_websocket_secure_enabled: true
+logos_node_delivery_websocket_domain: '{{ dns_entry }}'
 
 # Store - Postgres
-logos_node_store_db_url: 'postgres://delivery:{{ lookup("vault", "delivery/database", field="db-password") }}@delivery-db-01.{{ ansible_domain }}.wg:5432/delivery'
-logos_node_store_retention_policy: 'size:1GB'
+logos_node_delivery_store_db_url: 'postgres://delivery:{{ lookup("vault", "delivery/database", field="db-password") }}@delivery-db-01.{{ ansible_domain }}.wg:5432/delivery'
+logos_node_delivery_store_retention_policy: 'size:1GB'
 
 # Kademlia bootstrap - populate after first deploy
-logos_node_kad_bootstrap_nodes:
+logos_node_delivery_kad_bootstrap_nodes:
   - '/dns4/delivery-01.do-ams3.logos.dev.status.im/tcp/30303/p2p/16Uiu2HAmTUbnxLGT9JvV6mu9oPyDjqHK4Phs1VDJNUgESgNSkuby'
   - '/dns4/delivery-02.do-ams3.logos.dev.status.im/tcp/30303/p2p/16Uiu2HAmMK7PYygBtKUQ8EHp7EfaD3bCEsJrkFooK8RQ2PVpJprH'
   - '/dns4/delivery-01.gc-us-central1-a.logos.dev.status.im/tcp/30303/p2p/16Uiu2HAm4S1JYkuzDKLKQvwgAhZKs9otxXqt8SCGtB4hoJP1S397'
@@ -74,15 +73,15 @@ certbot_admin_email: 'devops@status.im'
 certbot_containers_to_stop: ['{{ logos_node_cont_name }}']
 certbot_certs:
   - domains:
-    - '{{ logos_node_websocket_domain }}'
+    - '{{ logos_node_delivery_websocket_domain }}'
 
-conn_limit_dport: '{{ logos_node_websock_port }}'
+conn_limit_dport: '{{ logos_node_delivery_websocket_port }}'
 
 # Open Ports
 open_ports_list:
   certbot:
     - { port: '80', comment: 'Certbot' }
   logos-node:
-    - { port: '{{ logos_node_p2p_tcp_port }}',  comment: 'libp2p' }
-    - { port: '{{ logos_node_disc_v5_port }}',   comment: 'discovery v5', protocol: 'udp' }
-    - { port: '{{ logos_node_websock_port }}',    comment: 'websocket' }
+    - { port: '{{ logos_node_delivery_p2p_tcp_port }}',       comment: 'libp2p' }
+    - { port: '{{ logos_node_delivery_discv5_udp_port }}',    comment: 'discovery v5', protocol: 'udp' }
+    - { port: '{{ logos_node_delivery_websocket_port }}',     comment: 'websocket' }

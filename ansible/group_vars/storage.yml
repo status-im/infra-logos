@@ -1,4 +1,8 @@
 ---
+# Custom SSH accounts, should start from UID 8000.
+bootstrap__active_extra_users:
+  - { name: giuliano, uid: 8007, groups: ['docker', 'dockremap'], admin: false, key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzt3VMCbnEPczotkMQNcD8lhsI8wsj9YUgUvM9d2c7fYSaQ7+ZQS7MjXF/znyGBymCjrvSmOHG200WcKKiNnFNpWXLfOZDzMJEdhQLmQ43fVUqEaVQnNLRJdTwdhZFjoeQz/lKGLti9jOlgMLjrR/87d880pxtG+3cZkNP1j1UnjmER9ld1VcWLW6z1TGzq6M0Piz/geWQOWtvh+5h5bjcqdCl/hV42ktVinytmiDMPS2khQdSXeGARmvSYOIPwGO9VUEtjTPP2cWBZR39oY6XC/PrXBRZeDNzJ9Gl+z/uC2DnJ1S251KJxx8FEcn08MI6cfnT6oLedQ/PfFY/EEJJ giuliano@chronos' }
+
 bootstrap__logrotate_frequency: 'hourly'
 bootstrap__logrotate_timer_frequency: '*:0/30'
 
@@ -18,9 +22,6 @@ logos_node_module_calls:
   - 'storage_module init @/conf/storage_config.json'
   - 'storage_module start'
   - 'storage_module importFiles /content'
-
-# Network
-logos_node_dns4_domain_name: '{{ dns_entry }}'
 
 # Storage network
 logos_node_storage_tcp_port: 8080
