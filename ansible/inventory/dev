@@ -4,6 +4,7 @@
 blockchain-01.ac-cn-hongkong-c.logos.dev ansible_host=43.99.9.55 data_center=ac-cn-hongkong-c dns_domain=status.im dns_entry=blockchain-01.ac-cn-hongkong-c.logos.dev.status.im env=logos region=cn-hongkong-c stage=dev
 blockchain-01.do-ams3.logos.dev ansible_host=209.38.54.102 data_center=do-ams3 dns_domain=status.im dns_entry=blockchain-01.do-ams3.logos.dev.status.im env=logos region=ams3 stage=dev
 blockchain-01.gc-us-central1-a.logos.dev ansible_host=136.111.52.229 data_center=gc-us-central1-a dns_entry=blockchain-01.gc-us-central1-a.logos.dev.status.im env=logos region=us-central1-a stage=dev
+chat-kc-01.do-ams3.logos.dev ansible_host=152.42.151.39 data_center=do-ams3 dns_domain=status.im dns_entry=chat-kc-01.do-ams3.logos.dev.status.im env=logos region=ams3 stage=dev
 delivery-01.ac-cn-hongkong-c.logos.dev ansible_host=47.242.130.189 data_center=ac-cn-hongkong-c dns_domain=status.im dns_entry=delivery-01.ac-cn-hongkong-c.logos.dev.status.im env=logos region=cn-hongkong-c stage=dev
 delivery-01.do-ams3.logos.dev ansible_host=138.68.122.137 data_center=do-ams3 dns_domain=status.im dns_entry=delivery-01.do-ams3.logos.dev.status.im env=logos region=ams3 stage=dev
 delivery-01.gc-us-central1-a.logos.dev ansible_host=136.119.156.87 data_center=gc-us-central1-a dns_entry=delivery-01.gc-us-central1-a.logos.dev.status.im env=logos region=us-central1-a stage=dev
@@ -29,6 +30,9 @@ blockchain-01.ac-cn-hongkong-c.logos.dev
 blockchain-01.do-ams3.logos.dev
 blockchain-01.gc-us-central1-a.logos.dev
 
+[chat-kc]
+chat-kc-01.do-ams3.logos.dev
+
 [delivery]
 delivery-01.ac-cn-hongkong-c.logos.dev
 delivery-01.do-ams3.logos.dev
@@ -44,6 +48,7 @@ delivery-db-01.gc-us-central1-a.logos.dev
 
 [do-ams3]
 blockchain-01.do-ams3.logos.dev
+chat-kc-01.do-ams3.logos.dev
 delivery-01.do-ams3.logos.dev
 delivery-02.do-ams3.logos.dev
 delivery-db-01.do-ams3.logos.dev
@@ -60,6 +65,7 @@ storage-01.gc-us-central1-a.logos.dev
 blockchain-01.ac-cn-hongkong-c.logos.dev
 blockchain-01.do-ams3.logos.dev
 blockchain-01.gc-us-central1-a.logos.dev
+chat-kc-01.do-ams3.logos.dev
 delivery-01.ac-cn-hongkong-c.logos.dev
 delivery-01.do-ams3.logos.dev
 delivery-01.gc-us-central1-a.logos.dev

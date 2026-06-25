@@ -51,6 +51,17 @@ locals {
 
       blockchain_data_vol_size = 40
 
+      /* Logos Chat KeyPackage cache. */
+      ac_chat_kc_count = 0
+      do_chat_kc_count = 0
+      gc_chat_kc_count = 0
+
+      chat_kc_do_type = "s-1vcpu-2gb"        /* DigitalOcean */
+      chat_kc_ac_type = "ecs.t5-lc1m2.large" /* Alibaba Cloud */
+      chat_kc_gc_type = "e2-medium"          /* Google Cloud */
+
+      chat_kc_data_vol_size = 30
+
       /* Combined nodes running multiple Logos modules. */
       ac_node_count = 0
       do_node_count = 0
@@ -99,6 +110,8 @@ locals {
       ac_blockchain_count = 1
       do_blockchain_count = 1
       gc_blockchain_count = 1
+
+      do_chat_kc_count = 1
     }
     test = {
       ac_node_count = 2
