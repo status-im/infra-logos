@@ -1,0 +1,26 @@
+---
+- name: Create chat-kc directories
+  file:
+    path: '{{ item }}'
+    state: directory
+    owner: dockremap
+    group: docker
+    mode: 0755
+  loop:
+    - '{{ chat_kc_base_dir }}'
+    - '{{ chat_kc_data_dir }}'
+
+- name: Template docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: '{{ chat_kc_base_dir }}/docker-compose.yml'
+    owner: dockremap
+    group: docker
+    mode: 0644
+  notify: restart-chat-kc
+
+- name: Deploy chat-kc container
+  community.docker.docker_compose_v2:
+    project_src: '{{ chat_kc_base_dir }}'
+    state: present
+    pull: always

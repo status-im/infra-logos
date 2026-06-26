@@ -1,0 +1,20 @@
+---
+- name: Create Consul service definition
+  include_role: name=infra-role-consul-service
+  vars:
+    consul_config_name:                      '{{ chat_kc_service_name }}'
+    consul_default_check_disabled:           '{{ chat_kc_consul_check_disabled }}'
+    consul_default_check_interval:           '{{ chat_kc_consul_check_interval }}'
+    consul_default_check_timeout:            '{{ chat_kc_consul_check_timeout }}'
+    consul_default_success_before_passing:   '{{ chat_kc_consul_success_before_passing }}'
+    consul_default_failures_before_warning:  '{{ chat_kc_consul_failures_before_warning }}'
+    consul_default_failures_before_critical: '{{ chat_kc_consul_failures_before_critical }}'
+    consul_services:
+      - name: '{{ chat_kc_service_name }}'
+        tags: '{{ chat_kc_consul_tags }}'
+        port: '{{ chat_kc_host_port }}'
+        checks:
+          - id:   '{{ chat_kc_service_name }}-status'
+            name: 'Chat KeyPackage Cache Healthcheck'
+            type: 'tcp'
+            tcp:  'localhost:{{ chat_kc_host_port }}'

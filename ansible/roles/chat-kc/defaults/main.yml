@@ -1,0 +1,30 @@
+---
+# Paths
+chat_kc_base_dir: '/docker/chat-kc'
+chat_kc_src_dir: '{{ chat_kc_base_dir }}/src'
+chat_kc_data_dir: '{{ chat_kc_base_dir }}/data'
+
+# Image
+chat_kc_image_name: 'harbor.status.im/logos-messaging/chat-store'
+chat_kc_image_tag: 'deploy-logos-dev'
+
+# Container
+chat_kc_cont_name: 'chat-kc'
+chat_kc_host_port: 8080
+chat_kc_container_port: 8080
+
+# Service flags (chat-store CLI args)
+chat_kc_retention_days: 21
+chat_kc_max_per_identity: 100
+chat_kc_prune_interval_secs: 3600
+chat_kc_log_level: 'info'
+
+# Consul
+chat_kc_service_name: 'chat-kc'
+chat_kc_consul_tags: ['logos', 'chat', 'keypackage-cache']
+chat_kc_consul_check_disabled: false
+chat_kc_consul_check_interval: '30s'
+chat_kc_consul_check_timeout: '5s'
+chat_kc_consul_success_before_passing: 0
+chat_kc_consul_failures_before_warning: 1
+chat_kc_consul_failures_before_critical: 2

@@ -1,0 +1,36 @@
+---
+# Domain
+chat_kc_public_domain: 'devnet.chat-kc.logos.co'
+
+# Swap
+swap_file_size_mb: 2048
+
+# Certbot
+certbot_docker_enabled: true
+certbot_admin_email: 'devops@status.im'
+certbot_services_to_stop: ['nginx']
+certbot_certs:
+  - domains:
+      - '{{ chat_kc_public_domain }}'
+
+# Nginx
+nginx_http_params: '{{ nginx_http_default_params + ["limit_req_zone $binary_remote_addr zone=chat_kc:10m rate=10r/s"] }}'
+
+nginx_sites:
+  chat_kc_https:
+    - listen 443 ssl
+    - server_name {{ chat_kc_public_domain }}
+
+    - ssl_certificate     /etc/letsencrypt/live/{{ chat_kc_public_domain }}/fullchain.pem
+    - ssl_certificate_key /etc/letsencrypt/live/{{ chat_kc_public_domain }}/privkey.pem
+
+    - limit_req zone=chat_kc burst=20 nodelay
+
+    - location / {
+        proxy_pass http://localhost:{{ chat_kc_host_port }}/;
+      }
+
+# Firewall
+open_ports_list:
+  chat-kc:
+    - { port: [80, 443], comment: 'Chat KeyPackage Cache' }

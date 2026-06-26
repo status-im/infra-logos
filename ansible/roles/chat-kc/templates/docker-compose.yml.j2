@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  chat-kc:
+    image: "{{ chat_kc_image_name }}:{{ chat_kc_image_tag }}"
+    container_name: "{{ chat_kc_cont_name }}"
+    restart: unless-stopped
+    command:
+      - "--bind"
+      - "0.0.0.0:{{ chat_kc_container_port }}"
+      - "--db"
+      - "/data/chat-store.db"
+      - "--retention-days"
+      - "{{ chat_kc_retention_days }}"
+      - "--max-per-identity"
+      - "{{ chat_kc_max_per_identity }}"
+      - "--prune-interval-secs"
+      - "{{ chat_kc_prune_interval_secs }}"
+    environment:
+      - "RUST_LOG={{ chat_kc_log_level }}"
+    ports:
+      - "127.0.0.1:{{ chat_kc_host_port }}:{{ chat_kc_container_port }}"
+    volumes:
+      - "{{ chat_kc_data_dir }}:/data"
+    labels:
+      com.centurylinklabs.watchtower.enable: 'true'
