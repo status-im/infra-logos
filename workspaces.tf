@@ -105,9 +105,9 @@ locals {
 
       db_data_vol_size = 320
 
-      ac_storage_count = 1
-      do_storage_count = 1
-      gc_storage_count = 1
+      ac_storage_count = 2
+      do_storage_count = 2
+      gc_storage_count = 2
 
       ac_blockchain_count = 1
       do_blockchain_count = 1

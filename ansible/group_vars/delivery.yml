@@ -6,7 +6,8 @@ bootstrap__rsyslog_filter_rules:
   - 'storeMessageDbUrl'
 
 # Container
-logos_node_cont_tag: 'dev-d0.1.3'
+logos_node_delivery_version: '0.1.3'
+logos_node_cont_tag: '{{ stage }}-d{{ logos_node_delivery_version }}'
 logos_node_cont_name: 'logos-node'
 logos_node_cont_vol: '/docker/{{ logos_node_cont_name }}'
 logos_node_conf_path: '{{ logos_node_cont_vol }}/conf'

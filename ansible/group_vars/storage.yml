@@ -3,7 +3,8 @@ bootstrap__logrotate_frequency: 'hourly'
 bootstrap__logrotate_timer_frequency: '*:0/30'
 
 # Container
-logos_node_cont_tag: 'deploy-{{ env }}-{{ stage }}'
+logos_node_storage_version: '1.2.0'
+logos_node_cont_tag: '{{ stage }}-s{{ logos_node_storage_version }}'
 logos_node_cont_name: 'logos-node'
 logos_node_cont_vol: '/docker/{{ logos_node_cont_name }}'
 logos_node_conf_path: '{{ logos_node_cont_vol }}/conf'
@@ -17,7 +18,6 @@ logos_node_modules: ['storage_module']
 logos_node_module_calls:
   - 'storage_module init @/conf/storage_config.json'
   - 'storage_module start'
-  - 'storage_module importFiles /content'
 
 # Storage network
 logos_node_storage_tcp_port: 8080
@@ -38,20 +38,60 @@ logos_node_storage_data_dir: '/data'
 logos_node_storage_quota: 21474836480
 logos_node_storage_block_ttl: '4w2d'
 
-# Bootstrap SPR: empty for first deploy, populate after getting SPR from node 1
+# Mix-Proxy network (minimum 4 MP nodes, first one bootstraps)
+logos_node_storage_mix_enabled: true
+logos_node_storage_mp_nodes:
+  - storage-01.do-ams3.logos.dev
+  - storage-02.do-ams3.logos.dev
+  - storage-01.gc-us-central1-a.logos.dev
+  - storage-01.ac-cn-hongkong-c.logos.dev
+
+logos_node_storage_first_node: 'storage-01.do-ams3.logos.dev'
+logos_node_storage_role: "{{ 'mp' if inventory_hostname in logos_node_storage_mp_nodes else 'rs' }}"
+logos_node_storage_no_bootstrap: "{{ inventory_hostname == logos_node_storage_first_node }}"
+
+# Bootstrap SPR (from logos_node_storage_first_node)
 logos_node_storage_bootstrap_nodes:
-  - 'spr:CiUIAhIhAwfZDeTtWNlSgRbZlZfvxLI5Bpy0lFEYN7gImS3oHNaSEgIDARpJCicAJQgCEiEDB9kN5O1Y2VKBFtmVl-_EsjkGnLSUURg3uAiZLegc1pIQsZaVzQYaCwoJBBiQTsiRAiOCGgsKCQQYkE7IkQIjgipHMEUCIQCH6MiUxwE3GdVgAoazpXZ9KDqQsKcmLqRrdFj65g2GOQIgTF4i47pdVN68ceG9rqb5Bp5WIZNqBBqHZFa0WfSdHlA'
-  - 'spr:CiUIAhIhA8d4LjRirtXO1M-JEmbhVA0CQeA7hHNR9BA7DvFsPKTEEgIDARpJCicAJQgCEiEDx3guNGKu1c7Uz4kSZuFUDQJB4DuEc1H0EDsO8Ww8pMQQvpqVzQYaCwoJBCIq5juRAiOCGgsKCQQiKuY7kQIjgipHMEUCIQC2zMlesW5XXOhyAN-x-cc42vPfVFF-nd_NMq0iJrcayAIgatqbYxpysNK2gGYBkNn_snc9nWf42uX8pjy4PulmGBY'
-  - 'spr:CiUIAhIhA_MocWwn1_t__FEONMqYluUjc9ZVkcvYRLo6C0GzTkbfEgIDARpJCicAJQgCEiED8yhxbCfX-3_8UQ40ypiW5SNz1lWRy9hEujoLQbNORt8QqZyVzQYaCwoJBC_u5W-RAiOCGgsKCQQv7uVvkQIjgipHMEUCIQDJt4dMuSobs8IWlqOnJm4_3PL2m8DPRdDeuPGU3hlp8wIgRbPF4_S_2H6oIFrVvodekNgDyn0yRMnSGRgDa1Xcmr0'
+  - 'spr:CiUIAhIhA11LamlswboRlyrpEXBubPQAr2WRmqjgWRC4JsvFptrCEgIDARpJCicAJQgCEiEDXUtqaWzBuhGXKukRcG5s9ACvZZGaqOBZELgmy8Wm2sIQxJeK0gYaCwoJBBiQTsiRAiOCGgsKCQQYkE7IkQIjgipHMEUCIQDOuJ51pGEw3Vj8p3n5UBxNuR5RyBVZ6LtkQi5saCFrtwIgAx6bF95oE6icVUFg4tp8AWDFHhAv3o2iGGNy_qQV5TY'
+
+# TCP SPRs from all MP nodes (for RS dht-mix-proxy)
+logos_node_storage_dht_mix_proxy:
+  - 'spr:CiUIAhIhA11LamlswboRlyrpEXBubPQAr2WRmqjgWRC4JsvFptrCEgIDARpHCicAJQgCEiEDXUtqaWzBuhGXKukRcG5s9ACvZZGaqOBZELgmy8Wm2sIQxJeK0gYaCgoIBBiQTsgGH5AaCgoIBBiQTsgGH5AqRjBEAiBky7e5AIKAV0xeWqshEKBNxAtaJes1XZA4HWEPOsBn7wIgGv9SO_M9xg11BndxFogxTwyX1PBgyEmN-dERKSufOcs'
+  - 'spr:CiUIAhIhAzZMgD-qjJe5tlKjSoF78qo7MM4sxRSLWPmgkye9R6YsEgIDARpHCicAJQgCEiEDNkyAP6qMl7m2UqNKgXvyqjswzizFFItY-aCTJ71HpiwQm5mK0gYaCgoIBLymyHcGH5AaCgoIBLymyHcGH5AqRjBEAiBPTZUvON0ylEwPI-V5ssAxoG_jaeB2frlYR9DWUKTlxQIgcWal583gfSZWyispl9zJmu6UoKtsI4npImnWzSBPlDY'
+  - 'spr:CiUIAhIhAwi_g5xHmn-aLe9OVMxOaBADpkjm2uiQItF5cUbCqLQ9EgIDARpHCicAJQgCEiEDCL-DnEeaf5ot705UzE5oEAOmSOba6JAi0XlxRsKotD0QjpiK0gYaCgoIBCIq5jsGH5AaCgoIBCIq5jsGH5AqRjBEAiA0Za6KcO4hPCiDAIFgrrm9nUXTUOh3NcQa5uDzPjLpPQIgA4XJdVFfwpvSLWla3orH81N5dByZezALyTinuuIzsKE'
+  - 'spr:CiUIAhIhAuc7v0KnrAyWlwcAw72SvOxVDRG0yAA3ldfwAz6ArdCOEgIDARpHCicAJQgCEiEC5zu_QqesDJaXBwDDvZK87FUNEbTIADeV1_ADPoCt0I4Q_ZaK0gYaCgoIBC_u5W8GH5AaCgoIBC_u5W8GH5AqRzBFAiEAyghuJc4f916ZLwha7n0aoKHPEYcoChf9QHaewcgHtCsCIHVFatemdA3GTmlijPafVtuuMbUMhKp6FxVMtXA-Sr7O'
+
+# Mix pool relays (for RS mix-pool)
+logos_node_storage_mix_pool_relays:
+  - peerId: '16Uiu2HAmJwAxtuRLfjP1SfjE7EWWr6zExFBFVLnUnTsc28fmvrpq'
+    multiAddr: '/ip4/24.144.78.200/tcp/8080'
+    mixPubKey: 'd2bad8ab91f9a63c8a60b1e305fc1045224891ed00719ada2991abe9bc627540'
+    libp2pPubKey: '035d4b6a696cc1ba11972ae911706e6cf400af65919aa8e05910b826cbc5a6dac2'
+  - peerId: '16Uiu2HAmGJx2MWRH66M2A1RcD5TcY5Z2kReNdddpF9kRyfykBFwy'
+    multiAddr: '/ip4/188.166.200.119/tcp/8080'
+    mixPubKey: '410d987b608e5164ec1748b964a0ee6d636af4e62667a5a207e7fd766ec42268'
+    libp2pPubKey: '03364c803faa8c97b9b652a34a817bf2aa3b30ce2cc5148b58f9a09327bd47a62c'
+  - peerId: '16Uiu2HAmDF8zGjsuxM4h1N5x37hzUtGnDHtkVJ8jLiVty1DJyG92'
+    multiAddr: '/ip4/34.42.230.59/tcp/8080'
+    mixPubKey: '0a9b87d4a03fca9ffd9b0d7b21dd9950741f08d72fc0716bf79c8ad83e702e34'
+    libp2pPubKey: '0308bf839c479a7f9a2def4e54cc4e681003a648e6dae89022d1797146c2a8b43d'
+  - peerId: '16Uiu2HAmAzJztKiAAMSixFAhUjfWdKB3bGcXGfDFqaut6nc5PTRf'
+    multiAddr: '/ip4/47.238.229.111/tcp/8080'
+    mixPubKey: '04dddf75ad5090f8975836f8617b7b87cf926a7f2938a5059c9f5e0000509513'
+    libp2pPubKey: '02e73bbf42a7ac0c96970700c3bd92bcec550d11b4c8003795d7f0033e80add08e'
+
+logos_node_storage_preload_content:
+  - url: 'https://logos.co/book/farewell-to-westphalia-foss-edition.pdf'
+    block_size: 65536
 
 # Consul
 logos_node_consul_success_before_passing: 5
 logos_node_consul_failures_before_warning: 2
 logos_node_consul_failures_before_critical: 20
 
-# Open Ports (public only)
+# Open Ports
 open_ports_list:
   logos-node:
-    - { port: '{{ logos_node_storage_tcp_port }}',      comment: 'storage libp2p'                                         }
-    - { port: '{{ logos_node_storage_disc_port }}',     comment: 'storage discovery', protocol: 'udp'                     }
-    - { port: '{{ logos_node_storage_metrics_port }}',  comment: 'storage metrics',   ipset: 'hq.metrics', iifname: 'wg0' }
+    - { port: '{{ logos_node_storage_tcp_port }}',     comment: 'storage libp2p'                                         }
+    - { port: '{{ logos_node_storage_disc_port }}',    comment: 'storage discovery', protocol: 'udp'                     }
+    - { port: '{{ logos_node_storage_metrics_port }}', comment: 'storage metrics',   ipset: 'hq.metrics', iifname: 'wg0' }

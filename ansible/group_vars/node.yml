@@ -6,13 +6,16 @@ bootstrap__rsyslog_filter_rules:
   - 'storeMessageDbUrl'
 
 # Container
-logos_node_cont_tag: 'deploy-{{ env }}-{{ stage }}'
+logos_node_delivery_version: '0.1.3'
+logos_node_storage_version: '1.2.0'
+logos_node_blockchain_version: '0.2.0'
+logos_node_cont_tag: '{{ stage }}-d{{ logos_node_delivery_version }}-s{{ logos_node_storage_version }}-b{{ logos_node_blockchain_version }}'
 logos_node_cont_name: 'logos-node'
 logos_node_cont_vol: '/docker/{{ logos_node_cont_name }}'
 logos_node_conf_path: '{{ logos_node_cont_vol }}/conf'
 logos_node_log_level: 'DEBUG'
 
-# Blockchain disabled due to upstream bug: liblogos_blockchain_module.start returns error 3
+# Blockchain disabled due to upstream bug: blockchain_module.start returns error 3
 # ("no http client specified"). Re-enable when fixed upstream.
 logos_node_modules: ['delivery_module', 'storage_module']
 logos_node_module_calls:
@@ -20,7 +23,6 @@ logos_node_module_calls:
   - 'delivery_module start'
   - 'storage_module init @/conf/storage_config.json'
   - 'storage_module start'
-  - 'storage_module importFiles /content'
 
 # --- Delivery ---
 
@@ -79,13 +81,49 @@ logos_node_storage_data_dir: '/data'
 logos_node_storage_quota: 21474836480
 logos_node_storage_block_ttl: '4w2d'
 
+# Mix-Proxy network (minimum 4 MP nodes, first one bootstraps)
+logos_node_storage_mix_enabled: true
+logos_node_storage_mp_nodes:
+  - node-01.do-ams3.logos.test
+  - node-02.do-ams3.logos.test
+  - node-01.gc-us-central1-a.logos.test
+  - node-01.ac-cn-hongkong-c.logos.test
+
+logos_node_storage_first_node: 'node-01.do-ams3.logos.test'
+logos_node_storage_role: "{{ 'mp' if inventory_hostname in logos_node_storage_mp_nodes else 'rs' }}"
+logos_node_storage_no_bootstrap: "{{ inventory_hostname == logos_node_storage_first_node }}"
+
 logos_node_storage_bootstrap_nodes:
-  - 'spr:CiUIAhIhA6rD-Sa1mJqHOoYMk8yad7B4BYDEI_toNwb1z0cYIRu6EgIDARpJCicAJQgCEiEDqsP5JrWYmoc6hgyTzJp3sHgFgMQj-2g3BvXPRxghG7oQxfm60AYaCwoJBEDhQ42RAiOCGgsKCQRA4UONkQIjgipHMEUCIQDvDWYjtGgocMO1TtfUco_Fua4eE4Xvs49c2JQ5UQWNPAIgQRA4DZVEbXvHYsyTKeJzW2sLX4KTcemE_VcwAEKhyoU'
-  - 'spr:CiUIAhIhAsFwlXD-3VpX-Pa3taM15wdL3DS75l_dpVCIFhdaIKYREgIDARpJCicAJQgCEiECwXCVcP7dWlf49re1ozXnB0vcNLvmX92lUIgWF1ogphEQ5rW30AYaCwoJBI5d6vqRAiOCGgsKCQSOXer6kQIjgipHMEUCIQC9zlsHnbFR-rI4vRutQCSlvYiCtd4adNJHijVGrT5SJAIgHJBXqbq9lPQRkzWzJ73Llxd5-0_D1rEWGjGbUT0bbkc'
-  - 'spr:CiUIAhIhAwSYqf83tfZom9eGFFdXXea-dblO-I7-I8B1kjhfJeEAEgIDARpJCicAJQgCEiEDBJip_ze19mib14YUV1dd5r51uU74jv4jwHWSOF8l4QAQ6K-30AYaCwoJBAqAABKRAiOCGgsKCQQKgAASkQIjgipHMEUCIQCYXIUemKQBPajJtISYbveDG6VPLXft1nWfNlx_UNLODwIgSYSg2Vgrvj2nVEcHz7CoJuL75ODjoq_u2Qsdv3j8S0Q'
-  - 'spr:CiUIAhIhA4T8XrxB6PKor8f7j7eqKxgIXH6mMST0_Uel5hZjSDp2EgIDARpJCicAJQgCEiEDhPxevEHo8qivx_uPt6orGAhcfqYxJPT9R6XmFmNIOnYQy-y60AYaCwoJBAqAAFuRAiOCGgsKCQQKgABbkQIjgipHMEUCIQC5CNvj2oG6nPj3JO6dm8BixqJOD-CFPcYNTRmWBseqsQIgL7bqmZCnQzaOOIpEHjkX0JjAjdbzvJNqgfzl8jjsR8s'
-  - 'spr:CiUIAhIhAqk6NgpRxbKvI02Up24XP3U-dD3TdKRurXpW-ak3Zvh-EgIDARpJCicAJQgCEiECqTo2ClHFsq8jTZSnbhc_dT50PdN0pG6telb5qTdm-H4Q4q230AYaCwoJBKwf79KRAiOCGgsKCQSsH-_SkQIjgipGMEQCIFOdgdffPycoeLaaGjsJEjifpZyD4aSsBVFe1gWG754JAiBDmVRGWJ8OQvuPwkc3E0fKezHr2deFhtaHXqdD2DTFPQ'
-  - 'spr:CiUIAhIhAvSGKPkE3mD7MP-ZCWS5AEvzcDNVsM6XFYeCBXNja7h2EgIDARpJCicAJQgCEiEC9IYo-QTeYPsw_5kJZLkAS_NwM1WwzpcVh4IFc2NruHYQxbS30AYaCwoJBKwf79ORAiOCGgsKCQSsH-_TkQIjgipGMEQCIBJdKxKHG9h39G2FrsJ00oZg8Kv__kVO-sGXNiSxpaP3AiBHtBpvE9Os4hIdcJ2VgKHArfEngKlNGnMw33ig1IDhHw'
+  - 'spr:CiUIAhIhAn67-cPFkDpqyeTEjDPbhtN8NUxt9S-niBc5QRLyc2xrEgIDARpJCicAJQgCEiECfrv5w8WQOmrJ5MSMM9uG03w1TG31L6eIFzlBEvJzbGsQ3LWT0gYaCwoJBLKAjM6RAiOCGgsKCQSygIzOkQIjgipHMEUCIQDX2BuLjlWusHeQC-bI50ynRHSXfchFSSFfup2NFHB3dwIgLEUpNwVgcaP7Rj_GkClm3pmQ1KSqB1GeaKDbipsZJ3o'
+
+logos_node_storage_dht_mix_proxy:
+  - 'spr:CiUIAhIhAn67-cPFkDpqyeTEjDPbhtN8NUxt9S-niBc5QRLyc2xrEgIDARpHCicAJQgCEiECfrv5w8WQOmrJ5MSMM9uG03w1TG31L6eIFzlBEvJzbGsQ3LWT0gYaCgoIBLKAjM4GH4YaCgoIBLKAjM4GH4YqRjBEAiAmqkomC7tsg69lRWS6_XTgeijxIubmY2ANxqMDsKJjtwIgJVGiddoVsEAR0tAGIYnSwb5BAp4B-NGDQ8G8Yrh7PKs'  # node-01.do-ams3.logos.test
+  - 'spr:CiUIAhIhA_aTx0w5sTTjM1GEgYYDd1cbzpzGQZ8eiqL77znxAunKEgIDARpHCicAJQgCEiED9pPHTDmxNOMzUYSBhgN3VxvOnMZBnx6KovvvOfEC6coQ6riT0gYaCgoIBIHU3SwGH4YaCgoIBIHU3SwGH4YqRjBEAiBcVYRRPsMAF3A3rHKQZuN3PHVrnc_ZuUJaFPkw39az2gIgRbR7OmtNaXghJ1x0_sU0598Ggo5GPUG3V78BuePTNjc'  # node-02.do-ams3.logos.test
+  - 'spr:CiUIAhIhAph_ARtkKQwuVAqmTaccbMpF5q2Ub3rOI8AO8jNJPqU_EgIDARpHCicAJQgCEiECmH8BG2QpDC5UCqZNpxxsykXmrZRves4jwA7yM0k-pT8Q-raT0gYaCgoIBCJGPMkGH4YaCgoIBCJGPMkGH4YqRzBFAiEAxB4O-5HpmKKYF9bmy2nxn92C05sU_jHk-Ndw2EC_u2gCICS1Tuv9A4H9654k4B1RvLWD4aFcUI2Id1q4utgEBxxh'  # node-01.gc-us-central1-a.logos.test
+  - 'spr:CiUIAhIhAr0XuiYSeu54D9yrXkzAhdOMfB8HB7ym0kzrGxL7-8fQEgIDARpHCicAJQgCEiECvRe6JhJ67ngP3KteTMCF04x8HwcHvKbSTOsbEvv7x9AQkLOT0gYaCgoIBC9MqLoGH4YaCgoIBC9MqLoGH4YqRjBEAiAPIvPSApwhegTNADOM41tQ9vLz9M17087_1liFz-yidwIgWUw1bQCzlPPUGXICbv4LOr3hXyyQIWcyXfbgQ2sl694'  # node-01.ac-cn-hongkong-c.logos.test
+
+logos_node_storage_mix_pool_relays:
+  - peerId: '16Uiu2HAm3xPbYz2zsq5XVGDCMqKhhNXZWyYV6WLVv3yzzUiRJWnW'
+    multiAddr: '/ip4/178.128.140.206/tcp/8070'
+    mixPubKey: '7da7478099878e16e1ae64d8d92f3ac5a033d309202672f38c4b23580029c935'
+    libp2pPubKey: '027ebbf9c3c5903a6ac9e4c48c33db86d37c354c6df52fa78817394112f2736c6b'
+  - peerId: '16Uiu2HAmVFXLh9fs5mExDDwzsah2rWdiHR2Fy3cPmF5xPx29vrbB'
+    multiAddr: '/ip4/129.212.221.44/tcp/8070'
+    mixPubKey: 'a2e5d0dd654b1fee41e20ff6db666b3d1281462fb5d1d72b3e6adbad03cc1d02'
+    libp2pPubKey: '03f693c74c39b134e333518481860377571bce9cc6419f1e8aa2fbef39f102e9ca'
+  - peerId: '16Uiu2HAm5gxGojS6RFjK9jUm6QiKb1Vjnx81iQkfhSTXTzXWmJd4'
+    multiAddr: '/ip4/34.70.60.201/tcp/8070'
+    mixPubKey: '88225286ed1ac06bfaa557a6100d16c9d231d4385cec63978bdafcf03d503e2f'
+    libp2pPubKey: '02987f011b64290c2e540aa64da71c6cca45e6ad946f7ace23c00ef233493ea53f'
+  - peerId: '16Uiu2HAm89p258CC7dWuHBvhK7oXK7d37oCsVH8kFsa2nxH6rT9Z'
+    multiAddr: '/ip4/47.76.168.186/tcp/8070'
+    mixPubKey: '752e5fad795b8795d5db1442148a64fe21c7ffb54017ee3656ae42b4f102f217'
+    libp2pPubKey: '02bd17ba26127aee780fdcab5e4cc085d38c7c1f0707bca6d24ceb1b12fbfbc7d0'
+
+# Content preload (RS nodes only)
+logos_node_storage_preload_content:
+  - url: 'https://logos.co/book/farewell-to-westphalia-foss-edition.pdf'
+    block_size: 65536
 
 # --- Blockchain ---
 

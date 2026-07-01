@@ -17,6 +17,9 @@ delivery-db-01.gc-us-central1-a.logos.dev ansible_host=136.115.120.136 data_cent
 storage-01.ac-cn-hongkong-c.logos.dev ansible_host=47.238.229.111 data_center=ac-cn-hongkong-c dns_domain=status.im dns_entry=storage-01.ac-cn-hongkong-c.logos.dev.status.im env=logos region=cn-hongkong-c stage=dev
 storage-01.do-ams3.logos.dev ansible_host=24.144.78.200 data_center=do-ams3 dns_domain=status.im dns_entry=storage-01.do-ams3.logos.dev.status.im env=logos region=ams3 stage=dev
 storage-01.gc-us-central1-a.logos.dev ansible_host=34.42.230.59 data_center=gc-us-central1-a dns_entry=storage-01.gc-us-central1-a.logos.dev.status.im env=logos region=us-central1-a stage=dev
+storage-02.ac-cn-hongkong-c.logos.dev ansible_host=47.86.34.202 data_center=ac-cn-hongkong-c dns_domain=status.im dns_entry=storage-02.ac-cn-hongkong-c.logos.dev.status.im env=logos region=cn-hongkong-c stage=dev
+storage-02.do-ams3.logos.dev ansible_host=188.166.200.119 data_center=do-ams3 dns_domain=status.im dns_entry=storage-02.do-ams3.logos.dev.status.im env=logos region=ams3 stage=dev
+storage-02.gc-us-central1-a.logos.dev ansible_host=34.59.82.115 data_center=gc-us-central1-a dns_entry=storage-02.gc-us-central1-a.logos.dev.status.im env=logos region=us-central1-a stage=dev
 
 [ac-cn-hongkong-c]
 blockchain-01.ac-cn-hongkong-c.logos.dev
@@ -24,6 +27,7 @@ delivery-01.ac-cn-hongkong-c.logos.dev
 delivery-02.ac-cn-hongkong-c.logos.dev
 delivery-db-01.ac-cn-hongkong-c.logos.dev
 storage-01.ac-cn-hongkong-c.logos.dev
+storage-02.ac-cn-hongkong-c.logos.dev
 
 [blockchain]
 blockchain-01.ac-cn-hongkong-c.logos.dev
@@ -53,6 +57,7 @@ delivery-01.do-ams3.logos.dev
 delivery-02.do-ams3.logos.dev
 delivery-db-01.do-ams3.logos.dev
 storage-01.do-ams3.logos.dev
+storage-02.do-ams3.logos.dev
 
 [gc-us-central1-a]
 blockchain-01.gc-us-central1-a.logos.dev
@@ -60,6 +65,7 @@ delivery-01.gc-us-central1-a.logos.dev
 delivery-02.gc-us-central1-a.logos.dev
 delivery-db-01.gc-us-central1-a.logos.dev
 storage-01.gc-us-central1-a.logos.dev
+storage-02.gc-us-central1-a.logos.dev
 
 [logos.dev]
 blockchain-01.ac-cn-hongkong-c.logos.dev
@@ -78,8 +84,15 @@ delivery-db-01.gc-us-central1-a.logos.dev
 storage-01.ac-cn-hongkong-c.logos.dev
 storage-01.do-ams3.logos.dev
 storage-01.gc-us-central1-a.logos.dev
+storage-02.ac-cn-hongkong-c.logos.dev
+storage-02.do-ams3.logos.dev
+storage-02.gc-us-central1-a.logos.dev
 
 [storage]
 storage-01.ac-cn-hongkong-c.logos.dev
 storage-01.do-ams3.logos.dev
 storage-01.gc-us-central1-a.logos.dev
+storage-02.ac-cn-hongkong-c.logos.dev
+storage-02.do-ams3.logos.dev
+storage-02.gc-us-central1-a.logos.dev
+
