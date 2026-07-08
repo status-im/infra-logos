@@ -15,7 +15,7 @@ Two-phase deploy. Two node types: Mix-Proxy (MP, minimum 4) and Regular Storage 
 - Storage keys in Vault must have libp2p protobuf header `08021220` prepended to the raw 32-byte hex key
 
 1. Deploy all nodes - RS nodes start without mix routing (template skips mix-pool when `dht_mix_proxy` is empty)
-2. Run `ansible/files/storage-info.py` to collect MP node info, copy output into group vars, remove RS node entries from `dht_mix_proxy` and `mix_pool_relays`
+2. Collect MP node info from Consul (`logos-node-storage` service metadata), populate `logos_node_storage_bootstrap_nodes`, `logos_node_storage_dht_mix_proxy`, and `logos_node_storage_mix_pool_relays` in group vars
 3. Redeploy - RS nodes get mix-pool.json and dht-mix-proxy, content preload runs automatically on RS nodes
 
 ## Blockchain

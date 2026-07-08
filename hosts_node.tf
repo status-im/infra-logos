@@ -14,6 +14,9 @@ module "node" {
   ac_type = local.ws["node_ac_type"]
   gc_type = local.ws["node_gc_type"]
 
+  gc_root_vol_size = local.ws["node_gc_root_vol_size"]
+  ac_root_vol_size = local.ws["node_ac_root_vol_size"]
+
   ac_data_vol_size = local.ws["node_data_vol_size"]
   do_data_vol_size = local.ws["node_data_vol_size"]
   gc_data_vol_size = local.ws["node_data_vol_size"]

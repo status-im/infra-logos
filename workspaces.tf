@@ -71,6 +71,8 @@ locals {
       node_ac_type = "ecs.t5-lc1m2.large" /* Alibaba Cloud */
       node_gc_type = "e2-medium"           /* Google Cloud */
 
+      node_gc_root_vol_size = 15
+      node_ac_root_vol_size = 20
       node_data_vol_size = 40
 
       ac_node_db_count = 0
@@ -126,6 +128,8 @@ locals {
       node_ac_type = "ecs.t5-lc1m4.large"
       node_gc_type = "c2d-standard-4"
 
+      node_gc_root_vol_size = 40
+      node_ac_root_vol_size = 40
       node_data_vol_size = 80
 
       ac_node_db_count = 1
