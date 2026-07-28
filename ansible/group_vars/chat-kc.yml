@@ -34,3 +34,5 @@ nginx_sites:
 open_ports_list:
   chat-kc:
     - { port: [80, 443], comment: 'Chat KeyPackage Cache' }
+    - { port: 60000, comment: 'logos-delivery p2p' }
+    - { port: 60000, comment: 'logos-delivery discovery', protocol: 'udp' }

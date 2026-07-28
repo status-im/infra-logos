@@ -56,7 +56,7 @@ locals {
       do_chat_kc_count = 0
       gc_chat_kc_count = 0
 
-      chat_kc_do_type = "s-1vcpu-2gb"        /* DigitalOcean */
+      chat_kc_do_type = "s-2vcpu-4gb"        /* DigitalOcean */
       chat_kc_ac_type = "ecs.t5-lc1m2.large" /* Alibaba Cloud */
       chat_kc_gc_type = "e2-medium"          /* Google Cloud */
 

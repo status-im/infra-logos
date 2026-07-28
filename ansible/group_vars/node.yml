@@ -33,11 +33,7 @@ logos_node_delivery_cluster_id: 2
 logos_node_delivery_num_shards_in_network: 8
 logos_node_delivery_dns4_domain_name: '{{ dns_entry }}'
 
-logos_node_delivery_relay: true
-logos_node_delivery_store: true
-logos_node_delivery_filter: true
-logos_node_delivery_lightpush: true
-logos_node_delivery_mix: true
+logos_node_delivery_protocols_enabled: ['relay', 'store', 'filter', 'lightpush', 'mix']
 logos_node_delivery_discv5: true
 logos_node_delivery_kad_discovery: true
 

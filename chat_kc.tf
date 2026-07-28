@@ -26,6 +26,11 @@ module "chat-kc" {
   open_tcp_ports = [
     "80",  /* certbot */
     "443", /* public https */
+    "60000", /* logos-delivery p2p */
+  ]
+
+  open_udp_ports = [
+    "60000", /* logos-delivery discovery */
   ]
 }
 

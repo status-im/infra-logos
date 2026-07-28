@@ -10,6 +10,10 @@ services:
       - "0.0.0.0:{{ chat_kc_container_port }}"
       - "--db"
       - "/data/chat-store.db"
+      - "--p2p-port"
+      - "{{ chat_kc_p2p_port }}"
+      - "--preset"
+      - "{{ chat_kc_delivery_preset }}"
       - "--retention-days"
       - "{{ chat_kc_retention_days }}"
       - "--max-per-identity"
@@ -20,6 +24,8 @@ services:
       - "RUST_LOG={{ chat_kc_log_level }}"
     ports:
       - "127.0.0.1:{{ chat_kc_host_port }}:{{ chat_kc_container_port }}"
+      - "{{ chat_kc_p2p_port }}:{{ chat_kc_p2p_port }}/tcp"
+      - "{{ chat_kc_p2p_port }}:{{ chat_kc_p2p_port }}/udp"
     volumes:
       - "{{ chat_kc_data_dir }}:/data"
     labels:
