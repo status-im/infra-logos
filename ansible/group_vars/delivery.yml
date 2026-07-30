@@ -40,6 +40,7 @@ logos_node_delivery_max_connections: 300
 logos_node_delivery_p2p_tcp_port: 30303
 logos_node_delivery_discv5_udp_port: 9000
 logos_node_delivery_websocket_port: 8000
+logos_node_metrics_port: 8008
 
 # Websocket
 logos_node_delivery_websocket_enabled: false
@@ -79,6 +80,7 @@ open_ports_list:
   certbot:
     - { port: '80', comment: 'Certbot' }
   logos-node:
-    - { port: '{{ logos_node_delivery_p2p_tcp_port }}',       comment: 'libp2p' }
-    - { port: '{{ logos_node_delivery_discv5_udp_port }}',    comment: 'discovery v5', protocol: 'udp' }
-    - { port: '{{ logos_node_delivery_websocket_port }}',     comment: 'websocket' }
+    - { port: '{{ logos_node_delivery_p2p_tcp_port }}',                             comment: 'libp2p'       }
+    - { port: '{{ logos_node_delivery_discv5_udp_port }}', protocol: 'udp',         comment: 'discovery v5' }
+    - { port: '{{ logos_node_delivery_websocket_port }}',                           comment: 'websocket'    }
+    - { port: '{{ logos_node_metrics_port }}', ipset: 'hq.metrics', iifname: 'wg0', comment: 'metrics'      }

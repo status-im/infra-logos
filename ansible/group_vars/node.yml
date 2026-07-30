@@ -24,6 +24,9 @@ logos_node_module_calls:
   - 'storage_module init @/conf/storage_config.json'
   - 'storage_module start'
 
+# Metrics
+logos_node_metrics_port: 8008
+
 # --- Delivery ---
 
 logos_node_delivery_key: '{{ lookup("vault", "node/delivery/nodekeys", field=hostname) }}'
@@ -69,9 +72,6 @@ logos_node_storage_max_peers: 160
 
 logos_node_storage_api_port: 8091
 logos_node_storage_api_bindaddr: '0.0.0.0'
-
-logos_node_storage_metrics_enabled: true
-logos_node_storage_metrics_port: 8008
 
 logos_node_storage_data_dir: '/data'
 logos_node_storage_quota: 21474836480
@@ -165,11 +165,11 @@ open_ports_list:
   certbot:
     - { port: '80', comment: 'Certbot' }
   logos-node:
-    - { port: '{{ logos_node_delivery_p2p_tcp_port }}',         comment: 'delivery libp2p' }
-    - { port: '{{ logos_node_delivery_discv5_udp_port }}',      comment: 'delivery discv5',    protocol: 'udp' }
-    - { port: '{{ logos_node_delivery_websocket_port }}',       comment: 'delivery WSS' }
-    - { port: '{{ logos_node_storage_tcp_port }}',              comment: 'storage libp2p' }
-    - { port: '{{ logos_node_storage_disc_port }}',             comment: 'storage discovery',  protocol: 'udp' }
-    - { port: '{{ logos_node_storage_metrics_port }}',          comment: 'storage metrics',    ipset: 'hq.metrics', iifname: 'wg0' }
-    - { port: '{{ logos_node_blockchain_swarm_port }}',         comment: 'blockchain swarm',   protocol: 'udp' }
-    - { port: '{{ logos_node_blockchain_blend_port }}',         comment: 'blockchain blend',   protocol: 'udp' }
+    - { port: '{{ logos_node_delivery_p2p_tcp_port }}',                             comment: 'delivery libp2p'    }
+    - { port: '{{ logos_node_delivery_discv5_udp_port }}', protocol: 'udp',         comment: 'delivery discv5'    }
+    - { port: '{{ logos_node_delivery_websocket_port }}',                           comment: 'delivery WSS'       }
+    - { port: '{{ logos_node_storage_tcp_port }}',                                  comment: 'storage libp2p'     }
+    - { port: '{{ logos_node_storage_disc_port }}',        protocol: 'udp',         comment: 'storage discovery'  }
+    - { port: '{{ logos_node_blockchain_swarm_port }}',    protocol: 'udp',         comment: 'blockchain swarm'   }
+    - { port: '{{ logos_node_blockchain_blend_port }}',    protocol: 'udp',         comment: 'blockchain blend'   }
+    - { port: '{{ logos_node_metrics_port }}', ipset: 'hq.metrics', iifname: 'wg0', comment: 'logos node metrics' }
