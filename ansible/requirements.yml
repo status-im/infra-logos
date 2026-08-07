@@ -30,7 +30,7 @@
 
 - name: infra-role-logos-node
   src: git@github.com:status-im/infra-role-logos-node.git
-  version: 7f6658d7eb8b0f4cac4eb9606531fa5d562a0ef5
+  version: e495249bd5a3e92e00b8d2ce914651176def447c
 
 - name: infra-role-wazuh-agent
   src: git@github.com:status-im/infra-role-wazuh-agent.git
