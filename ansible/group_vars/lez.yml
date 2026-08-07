@@ -7,8 +7,8 @@ lez_explorer_cont_port: 8081
 lez_sequencer_cont_port: 3040
 lez_cont_tag: '{{ lez_cont_tag_map[stage] }}'
 lez_cont_tag_map:
-  dev:  'v0.2.2-rc1'
-  test: '0.2.2'
+  dev:  'v0.2.4'
+  test: 'v0.2.4'
 lez_blockchain_cont_tag: '{{ lez_blockchain_cont_tag_map[stage] }}'
 lez_blockchain_cont_tag_map:
   dev:  '0.2.1-rc.3'

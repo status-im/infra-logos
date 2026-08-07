@@ -6,7 +6,7 @@ lez_service_data: '{{ lez_service_path }}/data'
 lez_service_conf: '{{ lez_service_path }}/conf'
 
 # Containers
-lez_cont_tag: 'v0.2.2-rc1'
+lez_cont_tag: 'v0.2.4'
 lez_cont_uid: 1000
 lez_host_uid: '{{ 100000 + lez_cont_uid | int }}'
 
