@@ -71,3 +71,5 @@ open_ports_list:
     - { port: [80, 443], proto: 'tcp', comment: 'Nginx and Certbot' }
   logos-blockchain:
     - { port: '{{ lez_blockchain_cont_swarm_port }}', proto: tcp, comment: 'Logos Blockchain Swarm' }
+    - { port: '{{ lez_blockchain_cont_api_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction'}
+    - { port: '{{ lez_sequencer_cont_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction'}
