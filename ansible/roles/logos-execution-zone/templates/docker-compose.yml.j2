@@ -59,23 +59,40 @@ services:
       - '/etc/indexer_service/indexer_config.json'
       - '--data-dir=/var/lib/indexer_service'
 
-  sequencer:
-    container_name: '{{ lez_sequencer_cont_name }}'
+{% for i in range(lez_sequencer_count) %}
+  sequencer-{{ i }}:
+    container_name: '{{ lez_sequencer_cont_name }}{% if lez_sequencer_count > 1 %}-{{ i }}{% endif %}'
     image: '{{ lez_sequencer_cont_image }}'
     restart: 'always'
     depends_on:
       - indexer
       - blockchain
     ports:
-      - '{{ lez_sequencer_cont_port }}:{{ lez_sequencer_cont_port }}/tcp'
+      - '{{ lez_sequencer_cont_base_port + i }}:{{ lez_sequencer_cont_base_port + i }}/tcp'
+{% if lez_sequencer_count > 1 %}
+      - '{{ lez_sequencer_metrics_base_port + i }}:{{ lez_sequencer_metrics_base_port + i }}/tcp'
+{% endif %}
     volumes:
       - '{{ lez_sequencer_config_path }}:/etc/sequencer_service/sequencer_config.json:ro'
+{% if lez_sequencer_count > 1 %}
+      - '{{ lez_service_conf }}/sequencer/seq-{{ i }}/signing_key:/etc/sequencer_service/signing_key:ro'
+      - '{{ lez_service_conf }}/sequencer/seq-{{ i }}/bedrock_signing_key:/var/lib/sequencer_service/bedrock_signing_key:ro'
+      - '{{ lez_service_data }}/sequencer/seq-{{ i }}:/var/lib/sequencer_service'
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        rm -rf /var/lib/sequencer_service/rocksdb
+        exec sequencer_service /etc/sequencer_service/sequencer_config.json --signing-key /etc/sequencer_service/signing_key --port {{ lez_sequencer_cont_base_port + i }}
+{% else %}
       - '{{ lez_sequencer_vol }}:/var/lib/sequencer_service'
     command:
       - 'sequencer_service'
       - '/etc/sequencer_service/sequencer_config.json'
-      - '--port={{ lez_sequencer_cont_port }}'
+      - '--port={{ lez_sequencer_cont_base_port }}'
+{% endif %}
 
+{% endfor %}
   explorer:
     container_name: '{{ lez_explorer_cont_name }}'
     image: '{{ lez_explorer_cont_image }}'

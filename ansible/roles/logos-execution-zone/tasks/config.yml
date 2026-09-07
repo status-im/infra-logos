@@ -1,5 +1,5 @@
 ---
-- name: Create config directory
+- name: Create config directories
   file:
     path: '{{ item }}'
     owner: '{{ lez_host_uid }}'
@@ -8,12 +8,66 @@
     mode: '0775'
   with_items:
     - '{{ lez_service_conf }}'
-    - '{{ lez_sequencer_vol }}'
     - '{{ lez_indexer_cont_vol }}'
     - '{{ lez_blockchain_state_path }}'
     - '{{ lez_blockchain_config_path | dirname }}'
     - '{{ lez_indexer_config_path | dirname }}'
     - '{{ lez_sequencer_config_path | dirname }}'
+    - '{{ lez_sequencer_vol }}'
+
+- name: Create sequencer key directories
+  file:
+    path: '{{ lez_service_conf }}/sequencer/seq-{{ item }}'
+    owner: '{{ lez_host_uid }}'
+    group: dockremap
+    state: directory
+    mode: '0775'
+  loop: '{{ range(lez_sequencer_count) | list }}'
+  when: lez_sequencer_count > 1
+
+- name: Create sequencer data directories
+  file:
+    path: '{{ lez_service_data }}/sequencer/seq-{{ item }}'
+    owner: '{{ lez_host_uid }}'
+    group: dockremap
+    state: directory
+    mode: '0775'
+  loop: '{{ range(lez_sequencer_count) | list }}'
+  when: lez_sequencer_count > 1
+
+- name: Create sequencer health check script
+  template:
+    src: 'check_seq.sh.j2'
+    dest: '{{ lez_service_path }}/check_seq.sh'
+    owner: 'root'
+    group: 'docker'
+    mode: '0755'
+
+- name: Write sequencer signing keys
+  copy:
+    dest: '{{ lez_service_conf }}/sequencer/seq-{{ idx }}/signing_key'
+    content: '{{ item.signing_key | b64decode }}'
+    owner: '{{ lez_host_uid }}'
+    group: dockremap
+    mode: '0600'
+  loop: '{{ lez_sequencer_keys }}'
+  loop_control:
+    index_var: idx
+  when: lez_sequencer_count > 1
+  no_log: true
+
+- name: Write sequencer bedrock signing keys
+  copy:
+    dest: '{{ lez_service_conf }}/sequencer/seq-{{ idx }}/bedrock_signing_key'
+    content: '{{ item.bedrock_signing_key | b64decode }}'
+    owner: '{{ lez_host_uid }}'
+    group: dockremap
+    mode: '0600'
+  loop: '{{ lez_sequencer_keys }}'
+  loop_control:
+    index_var: idx
+  when: lez_sequencer_count > 1
+  no_log: true
 
 - name: Create sequencer config
   register: lez_sequencer_config_file
@@ -52,7 +106,9 @@
     mode:    '0644'
 
 - name: Create blockchain keystore config
-  when: lez_blockchain_keystore_config is defined
+  when:
+    - lez_blockchain_keystore_config is defined
+    - lez_blockchain_config_file.stat.exists
   copy:
     dest:    '{{ lez_blockchain_keystore_path }}'
     content: '{{ lez_blockchain_keystore_config }}'
