@@ -1,25 +1,43 @@
----
 # Logos Execution Zone
 lez_rpc_domain: '{{ stage }}net.lez.logos.co'
 lez_explorer_domain: 'explorer.{{ stage }}net.lez.logos.co'
 lez_service_name: 'logos-exec-zone-{{ stage }}net'
 lez_explorer_cont_port: 8081
-lez_sequencer_cont_port: 3040
+lez_sequencer_cont_base_port: 3040
 lez_indexer_cont_port: 8779
 lez_cont_tag: '{{ lez_cont_tag_map[stage] }}'
 lez_cont_tag_map:
-  dev:  'v0.2.4'
+  dev:  'v0.2.5-rc1'
   test: 'v0.2.4'
 lez_blockchain_cont_tag: '{{ lez_blockchain_cont_tag_map[stage] }}'
 lez_blockchain_cont_tag_map:
-  dev:  '0.2.1-rc.3'
+  dev:  '0.3.0-rc.2'
   test: '0.2.4'
 lez_blockchain_cont_api_port: 8080
 lez_blockchain_cont_swarm_port: 3000
 lez_blockchain_keystore_config: '{{ lookup("vault", "lez/blockchain", field="keystore") }}'
 lez_blockchain_deployment_config: '{{ lookup("ansible.builtin.file", "../files/lez/"+stage+"/blockchain_deployment.yaml") | mandatory }}'
-lez_sequencer_config:             '{{ lookup("ansible.builtin.file", "../files/lez/"+stage+"/sequencer_config.json") | mandatory }}'
-lez_indexer_config:               '{{ lookup("ansible.builtin.file", "../files/lez/"+stage+"/indexer_config.json") | mandatory }}'
+lez_sequencer_config: '{{ lookup("ansible.builtin.file", "../files/lez/"+stage+"/sequencer_config.json") | mandatory }}'
+lez_sequencer_count: '{{ lez_sequencer_count_map[stage] }}'
+lez_sequencer_count_map:
+  dev: 4
+  test: 1
+lez_sequencer_cont_image: '{{ lez_sequencer_image_map[stage] }}'
+lez_sequencer_image_map:
+  dev: 'harbor.status.im/logos-blockchain/logos-execution-zone/sequencer_service-mdns:{{ lez_cont_tag }}'
+  test: 'harbor.status.im/logos-blockchain/logos-execution-zone/sequencer_service:{{ lez_cont_tag }}'
+lez_sequencer_keys: '{{ lez_sequencer_keys_map[stage] | default([]) }}'
+lez_sequencer_keys_map:
+  dev:
+    - signing_key: '{{ lookup("vault", "lez/sequencer/seq-0", field="signing_key") }}'
+      bedrock_signing_key: '{{ lookup("vault", "lez/sequencer/seq-0", field="signing_key") }}'
+    - signing_key: '{{ lookup("vault", "lez/sequencer/seq-1", field="signing_key") }}'
+      bedrock_signing_key: '{{ lookup("vault", "lez/sequencer/seq-1", field="signing_key") }}'
+    - signing_key: '{{ lookup("vault", "lez/sequencer/seq-2", field="signing_key") }}'
+      bedrock_signing_key: '{{ lookup("vault", "lez/sequencer/seq-2", field="signing_key") }}'
+    - signing_key: '{{ lookup("vault", "lez/sequencer/seq-3", field="signing_key") }}'
+      bedrock_signing_key: '{{ lookup("vault", "lez/sequencer/seq-3", field="signing_key") }}'
+lez_indexer_config: '{{ lookup("ansible.builtin.file", "../files/lez/"+stage+"/indexer_config.json") | mandatory }}'
 lez_blockchain_initial_peers: '{{ lez_blockchain_initial_peers_map[stage] }}'
 lez_blockchain_initial_peers_map:
   dev:
@@ -52,7 +70,7 @@ nginx_sites:
     - ssl_certificate_key /etc/letsencrypt/live/{{ lez_rpc_domain }}/privkey.pem
 
     - location / {
-        proxy_pass http://localhost:{{ lez_sequencer_cont_port }}/;
+        proxy_pass http://localhost:{{ lez_sequencer_cont_base_port }}/;
       }
 
   lez_explorer_https:
@@ -72,6 +90,11 @@ open_ports_list:
     - { port: [80, 443], proto: 'tcp', comment: 'Nginx and Certbot' }
   logos-blockchain:
     - { port: '{{ lez_blockchain_cont_swarm_port }}', proto: tcp, comment: 'Logos Blockchain Swarm' }
-    - { port: '{{ lez_blockchain_cont_api_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction'}
-    - { port: '{{ lez_sequencer_cont_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction'}
-    - { port: '{{ lez_indexer_cont_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction'}
+    - { port: '{{ lez_blockchain_cont_api_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
+    - { port: '{{ lez_sequencer_cont_base_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
+    - { port: '{{ lez_indexer_cont_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
+  logos-sequencer:
+    - { port: '9000-9003', comment: 'Sequencer metrics', ipset: 'hq.metrics', iifname: 'wg0' }
+
+
+

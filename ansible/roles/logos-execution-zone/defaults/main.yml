@@ -28,7 +28,10 @@ lez_blockchain_initial_peers: []
 lez_sequencer_cont_name: '{{ lez_service_name }}-sequencer'
 lez_sequencer_cont_tag: '{{ lez_cont_tag }}'
 lez_sequencer_cont_image: 'harbor.status.im/logos-blockchain/logos-execution-zone/sequencer_service:{{ lez_sequencer_cont_tag }}'
-lez_sequencer_cont_port: 3040
+lez_sequencer_count: 1
+lez_sequencer_cont_base_port: 3040
+lez_sequencer_metrics_base_port: 9000
+lez_sequencer_keys: []
 lez_sequencer_health_path: '/health'
 lez_sequencer_vol: '{{ lez_service_data }}/sequencer'
 lez_sequencer_config_path: '{{ lez_service_conf }}/sequencer/config.json'

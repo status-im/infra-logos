@@ -1,0 +1,4 @@
+#!/bin/bash
+for p in $(seq {{ lez_sequencer_cont_base_port }} {{ lez_sequencer_cont_base_port + lez_sequencer_count - 1 }}); do
+  nc -z localhost $p || exit 1
+done

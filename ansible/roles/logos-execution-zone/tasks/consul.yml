@@ -2,12 +2,12 @@
 - name: Create Consul service definition
   include_role: name=infra-role-consul-service
   vars:
-    consul_config_name:                      '{{ lez_service_name }}'
-    consul_default_check_disabled:           '{{ lez_consul_check_disabled }}'
-    consul_default_check_interval:           '{{ lez_consul_check_interval }}'
-    consul_default_check_timeout:            '{{ lez_consul_check_timeout }}'
-    consul_default_success_before_passing:   '{{ lez_consul_success_before_passing }}'
-    consul_default_failures_before_warning:  '{{ lez_consul_failures_before_warning }}'
+    consul_config_name: '{{ lez_service_name }}'
+    consul_default_check_disabled: '{{ lez_consul_check_disabled }}'
+    consul_default_check_interval: '{{ lez_consul_check_interval }}'
+    consul_default_check_timeout: '{{ lez_consul_check_timeout }}'
+    consul_default_success_before_passing: '{{ lez_consul_success_before_passing }}'
+    consul_default_failures_before_warning: '{{ lez_consul_failures_before_warning }}'
     consul_default_failures_before_critical: '{{ lez_consul_failures_before_critical }}'
     consul_services:
       - id:   '{{ lez_service_name }}'
@@ -21,8 +21,8 @@
 
           - id:   '{{ lez_sequencer_cont_name }}-health'
             name: '{{ lez_sequencer_cont_name }}-health'
-            type: 'tcp'
-            tcp:  'localhost:{{ lez_sequencer_cont_port }}'
+            type: 'script'
+            script: '{{ lez_service_path }}/check_seq.sh'
 
           - id:   '{{ lez_indexer_cont_name }}-health'
             name: '{{ lez_indexer_cont_name }}-health'
@@ -33,3 +33,62 @@
             name: '{{ lez_explorer_cont_name }}-health'
             type: 'tcp'
             tcp:  'localhost:{{ lez_explorer_cont_port }}'
+
+- name: Create sequencer metrics Consul services
+  when: lez_sequencer_count | int > 1
+  include_role: name=infra-role-consul-service
+  vars:
+    consul_config_name: '{{ lez_service_name }}_sequencer_metrics'
+    consul_default_check_interval: '{{ lez_consul_check_interval }}'
+    consul_default_check_timeout: '{{ lez_consul_check_timeout }}'
+    consul_default_success_before_passing: '{{ lez_consul_success_before_passing }}'
+    consul_default_failures_before_warning: '{{ lez_consul_failures_before_warning }}'
+    consul_default_failures_before_critical: '{{ lez_consul_failures_before_critical }}'
+    consul_services:
+      - id:   '{{ lez_sequencer_cont_name }}-0-metrics'
+        name: '{{ lez_consul_service_name }}-sequencer-metrics'
+        port: '{{ lez_sequencer_metrics_base_port }}'
+        address: '{{ ansible_local.wireguard.address }}'
+        tags: ['env:{{ env }}', 'stage:{{ stage }}', 'logos', 'lez', 'sequencer', 'metrics']
+        meta:
+          container: '{{ lez_sequencer_cont_name }}-0'
+        checks:
+          - id:   '{{ lez_sequencer_cont_name }}-0-metrics'
+            type: 'http'
+            http:  'http://localhost:{{ lez_sequencer_metrics_base_port }}/metrics'
+
+      - id:   '{{ lez_sequencer_cont_name }}-1-metrics'
+        name: '{{ lez_consul_service_name }}-sequencer-metrics'
+        port: '{{ lez_sequencer_metrics_base_port + 1 }}'
+        address: '{{ ansible_local.wireguard.address }}'
+        tags: ['env:{{ env }}', 'stage:{{ stage }}', 'logos', 'lez', 'sequencer', 'metrics']
+        meta:
+          container: '{{ lez_sequencer_cont_name }}-1'
+        checks:
+          - id:   '{{ lez_sequencer_cont_name }}-1-metrics'
+            type: 'http'
+            http:  'http://localhost:{{ lez_sequencer_metrics_base_port + 1 }}/metrics'
+
+      - id:   '{{ lez_sequencer_cont_name }}-2-metrics'
+        name: '{{ lez_consul_service_name }}-sequencer-metrics'
+        port: '{{ lez_sequencer_metrics_base_port + 2 }}'
+        address: '{{ ansible_local.wireguard.address }}'
+        tags: ['env:{{ env }}', 'stage:{{ stage }}', 'logos', 'lez', 'sequencer', 'metrics']
+        meta:
+          container: '{{ lez_sequencer_cont_name }}-2'
+        checks:
+          - id:   '{{ lez_sequencer_cont_name }}-2-metrics'
+            type: 'http'
+            http:  'http://localhost:{{ lez_sequencer_metrics_base_port + 2 }}/metrics'
+
+      - id:   '{{ lez_sequencer_cont_name }}-3-metrics'
+        name: '{{ lez_consul_service_name }}-sequencer-metrics'
+        port: '{{ lez_sequencer_metrics_base_port + 3 }}'
+        address: '{{ ansible_local.wireguard.address }}'
+        tags: ['env:{{ env }}', 'stage:{{ stage }}', 'logos', 'lez', 'sequencer', 'metrics']
+        meta:
+          container: '{{ lez_sequencer_cont_name }}-3'
+        checks:
+          - id:   '{{ lez_sequencer_cont_name }}-3-metrics'
+            type: 'http'
+            http:  'http://localhost:{{ lez_sequencer_metrics_base_port + 3 }}/metrics'
