@@ -13,7 +13,7 @@ lez_cont_tag_map:
 lez_blockchain_cont_tag: '{{ lez_blockchain_cont_tag_map[stage] }}'
 lez_blockchain_cont_tag_map:
   dev:  '0.2.1-rc.3'
-  test: '0.2.2'
+  test: '0.2.4'
 lez_blockchain_cont_api_port: 8080
 lez_blockchain_cont_swarm_port: 3000
 lez_blockchain_keystore_config: '{{ lookup("vault", "lez/blockchain", field="keystore") }}'

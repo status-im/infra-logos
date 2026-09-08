@@ -12,7 +12,7 @@ lez_host_uid: '{{ 100000 + lez_cont_uid | int }}'
 
 # Blockchain
 lez_blockchain_cont_name: '{{ lez_service_name }}-blockchain'
-lez_blockchain_cont_tag: '0.2.1-rc.3'
+lez_blockchain_cont_tag: '0.2.4'
 lez_blockchain_cont_image: 'ghcr.io/logos-blockchain/logos-blockchain:{{ lez_blockchain_cont_tag }}'
 lez_blockchain_cont_api_port: 8080
 lez_blockchain_cont_swarm_port: 3000
