@@ -28,6 +28,7 @@ module "storage" {
   /* firewall */
   open_tcp_ports = [
     "80",   /* certbot */
+    "443",  /* storage API */
     "8080", /* storage libp2p */
   ]
   open_udp_ports = [

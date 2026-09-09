@@ -7,6 +7,9 @@
 - name: infra-role-open-ports
   src: git@github.com:status-im/infra-role-open-ports.git
 
+- name: infra-role-nginx
+  src: git@github.com:status-im/infra-role-nginx.git
+
 - name: infra-role-swap-file
   src: git@github.com:status-im/infra-role-swap-file.git
 
