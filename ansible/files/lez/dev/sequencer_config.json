@@ -6,7 +6,7 @@
   "block_create_timeout": "10s",
   "retry_pending_blocks_timeout": "7s",
   "bedrock_config": {
-    "channel_id": "8401010101010101010101010101010101010101010101010101010101010101",
+    "channel_id": "8501010101010101010101010101010101010101010101010101010101010101",
     "node_url": "http://blockchain:8080/",
     "auth": null,
     "funding_key": "41fe2b86b637fdb7944effe8b21af9a905e432a1c4f5d6d9f1ec0593ae8d7b04",
