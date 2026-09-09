@@ -24,3 +24,5 @@
     - { role: infra-role-open-ports,  tags: open-ports  }
     - { role: infra-role-swap-file,   tags: swap-file   }
     - { role: infra-role-logos-node,  tags: logos-node  }
+    - { role: infra-role-certbot,     tags: certbot, when: logos_node_storage_api_enabled | bool }
+    - { role: infra-role-nginx,       tags: nginx,   when: logos_node_storage_api_enabled | bool }

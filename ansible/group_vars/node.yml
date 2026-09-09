@@ -78,7 +78,7 @@ logos_node_storage_quota: 21474836480
 logos_node_storage_block_ttl: '4w2d'
 
 # Mix-Proxy network (minimum 4 MP nodes, first one bootstraps)
-logos_node_storage_mix_enabled: true
+logos_node_storage_mix_enabled: "{{ logos_node_storage_role == 'mp' }}"
 logos_node_storage_mp_nodes:
   - node-01.do-ams3.logos.test
   - node-02.do-ams3.logos.test

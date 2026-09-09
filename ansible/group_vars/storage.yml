@@ -3,7 +3,7 @@ bootstrap__logrotate_frequency: 'hourly'
 bootstrap__logrotate_timer_frequency: '*:0/30'
 
 # Container
-logos_node_storage_version: '2.1.2'
+logos_node_storage_version: '2.1.3'
 logos_node_cont_tag: '{{ stage }}-s{{ logos_node_storage_version }}'
 logos_node_cont_name: 'logos-node'
 logos_node_cont_vol: '/docker/{{ logos_node_cont_name }}'
@@ -27,8 +27,11 @@ logos_node_storage_max_peers: 160
 logos_node_metrics_port: 8008
 
 # Storage API
+# RS nodes only, upload endpoint for package CI
+logos_node_storage_api_enabled: "{{ logos_node_storage_role == 'rs' }}"
 logos_node_storage_api_port: 8091
 logos_node_storage_api_bindaddr: '0.0.0.0'
+logos_node_storage_api_domain: '{{ dns_entry }}'
 
 # Storage config
 logos_node_storage_data_dir: '/data'
@@ -36,7 +39,7 @@ logos_node_storage_quota: 21474836480
 logos_node_storage_block_ttl: '4w2d'
 
 # Mix-Proxy network (minimum 4 MP nodes, first one bootstraps)
-logos_node_storage_mix_enabled: true
+logos_node_storage_mix_enabled: "{{ logos_node_storage_role == 'mp' }}"
 logos_node_storage_mp_nodes:
   - storage-01.do-ams3.logos.dev
   - storage-02.do-ams3.logos.dev
@@ -86,9 +89,49 @@ logos_node_consul_success_before_passing: 5
 logos_node_consul_failures_before_warning: 2
 logos_node_consul_failures_before_critical: 20
 
+# LetsEncrypt via Certbot
+certbot_docker_enabled: true
+certbot_admin_email: 'devops@status.im'
+certbot_services_to_stop: ['nginx']
+certbot_certs:
+  - domains:
+    - '{{ logos_node_storage_api_domain }}'
+
+nginx_auth_basic_files:
+  storage-api:
+    - '{{ lookup("vault", "storage/api", field="user") }}:{{ lookup("vault", "storage/api", field="pass-hash") }}'
+
+nginx_configs:
+  proxy:
+    - proxy_set_header Host $host
+    - proxy_set_header X-Real-IP $remote_addr
+    - proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for
+
+nginx_sites:
+  storage-api:
+    - listen 443 ssl
+    - server_name {{ logos_node_storage_api_domain }}
+    - ssl_certificate /etc/letsencrypt/live/{{ logos_node_storage_api_domain }}/fullchain.pem
+    - ssl_certificate_key /etc/letsencrypt/live/{{ logos_node_storage_api_domain }}/privkey.pem
+    - client_max_body_size 512m
+    - client_body_timeout 600s
+    - proxy_request_buffering off
+    - |
+      location /api/storage/v1/data {
+        auth_basic            "logos-storage";
+        auth_basic_user_file  auth_basic/storage-api;
+        proxy_pass            http://127.0.0.1:{{ logos_node_storage_api_port }};
+        proxy_read_timeout    600s;
+        proxy_send_timeout    600s;
+      }
+    - location / { return 404; }
+
 # Open Ports
 open_ports_list:
+  certbot:
+    - { port: '80', comment: 'Certbot' }
   logos-node:
+    - { port: '443', comment: 'storage API' }
     - { port: '{{ logos_node_storage_tcp_port }}',  comment: 'storage libp2p'                                         }
     - { port: '{{ logos_node_storage_disc_port }}', comment: 'storage discovery', protocol: 'udp'                     }
     - { port: '{{ logos_node_metrics_port }}',      comment: 'storage metrics',   ipset: 'hq.metrics', iifname: 'wg0' }
