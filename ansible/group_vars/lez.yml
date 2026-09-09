@@ -7,7 +7,7 @@ lez_sequencer_cont_base_port: 3040
 lez_indexer_cont_port: 8779
 lez_cont_tag: '{{ lez_cont_tag_map[stage] }}'
 lez_cont_tag_map:
-  dev:  'v0.2.5-rc1'
+  dev:  'v0.2.5-rc2'
   test: 'v0.2.4'
 lez_blockchain_cont_tag: '{{ lez_blockchain_cont_tag_map[stage] }}'
 lez_blockchain_cont_tag_map:
@@ -37,6 +37,7 @@ lez_sequencer_keys_map:
       bedrock_signing_key: '{{ lookup("vault", "lez/sequencer/seq-2", field="signing_key") }}'
     - signing_key: '{{ lookup("vault", "lez/sequencer/seq-3", field="signing_key") }}'
       bedrock_signing_key: '{{ lookup("vault", "lez/sequencer/seq-3", field="signing_key") }}'
+lez_sequencer_log_level: 'debug,kameo=info'
 lez_indexer_config: '{{ lookup("ansible.builtin.file", "../files/lez/"+stage+"/indexer_config.json") | mandatory }}'
 lez_blockchain_initial_peers: '{{ lez_blockchain_initial_peers_map[stage] }}'
 lez_blockchain_initial_peers_map:
