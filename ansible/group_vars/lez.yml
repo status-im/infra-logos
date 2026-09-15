@@ -93,7 +93,11 @@ open_ports_list:
     - { port: '{{ lez_blockchain_cont_swarm_port }}', proto: tcp, comment: 'Logos Blockchain Swarm' }
     - { port: '{{ lez_blockchain_cont_api_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
     - { port: '{{ lez_sequencer_cont_base_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
-    - { port: '{{ lez_indexer_cont_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
+    - { port: '{{ lez_indexer_cont_port }}',        ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
+    - { port: '{{ lez_blockchain_cont_api_port }}', ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
+    - { port: '{{ lez_sequencer_cont_base_port }}', ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
+    - { port: '{{ lez_indexer_cont_port }}',        ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
+
   logos-sequencer:
     - { port: '9000-9003', comment: 'Sequencer metrics', ipset: 'hq.metrics', iifname: 'wg0' }
 
