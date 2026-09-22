@@ -1,0 +1,23 @@
+---
+# Volume of Trace level logs is too high and fills up ES cluster.
+bootstrap__rsyslog_filter_rules: ['TRC']
+
+# lower local retention to save space
+bootstrap__logrotate_frequency: 'hourly'
+bootstrap__logrotate_count: 72
+bootstrap__logrotate_mbytes: 500
+
+# Docker registry
+bootstrap__docker_registries:
+  - url:      'https://harbor.status.im'
+    username: 'robot$wakuorg+infra-waku'
+    password: '{{ lookup("vault", "robot", field="robot$wakuorg+infra-waku", env="ci", stage="harbor")}}'
+
+# Custom SSH accounts, should start from UID 8000.
+bootstrap__active_extra_users:
+  - { name: ivan,     uid: 8000, admin: true, key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJBdm8y1PfWjT1pioaWJSZ2ETrUySb+dS/ifDg+VIpLY ivansete@status.im', pass: '$y$j9T$6d3ZQNLzh7Yb/787cDugT1$NxgTUW46/uCGyT/h3mOayfhYAxdb77Or./RV0o4d6h8' }
+  - { name: zoltan,   uid: 8002, admin: true, key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFNYe8dLIGTTrTYgKfaXhai6uQmJfewJPi3MXwIeM2Zk zoltan@status.im', pass: '$y$j9T$mDPUq.x9/dZqypIV9.VZa/$w/MxJ/Qlsq9kZwjJCdA/9dhN0go/58rmD1cM07IQsc2' }
+  - { name: fabiana,  uid: 8003, admin: true, key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFzQ3/t6ZKOjkBsph7672fziIIYFmzO2yOMoOP7BO5d3 fabiana@waku.org', pass: '$y$j9T$cFmwJBqZGJWR4qDVueTIp.$cIP2m3WtfxDqkfNG72LexFHQ4Yg4qTiKx5n03TD92yC' }
+  - { name: giuliano, uid: 8007, groups: ['docker', 'dockremap'], admin: false, key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzt3VMCbnEPczotkMQNcD8lhsI8wsj9YUgUvM9d2c7fYSaQ7+ZQS7MjXF/znyGBymCjrvSmOHG200WcKKiNnFNpWXLfOZDzMJEdhQLmQ43fVUqEaVQnNLRJdTwdhZFjoeQz/lKGLti9jOlgMLjrR/87d880pxtG+3cZkNP1j1UnjmER9ld1VcWLW6z1TGzq6M0Piz/geWQOWtvh+5h5bjcqdCl/hV42ktVinytmiDMPS2khQdSXeGARmvSYOIPwGO9VUEtjTPP2cWBZR39oY6XC/PrXBRZeDNzJ9Gl+z/uC2DnJ1S251KJxx8FEcn08MI6cfnT6oLedQ/PfFY/EEJJ giuliano@chronos' }
+  - { name: daniilp,  uid: 8008, groups: ['docker', 'dockremap'], admin: false, key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFBXTJHbRzw9Tk9xD7dgIGp8YXc+BJxqcYbtJSRbngKx daniilp@status.im' }
+  - { name: drusu,    uid: 8009, groups: ['docker', 'dockremap'], admin: false, key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEl+4I+X4u5lCXndIP0d3Pnyb83xRV7UEac/6E3XHds3 davidrusu@status.im' }
