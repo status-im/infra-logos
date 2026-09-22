@@ -6,12 +6,12 @@ bootstrap__rsyslog_filter_rules:
   - 'storeMessageDbUrl'
 
 # Container
-logos_node_delivery_version: '0.2.1'
-logos_node_cont_tag: '{{ stage }}-d{{ logos_node_delivery_version }}'
+logos_node_cont_tag: 'deploy-logos-dev'
 logos_node_cont_name: 'logos-node'
 logos_node_cont_vol: '/docker/{{ logos_node_cont_name }}'
 logos_node_conf_path: '{{ logos_node_cont_vol }}/conf'
 logos_node_log_level: 'DEBUG'
+logos_node_watchtower_enabled: true
 
 # Modules: delivery only
 logos_node_modules: ['delivery_module']
