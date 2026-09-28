@@ -35,6 +35,7 @@ logos_node_delivery_kad_discovery: true
 
 # P2P
 logos_node_delivery_max_connections: 300
+logos_node_delivery_max_pure_libp2p_peers: 50
 
 # Ports
 logos_node_delivery_p2p_tcp_port: 30303
