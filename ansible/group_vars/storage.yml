@@ -3,8 +3,7 @@ bootstrap__logrotate_frequency: 'hourly'
 bootstrap__logrotate_timer_frequency: '*:0/30'
 
 # Container
-logos_node_storage_version: '2.1.3'
-logos_node_cont_tag: '{{ stage }}-s{{ logos_node_storage_version }}'
+logos_node_cont_tag: 'deploy-storage-dev'
 logos_node_cont_name: 'logos-node'
 logos_node_cont_vol: '/docker/{{ logos_node_cont_name }}'
 logos_node_conf_path: '{{ logos_node_cont_vol }}/conf'
@@ -133,5 +132,4 @@ open_ports_list:
   logos-node:
     - { port: '443', comment: 'storage API' }
     - { port: '{{ logos_node_storage_tcp_port }}',  comment: 'storage libp2p'                                         }
-    - { port: '{{ logos_node_storage_disc_port }}', comment: 'storage discovery', protocol: 'udp'                     }
     - { port: '{{ logos_node_metrics_port }}',      comment: 'storage metrics',   ipset: 'hq.metrics', iifname: 'wg0' }

@@ -33,5 +33,6 @@ module "delivery" {
   ]
   open_udp_ports = [
     "9000",  /* discovery v5 */
+    "30303", /* QUIC transport */
   ]
 }
