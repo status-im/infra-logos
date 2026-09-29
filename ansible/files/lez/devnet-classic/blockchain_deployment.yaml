@@ -2,7 +2,8 @@ blend:
   common:
     num_blend_layers: 1
     minimum_network_size: 2
-    protocol_name: /logos-blockchain-devnet-0.3.0-rc.1/blend/1.0.0
+    network_absorption_in_rounds: 2
+    protocol_name: /logos-blockchain-devnet-0.3.0-rc.5/blend/1.0.0
     data_replication_factor: 1
   core:
     scheduler:
@@ -10,13 +11,15 @@ blend:
         message_frequency_per_round: 1.0
       delayer:
         maximum_release_delay_in_rounds: 1
-    minimum_messages_coefficient: 1
-    normalization_constant: 1.03
+    target_peering_degree: 4
+    verification_rate_per_second: 156
+    edge_node_send_deadline_in_rounds: 1
+    core_handshake_deadline_in_rounds: 2
     activity_threshold_sensitivity: 1
 network:
-  kademlia_protocol_name: /logos-blockchain-devnet-0.3.0-rc.1/kad/1.0.0
-  identify_protocol_name: /logos-blockchain-devnet-0.3.0-rc.1/identify/1.0.0
-  chain_sync_protocol_name: /logos-blockchain-devnet-0.3.0-rc.1/chainsync/1.0.0
+  kademlia_protocol_name: /logos-blockchain-devnet-0.3.0-rc.5/kad/1.0.0
+  identify_protocol_name: /logos-blockchain-devnet-0.3.0-rc.5/identify/1.0.0
+  chain_sync_protocol_name: /logos-blockchain-devnet-0.3.0-rc.5/chainsync/1.0.0
 cryptarchia:
   epoch_config:
     epoch_stake_distribution_stabilization: 3
@@ -38,13 +41,15 @@ cryptarchia:
     reward:
       reward_pool_genesis: 300000000000
       epoch_reward_genesis: 25000000
-      initial_difficulty_seed: 0
+      minimum_difficulty: 19
       ema_smoothing_factor: 9
       ema_smoothing_precision: 10
       target_claims_per_block: 1
       rate_num: 1
       rate_den: 10
       target_claim_per_block: 1
+      pow_share: 10
+      share_den: 100
       slot_window: 300
   sdp_config:
     service_params:
@@ -54,13 +59,13 @@ cryptarchia:
     min_stake:
       threshold: 1000000000
       timestamp: 0
-  gossipsub_protocol: /logos-blockchain-devnet-0.3.0-rc.1/cryptarchia/1.0.0
+  gossipsub_protocol: /logos-blockchain-devnet-0.3.0-rc.5/cryptarchia/1.0.0
   genesis_block:
     header:
       version: Bedrock
       parent_block: '0000000000000000000000000000000000000000000000000000000000000000'
       slot: 0
-      body_root: eac0bcd1c44106180dd0667b116bf66902e729f991422796b4fbfaa90747bf80
+      body_root: 0e1547d30758ef05c681775cc5087cbea6c834acd9e12e18edeb0e1c7087664a
       proof_of_leadership:
         proof: '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
         entropy_contribution: '0000000000000000000000000000000000000000000000000000000000000000'
@@ -354,7 +359,7 @@ cryptarchia:
         - opcode: 17
           payload:
             channel_id: '0000000000000000000000000000000000000000000000000000000000000000'
-            inscription: 0a302e332e302d72632e31a819976a2d2ddf918544bca603c5a291c7dd1b902d6769ff4b00021506780e075c06051a
+            inscription: 0a302e332e302d72632e35c85dba6a2d2ddf918544bca603c5a291c7dd1b902d6769ff4b00021506780e075c06051a
             parent: '0000000000000000000000000000000000000000000000000000000000000000'
             signer: '0000000000000000000000000000000000000000000000000000000000000000'
         - opcode: 32
@@ -423,4 +428,4 @@ cryptarchia:
 time:
   slot_duration: '1.000000000'
 mempool:
-  pubsub_topic: /logos-blockchain-devnet-0.3.0-rc.1/mempool/1.0.0
+  pubsub_topic: /logos-blockchain-devnet-0.3.0-rc.5/mempool/1.0.0

@@ -1,8 +1,8 @@
 ---
 # Logos Execution Zone - Classic(old) Devnet version
 lez_name: 'devnet-classic'
-lez_cont_tag: 'v0.2.5-rc3'
-lez_blockchain_cont_tag: '0.3.0-rc.2'
+lez_cont_tag: 'lez-classic'
+lez_blockchain_cont_tag: '0.3.0-rc.5'
 lez_explorer_cont_port: 8081
 lez_sequencer_cont_base_port: 3040
 lez_indexer_cont_port: 8779
