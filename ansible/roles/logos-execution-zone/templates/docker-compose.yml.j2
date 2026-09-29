@@ -69,9 +69,7 @@ services:
       - blockchain
     ports:
       - '{{ lez_sequencer_cont_base_port + i }}:{{ lez_sequencer_cont_base_port + i }}/tcp'
-{% if lez_sequencer_count > 1 %}
       - '{{ lez_sequencer_metrics_base_port + i }}:{{ lez_sequencer_metrics_base_port + i }}/tcp'
-{% endif %}
     volumes:
       - '{{ lez_sequencer_config_path }}:/etc/sequencer_service/sequencer_config.json:ro'
       - '{{ lez_service_conf }}/sequencer/seq-{{ i }}/signing_key:/etc/sequencer_service/signing_key:ro'
@@ -86,19 +84,12 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
-{% if lez_sequencer_count > 1 %}
-    entrypoint:
-      - /bin/sh
-      - -c
-      - |
-        rm -rf /var/lib/sequencer_service/rocksdb
-        exec sequencer_service /etc/sequencer_service/sequencer_config.json --signing-key /etc/sequencer_service/signing_key --port {{ lez_sequencer_cont_base_port + i }} --metrics-address 0.0.0.0:{{ lez_sequencer_metrics_base_port + i }}
-{% else %}
     command:
       - 'sequencer_service'
       - '/etc/sequencer_service/sequencer_config.json'
-      - '--port={{ lez_sequencer_cont_base_port }}'
-{% endif %}
+      - '--signing-key=/etc/sequencer_service/signing_key'
+      - '--port={{ lez_sequencer_cont_base_port + i }}'
+      - '--metrics-address=0.0.0.0:{{ lez_sequencer_metrics_base_port + i }}'
 
 {% endfor %}
   explorer:
