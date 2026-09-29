@@ -1,0 +1,58 @@
+---
+# Logos Execution Zone - Classic(old) Devnet version
+lez_name: 'devnet-classic'
+lez_cont_tag: 'v0.2.5-rc3'
+lez_blockchain_cont_tag: '0.3.0-rc.2'
+lez_explorer_cont_port: 8081
+lez_sequencer_cont_base_port: 3040
+lez_indexer_cont_port: 8779
+lez_blockchain_cont_api_port: 8080
+lez_blockchain_cont_swarm_port: 3000
+lez_sequencer_log_level: 'debug,kameo=info'
+lez_sequencer_count: 1
+lez_sequencer_cont_image: 'harbor.status.im/logos-blockchain/logos-execution-zone/sequencer_service-mdns:{{ lez_cont_tag }}'
+lez_sequencer_keys:
+  - signing_key: '{{ lookup("vault", "lez/sequencer/seq-0", field="signing_key") }}'
+    bedrock_signing_key: '{{ lookup("vault", "lez/sequencer/seq-0", field="signing_key") }}'
+lez_blockchain_initial_peers:
+  - '/ip4/65.108.203.235/udp/3000/quic-v1/p2p/12D3KooWNbZTQ86TZ9MrZ2wm6iUFFj25AFTzFLUD7i6XkZHoUzU8'
+  - '/ip4/65.108.203.235/udp/3001/quic-v1/p2p/12D3KooWNhXaH4XTX6Pp66NDQZxZpXYQzeruwwraMvTxojz1QXPJ'
+  - '/ip4/65.108.203.235/udp/3002/quic-v1/p2p/12D3KooWNTLPg5uYPKgZCDvzyaWNwZNcwVKmfS2bNv52E9L9P7Hf'
+  - '/ip4/65.108.203.235/udp/50001/quic-v1/p2p/12D3KooWMULUG8RXC2esnfLcVzGHohf6KNPSswkCKa1mdpXz4tHH'
+
+# Nginx
+nginx_sites:
+  lez_devnet_classic_rpc_https:
+    - listen 443 ssl
+    - server_name {{ lez_rpc_domain }}
+    - ssl_certificate     /etc/letsencrypt/live/{{ lez_rpc_domain }}/fullchain.pem
+    - ssl_certificate_key /etc/letsencrypt/live/{{ lez_rpc_domain }}/privkey.pem
+    - location / {
+        proxy_pass http://localhost:{{ lez_sequencer_cont_base_port }}/;
+      }
+
+  lez_devnet_classic_explorer_https:
+    - listen 443 ssl
+    - server_name {{ lez_explorer_domain }}
+    - ssl_certificate     /etc/letsencrypt/live/{{ lez_rpc_domain }}/fullchain.pem
+    - ssl_certificate_key /etc/letsencrypt/live/{{ lez_rpc_domain }}/privkey.pem
+    - location / {
+        proxy_pass http://localhost:{{ lez_explorer_cont_port }}/;
+      }
+
+# Firewall
+open_ports_list:
+  nginx:
+    - { port: [80, 443], proto: 'tcp', comment: 'Nginx and Certbot' }
+
+  lez-devnet-classic-blockchain:
+    - { port: '{{ lez_blockchain_cont_swarm_port }}', proto: tcp, comment: 'Logos Blockchain Swarm' }
+    - { port: '{{ lez_blockchain_cont_api_port }}',   ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
+    - { port: '{{ lez_sequencer_cont_base_port }}',   ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
+    - { port: '{{ lez_indexer_cont_port }}',          ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
+    - { port: '{{ lez_blockchain_cont_api_port }}',   ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
+    - { port: '{{ lez_sequencer_cont_base_port }}',   ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
+    - { port: '{{ lez_indexer_cont_port }}',          ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
+
+  lez-devnet-classic-sequencer:
+    - { port: '9000-9003', comment: 'Sequencer metrics', ipset: 'hq.metrics', iifname: 'wg0' }

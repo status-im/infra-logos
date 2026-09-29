@@ -74,13 +74,10 @@ services:
 {% endif %}
     volumes:
       - '{{ lez_sequencer_config_path }}:/etc/sequencer_service/sequencer_config.json:ro'
-{% if lez_sequencer_count > 1 %}
       - '{{ lez_service_conf }}/sequencer/seq-{{ i }}/signing_key:/etc/sequencer_service/signing_key:ro'
       - '{{ lez_service_conf }}/sequencer/seq-{{ i }}/bedrock_signing_key:/var/lib/sequencer_service/bedrock_signing_key:ro'
       - '{{ lez_service_data }}/sequencer/seq-{{ i }}:/var/lib/sequencer_service'
-{% else %}
       - '{{ lez_sequencer_vol }}:/var/lib/sequencer_service'
-{% endif %}
     environment:
       RUST_LOG: '{{ lez_sequencer_log_level }}'
     healthcheck:

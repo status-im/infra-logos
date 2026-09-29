@@ -9,9 +9,10 @@
     - local_action: command ./roles.py --check
       changed_when: false
 
-- name: Configure Logos Execution Zone
+- name: Configure Logos Classic Execution Zone
   serial: '{{ serial|default(1) }}'
   hosts: lez
+  vars_files: 'lez/devnet{{ "-classic" if stage == "dev" else "" }}.yml'
   pre_tasks:
     - name: Enable Maintenance Mode
       command: 'maintenance Ansible run by {{ lookup("env", "USER") }}'
@@ -21,8 +22,8 @@
       command: 'maintenance disable'
       tags: always
   roles:
-    - { role: infra-role-open-ports,  tags: open-ports }
     - { role: infra-role-swap-file,   tags: swap-file  }
+    - { role: infra-role-open-ports,  tags: open-ports }
     - { role: logos-execution-zone,   tags: lez        }
     - { role: infra-role-certbot,     tags: certbot    }
     - { role: infra-role-nginx,       tags: nginx      }

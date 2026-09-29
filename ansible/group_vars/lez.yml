@@ -1,56 +1,14 @@
+---
+# LEZ Domains
+lez_rpc_domain: '{{ lez_name }}.lez.logos.co'
+lez_explorer_domain: 'explorer.{{ lez_name }}.lez.logos.co'
 # Logos Execution Zone
-lez_rpc_domain: '{{ stage }}net.lez.logos.co'
-lez_explorer_domain: 'explorer.{{ stage }}net.lez.logos.co'
-lez_service_name: 'logos-exec-zone-{{ stage }}net'
-lez_explorer_cont_port: 8081
-lez_sequencer_cont_base_port: 3040
-lez_indexer_cont_port: 8779
-lez_cont_tag: '{{ lez_cont_tag_map[stage] }}'
-lez_cont_tag_map:
-  dev:  'v0.2.5-rc3'
-  test: 'v0.2.4'
-lez_blockchain_cont_tag: '{{ lez_blockchain_cont_tag_map[stage] }}'
-lez_blockchain_cont_tag_map:
-  dev:  '0.3.0-rc.2'
-  test: '0.2.4'
-lez_blockchain_cont_api_port: 8080
-lez_blockchain_cont_swarm_port: 3000
-lez_blockchain_keystore_config: '{{ lookup("vault", "lez/blockchain", field="keystore") }}'
-lez_blockchain_deployment_config: '{{ lookup("ansible.builtin.file", "../files/lez/"+stage+"/blockchain_deployment.yaml") | mandatory }}'
-lez_sequencer_config: '{{ lookup("ansible.builtin.file", "../files/lez/"+stage+"/sequencer_config.json") | mandatory }}'
-lez_sequencer_count: '{{ lez_sequencer_count_map[stage] }}'
-lez_sequencer_count_map:
-  dev: 4
-  test: 1
-lez_sequencer_cont_image: '{{ lez_sequencer_image_map[stage] }}'
-lez_sequencer_image_map:
-  dev: 'harbor.status.im/logos-blockchain/logos-execution-zone/sequencer_service-mdns:{{ lez_cont_tag }}'
-  test: 'harbor.status.im/logos-blockchain/logos-execution-zone/sequencer_service:{{ lez_cont_tag }}'
-lez_sequencer_keys: '{{ lez_sequencer_keys_map[stage] | default([]) }}'
-lez_sequencer_keys_map:
-  dev:
-    - signing_key: '{{ lookup("vault", "lez/sequencer/seq-0", field="signing_key") }}'
-      bedrock_signing_key: '{{ lookup("vault", "lez/sequencer/seq-0", field="signing_key") }}'
-    - signing_key: '{{ lookup("vault", "lez/sequencer/seq-1", field="signing_key") }}'
-      bedrock_signing_key: '{{ lookup("vault", "lez/sequencer/seq-1", field="signing_key") }}'
-    - signing_key: '{{ lookup("vault", "lez/sequencer/seq-2", field="signing_key") }}'
-      bedrock_signing_key: '{{ lookup("vault", "lez/sequencer/seq-2", field="signing_key") }}'
-    - signing_key: '{{ lookup("vault", "lez/sequencer/seq-3", field="signing_key") }}'
-      bedrock_signing_key: '{{ lookup("vault", "lez/sequencer/seq-3", field="signing_key") }}'
+lez_service_name: 'logos-exec-zone-{{ lez_name }}'
+lez_blockchain_keystore_config: '{{ lookup("vault", "lez/"+lez_name+"/blockchain", field="keystore") }}'
+lez_blockchain_deployment_config: '{{ lookup("ansible.builtin.file", "../files/lez/"+lez_name+"/blockchain_deployment.yaml") | mandatory }}'
+lez_sequencer_config: '{{ lookup("ansible.builtin.file", "../files/lez/"+lez_name+"/sequencer_config.json") | mandatory }}'
 lez_sequencer_log_level: 'debug,kameo=info'
-lez_indexer_config: '{{ lookup("ansible.builtin.file", "../files/lez/"+stage+"/indexer_config.json") | mandatory }}'
-lez_blockchain_initial_peers: '{{ lez_blockchain_initial_peers_map[stage] }}'
-lez_blockchain_initial_peers_map:
-  dev:
-    - '/ip4/65.108.203.235/udp/3000/quic-v1/p2p/12D3KooWNbZTQ86TZ9MrZ2wm6iUFFj25AFTzFLUD7i6XkZHoUzU8'
-    - '/ip4/65.108.203.235/udp/3001/quic-v1/p2p/12D3KooWNhXaH4XTX6Pp66NDQZxZpXYQzeruwwraMvTxojz1QXPJ'
-    - '/ip4/65.108.203.235/udp/3002/quic-v1/p2p/12D3KooWNTLPg5uYPKgZCDvzyaWNwZNcwVKmfS2bNv52E9L9P7Hf'
-    - '/ip4/65.108.203.235/udp/50001/quic-v1/p2p/12D3KooWMULUG8RXC2esnfLcVzGHohf6KNPSswkCKa1mdpXz4tHH'
-  test:
-    - '/ip4/65.109.51.37/udp/3000/quic-v1/p2p/12D3KooWFrouXfmrR4nsLMtE7wu15DoMJ6VtoUtHinREZCvbWHar'
-    - '/ip4/65.109.51.37/udp/3001/quic-v1/p2p/12D3KooWJRGau8M1rjT7R5e4YYsgdFhsMX35nRDtMwCDjxQkXAHz'
-    - '/ip4/65.109.51.37/udp/3002/quic-v1/p2p/12D3KooWQXJavMDTRscjauFSgVAB1VLB6Rzpy2uY5SU9Tk7927tb'
-    - '/ip4/65.109.51.37/udp/50001/quic-v1/p2p/12D3KooWSQc7CcGtvWDPF1yCbBthFnQjprfCVHmfmNDUrSmqQsU1'
+lez_indexer_config: '{{ lookup("ansible.builtin.file", "../files/lez/"+lez_name+"/indexer_config.json") | mandatory }}'
 
 # Certbot
 certbot_docker_enabled: true
@@ -60,46 +18,3 @@ certbot_certs:
   - domains:
       - '{{ lez_rpc_domain }}'
       - '{{ lez_explorer_domain }}'
-
-# Nginx
-nginx_sites:
-  lez_rpc_https:
-    - listen 443 ssl
-    - server_name {{ lez_rpc_domain }}
-
-    - ssl_certificate     /etc/letsencrypt/live/{{ lez_rpc_domain }}/fullchain.pem
-    - ssl_certificate_key /etc/letsencrypt/live/{{ lez_rpc_domain }}/privkey.pem
-
-    - location / {
-        proxy_pass http://localhost:{{ lez_sequencer_cont_base_port }}/;
-      }
-
-  lez_explorer_https:
-    - listen 443 ssl
-    - server_name {{ lez_explorer_domain }}
-
-    - ssl_certificate     /etc/letsencrypt/live/{{ lez_rpc_domain }}/fullchain.pem
-    - ssl_certificate_key /etc/letsencrypt/live/{{ lez_rpc_domain }}/privkey.pem
-
-    - location / {
-        proxy_pass http://localhost:{{ lez_explorer_cont_port }}/;
-      }
-
-# Firewall
-open_ports_list:
-  nginx:
-    - { port: [80, 443], proto: 'tcp', comment: 'Nginx and Certbot' }
-  logos-blockchain:
-    - { port: '{{ lez_blockchain_cont_swarm_port }}', proto: tcp, comment: 'Logos Blockchain Swarm' }
-    - { port: '{{ lez_blockchain_cont_api_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
-    - { port: '{{ lez_sequencer_cont_base_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
-    - { port: '{{ lez_indexer_cont_port }}',        ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
-    - { port: '{{ lez_blockchain_cont_api_port }}', ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
-    - { port: '{{ lez_sequencer_cont_base_port }}', ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
-    - { port: '{{ lez_indexer_cont_port }}',        ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
-
-  logos-sequencer:
-    - { port: '9000-9003', comment: 'Sequencer metrics', ipset: 'hq.metrics', iifname: 'wg0' }
-
-
-
