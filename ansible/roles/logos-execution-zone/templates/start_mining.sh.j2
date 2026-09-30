@@ -1,0 +1,32 @@
+#!/bin/bash
+# vim: set ft=sh:
+set -Eeo pipefail
+
+API_PORT='{{ lez_blockchain_cont_api_port }}'
+MAX_RETRIES=30
+RETRY_DELAY=2
+
+is_online() {
+  curl -sf localhost:${API_PORT}/cryptarchia/info \
+    | jq -e '.cryptarchia_info.state == "Online"' >/dev/null
+}
+
+attempt=1
+
+for ((attempt = 1; attempt <= MAX_RETRIES; attempt++)); do
+  if is_online; then
+    break
+  fi
+
+  echo "[start_mining] Retrying $attempt/$MAX_RETRIES"
+
+  if (( attempt == MAX_RETRIES )); then
+    echo "[start_mining] Node did not become Online!"
+    exit 1
+  fi
+
+  sleep "$RETRY_DELAY"
+done
+
+echo "[start_mining] Node is online, starting mining..."
+curl -X PUT localhost:${API_PORT}/pow/mining/start

@@ -31,7 +31,4 @@ module "storage" {
     "443",  /* storage API */
     "8080", /* storage libp2p */
   ]
-  open_udp_ports = [
-    "9090", /* storage discovery */
-  ]
 }
