@@ -13,15 +13,15 @@ Current state of fleets: https://fleets.logos.co/
 
 # Endpoints
 
-### LEZ Devnet
+## LEZ
 
-- RPC: https://devnet.lez.logos.co/
-- Explorer: https://explorer.devnet.lez.logos.co/
-
-### LEZ Testnet
-
-- RPC: https://testnet.lez.logos.co/
-- Explorer: https://explorer.testnet.lez.logos.co/
+|         | Explorer                                         | RPC                                     |
+|---------|--------------------------------------------------|-----------------------------------------|
+| Current | <https://explorer.devnet.lez.logos.co/>          | <https://devnet.lez.logos.co/>          |
+| Classic | <https://explorer.devnet-classic.lez.logos.co/>  | <https://devnet-classic.lez.logos.co/>  |
+|         |                                                  |                                         |
+| Current | <https://explorer.testnet.lez.logos.co/>         | <https://testnet.lez.logos.co/>         |
+| Classic | <https://explorer.testnet-classic.lez.logos.co/> | <https://testnet-classic.lez.logos.co/> |
 
 # Layout
 
