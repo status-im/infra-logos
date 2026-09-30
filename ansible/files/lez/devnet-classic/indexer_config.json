@@ -2,7 +2,7 @@
     "consensus_info_polling_interval": "1s",
     "allow_chain_reset": true,
     "bedrock_config": {
-        "addr": "http://blockchain:8080"
+        "addr": "http://blockchain:{{ lez_blockchain_cont_api_port }}"
     },
-    "channel_id": "8601010101010101010101010101010101010101010101010101010101010101"
+    "channel_id": "{{ lez_channel_id | mandatory }}"
 }

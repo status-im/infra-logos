@@ -6,10 +6,10 @@
   "block_create_timeout": "10s",
   "retry_pending_blocks_timeout": "7s",
   "bedrock_config": {
-    "channel_id": "8601010101010101010101010101010101010101010101010101010101010101",
-    "node_url": "http://blockchain:8080/",
+    "channel_id": "{{ lez_channel_id | mandatory }}",
+    "node_url": "http://blockchain:{{ lez_blockchain_cont_api_port }}/",
     "auth": null,
-    "funding_key": "41fe2b86b637fdb7944effe8b21af9a905e432a1c4f5d6d9f1ec0593ae8d7b04",
+    "funding_key": "{{ lez_funding_key | mandatory }}",
     "priority_fee_percent": 12,
     "channel_params": {
       "minimum_sequencer_stake": 149,
