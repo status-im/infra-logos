@@ -6,9 +6,9 @@ lez_explorer_domain: 'explorer.{{ lez_name }}.lez.logos.co'
 lez_service_name: 'logos-exec-zone-{{ lez_name }}'
 lez_blockchain_keystore_config: '{{ lookup("vault", "lez/"+lez_name+"/blockchain", field="keystore") }}'
 lez_blockchain_deployment_config: '{{ lookup("ansible.builtin.file", "../files/lez/"+lez_name+"/blockchain_deployment.yaml") | mandatory }}'
-lez_sequencer_config: '{{ lookup("ansible.builtin.file", "../files/lez/"+lez_name+"/sequencer_config.json") | mandatory }}'
+lez_sequencer_config: '{{ lookup("ansible.builtin.template", playbook_dir+"/files/lez/"+lez_name+"/sequencer_config.json") | mandatory }}'
 lez_sequencer_log_level: 'debug,kameo=info'
-lez_indexer_config: '{{ lookup("ansible.builtin.file", "../files/lez/"+lez_name+"/indexer_config.json") | mandatory }}'
+lez_indexer_config: '{{ lookup("ansible.builtin.template", playbook_dir+"/files/lez/"+lez_name+"/indexer_config.json") | mandatory }}'
 
 # Certbot
 certbot_docker_enabled: true

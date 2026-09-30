@@ -3,7 +3,7 @@
   "bedrock_config": {
     "addr": "http://blockchain:8080"
   },
-  "channel_id": "abababababababababababababababababababababababababababababababab",
+  "channel_id": "{{ lez_channel_id | mandatory }}",
   "allow_chain_reset": true,
   "event_filter": "archival"
 }

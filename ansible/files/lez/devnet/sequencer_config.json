@@ -10,7 +10,7 @@
             "start_delay": "100ms",
             "max_retries": 5
         },
-        "channel_id": "abababababababababababababababababababababababababababababababab",
+        "channel_id": "{{ lez_channel_id | mandatory }}",
         "node_url": "http://blockchain:8080",
         "funding_key": "cf879934b9559946e17237fb3d509c0cc1db9a77d60ae1171a10085d8abf1523",
         "channel_params": {

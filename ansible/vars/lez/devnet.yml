@@ -1,6 +1,7 @@
 ---
 # Logos Execution Zone - Devnet
 lez_name: 'devnet'
+lez_channel_id: 'abababababababababababababababababababababababababababababababab'
 lez_cont_tag: 'v0.3.0-rc1'
 lez_blockchain_cont_tag: '0.3.0-rc.5'
 lez_explorer_cont_port:         8081
