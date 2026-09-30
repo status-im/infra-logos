@@ -5,7 +5,7 @@ services:
     image: '{{ lez_blockchain_cont_image }}'
     restart: 'no'
     volumes:
-      - '{{ lez_blockchain_config_path | dirname }}:{{ lez_blockchain_config_path | dirname }}:rw'
+      - { source: '{{ lez_blockchain_config_path | dirname }}', target: '{{ lez_blockchain_config_path | dirname }}', type: bind, bind: {create_host_path: false} }
     command:
 {% if not lez_blockchain_config_file.stat.exists %}
       - 'init-config'
@@ -35,8 +35,8 @@ services:
       - '{{ lez_blockchain_cont_api_port }}:{{ lez_blockchain_cont_api_port }}/tcp'
       - '{{ lez_blockchain_cont_swarm_port }}:{{ lez_blockchain_cont_swarm_port }}/tcp'
     volumes:
-      - '{{ lez_blockchain_state_path }}:{{ lez_blockchain_state_path }}'
-      - '{{ lez_blockchain_config_path | dirname }}:{{ lez_blockchain_config_path | dirname }}:rw'
+      - { source: '{{ lez_blockchain_state_path }}',            target: '{{ lez_blockchain_state_path }}',            type: bind, bind: {create_host_path: false} }
+      - { source: '{{ lez_blockchain_config_path | dirname }}', target: '{{ lez_blockchain_config_path | dirname }}', type: bind, bind: {create_host_path: false} }
     command: |
 {% if lez_blockchain_deployment_config is defined %}
       --deployment='{{ lez_blockchain_deployment_path }}'
@@ -52,8 +52,8 @@ services:
     ports:
       - '{{ lez_indexer_cont_port }}:{{ lez_indexer_cont_port }}/tcp'
     volumes:
-      - '{{ lez_indexer_config_path }}:/etc/indexer_service/indexer_config.json:ro'
-      - '{{ lez_indexer_cont_vol }}:/var/lib/indexer_service'
+      - { source: '{{ lez_indexer_config_path }}', target: '/etc/indexer_service/indexer_config.json', type: bind, bind: {create_host_path: false}, read_only: true }
+      - { source: '{{ lez_indexer_cont_vol }}',    target: '/var/lib/indexer_service',                 type: bind, bind: {create_host_path: false}                  }
     command:
       - 'indexer_service'
       - '/etc/indexer_service/indexer_config.json'
@@ -71,11 +71,10 @@ services:
       - '{{ lez_sequencer_cont_base_port + i }}:{{ lez_sequencer_cont_base_port + i }}/tcp'
       - '{{ lez_sequencer_metrics_base_port + i }}:{{ lez_sequencer_metrics_base_port + i }}/tcp'
     volumes:
-      - '{{ lez_sequencer_config_path }}:/etc/sequencer_service/sequencer_config.json:ro'
-      - '{{ lez_service_conf }}/sequencer/seq-{{ i }}/signing_key:/etc/sequencer_service/signing_key:ro'
-      - '{{ lez_service_conf }}/sequencer/seq-{{ i }}/bedrock_signing_key:/var/lib/sequencer_service/bedrock_signing_key:ro'
-      - '{{ lez_service_data }}/sequencer/seq-{{ i }}:/var/lib/sequencer_service'
-      - '{{ lez_sequencer_vol }}:/var/lib/sequencer_service'
+      - { source: '{{ lez_sequencer_config_path }}',                                  target: '/etc/sequencer_service/sequencer_config.json',   type: bind, bind: {create_host_path: false}, read_only: true }
+      - { source: '{{ lez_service_conf }}/sequencer/seq-{{ i }}/signing_key',         target: '/etc/sequencer_service/signing_key',             type: bind, bind: {create_host_path: false}, read_only: true }
+      - { source: '{{ lez_service_conf }}/sequencer/seq-{{ i }}/bedrock_signing_key', target: '/var/lib/sequencer_service/bedrock_signing_key', type: bind, bind: {create_host_path: false}, read_only: true }
+      - { source: '{{ lez_service_data }}/sequencer/seq-{{ i }}',                     target: '/var/lib/sequencer_service',                     type: bind, bind: {create_host_path: false}                  }
     environment:
       RUST_LOG: '{{ lez_sequencer_log_level }}'
     healthcheck:

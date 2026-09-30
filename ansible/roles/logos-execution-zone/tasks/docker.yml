@@ -12,6 +12,4 @@
     project_src: '{{ lez_service_path }}'
     pull: '{{ compose_pull }}'
     state: '{{ compose_state }}'
-    recreate: >-
-      {{ (lez_sequencer_config_file.changed or lez_indexer_config_file.changed)
-        | ternary("always", compose_recreate) }}
+    recreate: 'always'
