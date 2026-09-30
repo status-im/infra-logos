@@ -3,21 +3,21 @@
     "max_num_tx_in_block": 20,
     "max_block_size": "1 MiB",
     "mempool_max_size": 10000,
-    "block_create_timeout": "10s",
-    "retry_pending_blocks_timeout": "7s",
+    "block_create_timeout": "30s",
+    "retry_pending_blocks_timeout": "30s",
     "bedrock_config": {
         "backoff": {
             "start_delay": "100ms",
             "max_retries": 5
         },
-        "channel_id": "0101010101010101010101010101010101010101010101010101010101010101",
+        "channel_id": "abababababababababababababababababababababababababababababababab",
         "node_url": "http://blockchain:8080",
-        "funding_key": "2e03b2eff5a45478e7e79668d2a146cf2c5c7925bce927f2b1c67f2ab4fc0d26",
+        "funding_key": "cf879934b9559946e17237fb3d509c0cc1db9a77d60ae1171a10085d8abf1523",
         "channel_params": {
-            "minimum_sequencer_stake": 149,
-            "posting_timeframe": 300,
-            "posting_timeout": 25,
-            "exit_delay": 100
+            "minimum_sequencer_stake": 25000000000,
+            "posting_timeframe": 900,
+            "posting_timeout": 150,
+            "exit_delay": 240
         }
     },
     "genesis": [
