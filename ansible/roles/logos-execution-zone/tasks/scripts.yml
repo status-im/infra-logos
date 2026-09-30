@@ -1,0 +1,20 @@
+---
+- name: Create Mining Start script
+  template:
+    src:   'start_mining.sh.j2'
+    dest:  '{{ lez_blockchain_pow_mining_start_script }}'
+    owner: '{{ lez_host_uid }}'
+    group: 'dockremap'
+    mode:  '0o770'
+  vars:
+    lez_config_content: '{{ lez_sequencer_config }}'
+
+- name: Create Blockchain Healthcheck script
+  template:
+    src:   'blockchain_healthcheck.sh.j2'
+    dest:  '{{ lez_blockchain_healthcheck_script }}'
+    owner: '{{ lez_host_uid }}'
+    group: 'dockremap'
+    mode:  '0o770'
+  vars:
+    lez_config_content: '{{ lez_sequencer_config }}'

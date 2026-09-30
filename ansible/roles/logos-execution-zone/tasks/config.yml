@@ -15,17 +15,6 @@
     - '{{ lez_sequencer_config_path | dirname }}'
     - '{{ lez_sequencer_vol }}'
 
-- name: Create Mining Start script
-  register: lez_sequencer_config_file
-  template:
-    src:   'start_mining.sh.j2'
-    dest:  '{{ lez_blockchain_pow_mining_start_script }}'
-    owner: '{{ lez_host_uid }}'
-    group: 'dockremap'
-    mode:  '0o770'
-  vars:
-    lez_config_content: '{{ lez_sequencer_config }}'
-
 - name: Create sequencer config
   register: lez_sequencer_config_file
   template:

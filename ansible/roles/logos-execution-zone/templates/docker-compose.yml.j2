@@ -37,6 +37,12 @@ services:
     volumes:
       - { source: '{{ lez_blockchain_state_path }}',  target: '{{ lez_blockchain_state_path }}',  type: bind, bind: {create_host_path: false} }
       - { source: '{{ lez_blockchain_config_path }}', target: '{{ lez_blockchain_config_path }}', type: bind, bind: {create_host_path: false} }
+    healthcheck:
+      test: ['CMD-SHELL', '{{ lez_blockchain_healthcheck_script }}']
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     command: |
 {% if lez_blockchain_deployment_config is defined %}
       --deployment='{{ lez_blockchain_deployment_path }}'

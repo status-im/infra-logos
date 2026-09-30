@@ -8,7 +8,7 @@ RETRY_DELAY=2
 
 is_online() {
   curl -sf localhost:${API_PORT}/cryptarchia/info \
-    | jq -e '.cryptarchia_info.state == "Online"' >/dev/null
+    | grep '"state":"Online"' >/dev/null
 }
 
 attempt=1

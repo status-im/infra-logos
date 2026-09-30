@@ -1,0 +1,5 @@
+#!/bin/bash
+# vim: set ft=sh:
+set -Eeo pipefail
+curl -sf localhost:{{ lez_blockchain_cont_api_port }}/cryptarchia/info \
+    | grep '"state":"Online"'
