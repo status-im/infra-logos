@@ -10,10 +10,21 @@
     - '{{ lez_service_conf }}'
     - '{{ lez_indexer_cont_vol }}'
     - '{{ lez_blockchain_state_path }}'
-    - '{{ lez_blockchain_config_path | dirname }}'
+    - '{{ lez_blockchain_config_path }}'
     - '{{ lez_indexer_config_path | dirname }}'
     - '{{ lez_sequencer_config_path | dirname }}'
     - '{{ lez_sequencer_vol }}'
+
+- name: Create Mining Start script
+  register: lez_sequencer_config_file
+  template:
+    src:   'start_mining.sh.j2'
+    dest:  '{{ lez_blockchain_pow_mining_start_script }}'
+    owner: '{{ lez_host_uid }}'
+    group: 'dockremap'
+    mode:  '0o770'
+  vars:
+    lez_config_content: '{{ lez_sequencer_config }}'
 
 - name: Create sequencer config
   register: lez_sequencer_config_file
@@ -40,7 +51,7 @@
 - name: Check blockchain config
   register: lez_blockchain_config_file
   stat:
-    path: '{{ lez_blockchain_config_path }}'
+    path: '{{ lez_blockchain_config_file_path }}'
 
 - name: Create blockchain deployment settings
   when: lez_blockchain_deployment_config is defined
@@ -56,7 +67,7 @@
     - lez_blockchain_keystore_config is defined
     - lez_blockchain_config_file.stat.exists
   copy:
-    dest:    '{{ lez_blockchain_keystore_path }}'
+    dest:    '{{ lez_blockchain_keystore_file_path }}'
     content: '{{ lez_blockchain_keystore_config }}'
     owner:   '{{ lez_host_uid }}'
     group:   'dockremap'

@@ -5,19 +5,19 @@ services:
     image: '{{ lez_blockchain_cont_image }}'
     restart: 'no'
     volumes:
-      - { source: '{{ lez_blockchain_config_path | dirname }}', target: '{{ lez_blockchain_config_path | dirname }}', type: bind, bind: {create_host_path: false} }
+      - { source: '{{ lez_blockchain_config_path }}', target: '{{ lez_blockchain_config_path }}', type: bind, bind: {create_host_path: false} }
     command:
 {% if not lez_blockchain_config_file.stat.exists %}
       - 'init-config'
-      - '--output={{ lez_blockchain_config_path }}'
+      - '--output={{ lez_blockchain_config_file_path }}'
 {% else %}
       - 'update-config'
-      - '--user-config={{ lez_blockchain_config_path }}'
+      - '--user-config={{ lez_blockchain_config_file_path }}'
       - '--yes'
 {% endif %}
       - '--log-level=debug'
       - '--state-path={{ lez_blockchain_state_path }}'
-      - '--keystore={{ lez_blockchain_keystore_path }}'
+      - '--keystore={{ lez_blockchain_keystore_file_path }}'
       - '--net-port={{ lez_blockchain_cont_swarm_port }}'
       - '--http-host=0.0.0.0:{{ lez_blockchain_cont_api_port }}'
 {% for peer in lez_blockchain_initial_peers %}
@@ -35,13 +35,17 @@ services:
       - '{{ lez_blockchain_cont_api_port }}:{{ lez_blockchain_cont_api_port }}/tcp'
       - '{{ lez_blockchain_cont_swarm_port }}:{{ lez_blockchain_cont_swarm_port }}/tcp'
     volumes:
-      - { source: '{{ lez_blockchain_state_path }}',            target: '{{ lez_blockchain_state_path }}',            type: bind, bind: {create_host_path: false} }
-      - { source: '{{ lez_blockchain_config_path | dirname }}', target: '{{ lez_blockchain_config_path | dirname }}', type: bind, bind: {create_host_path: false} }
+      - { source: '{{ lez_blockchain_state_path }}',  target: '{{ lez_blockchain_state_path }}',  type: bind, bind: {create_host_path: false} }
+      - { source: '{{ lez_blockchain_config_path }}', target: '{{ lez_blockchain_config_path }}', type: bind, bind: {create_host_path: false} }
     command: |
 {% if lez_blockchain_deployment_config is defined %}
       --deployment='{{ lez_blockchain_deployment_path }}'
 {% endif %}
-      '{{ lez_blockchain_config_path }}'
+      '{{ lez_blockchain_config_file_path }}'
+{% if lez_blockchain_pow_mining_start %}
+    post_start:
+      - command: /bin/bash -c '{{ lez_blockchain_pow_mining_start_script }} &'
+{% endif %}
 
   indexer:
     container_name: '{{ lez_indexer_cont_name }}'
