@@ -53,6 +53,12 @@ logos_node_delivery_websocket_domain: '{{ dns_entry }}'
 logos_node_delivery_store_db_url: 'postgres://node:{{ lookup("vault", "node/delivery/db", field="db-password") }}@node-db-01.{{ ansible_domain }}.wg:5432/node'
 logos_node_delivery_store_retention_policy: 'time:259200;size:50GB'
 
+logos_node_delivery_rln_enabled: true
+logos_node_delivery_rln_validation_enabled: false
+logos_node_delivery_rln_registry_id: 'logos:testnet:841312e989c77e3f6f58a5d880a8e25b950b8b5ffba2f39748fa44622c20c893'
+logos_node_delivery_rln_epoch_size_sec: 600
+logos_node_delivery_rln_sequencer_url: 'http://209.38.241.182:3240/'
+
 logos_node_delivery_kad_bootstrap_nodes:
   - '/dns4/node-01.do-ams3.logos.test.status.im/tcp/30303/p2p/16Uiu2HAmQ9X2xDfPG3uL77V9piYDhjq14JhKCtcmNYsTMKNqrKCj'
   - '/dns4/node-02.do-ams3.logos.test.status.im/tcp/30303/p2p/16Uiu2HAmB8NYprrfQrgWVzsJtYWkfjsXbmJEGNMG6othXsQ53BwG'

@@ -53,13 +53,6 @@ logos_node_delivery_websocket_domain: '{{ dns_entry }}'
 logos_node_delivery_store_db_url: 'postgres://delivery:{{ lookup("vault", "delivery/database", field="db-password") }}@delivery-db-01.{{ ansible_domain }}.wg:5432/delivery'
 logos_node_delivery_store_retention_policy: 'time:259200;size:50GB'
 
-# RLN
-logos_node_delivery_rln_enabled: true
-logos_node_delivery_rln_validation_enabled: false
-logos_node_delivery_rln_registry_id: ''
-logos_node_delivery_rln_epoch_size_sec: 0
-logos_node_delivery_rln_sequencer_url: 'https://testnet.lez.logos.co/'
-
 # Kademlia bootstrap - populate after first deploy
 logos_node_delivery_kad_bootstrap_nodes:
   - '/dns4/delivery-01.do-ams3.logos.dev.status.im/tcp/30303/p2p/16Uiu2HAmTUbnxLGT9JvV6mu9oPyDjqHK4Phs1VDJNUgESgNSkuby'
