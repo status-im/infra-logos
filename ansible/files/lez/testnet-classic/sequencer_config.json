@@ -1,0 +1,93 @@
+{
+  "home": "/var/lib/sequencer_service",
+  "max_num_tx_in_block": 20,
+  "max_block_size": "1.0 MiB",
+  "mempool_max_size": 10000,
+  "block_create_timeout": "10s",
+  "retry_pending_blocks_timeout": "7s",
+  "bedrock_config": {
+    "channel_id": "{{ lez_channel_id | mandatory }}",
+    "node_url": "http://blockchain:{{ lez_blockchain_cont_api_port }}",
+    "auth": null,
+    "funding_key": "{{ lez_funding_key | mandatory }}",
+    "priority_fee_percent": 12,
+    "channel_params": {
+      "minimum_sequencer_stake": 149,
+      "posting_timeframe": 60,
+      "posting_timeout": 25,
+      "exit_delay": 100
+    }
+  },
+  "genesis": [
+    {
+      "stake_sequencer": {
+        "sequencer_key": [
+          221,
+          248,
+          198,
+          175,
+          61,
+          217,
+          180,
+          90,
+          234,
+          70,
+          234,
+          236,
+          214,
+          192,
+          187,
+          239,
+          158,
+          208,
+          35,
+          44,
+          79,
+          29,
+          168,
+          196,
+          118,
+          117,
+          68,
+          247,
+          69,
+          140,
+          233,
+          166
+        ],
+        "ownership_public_key": "f520191f299a992203e5c4bb4fd52c45d8a60a6c3463066437b59d62e5b9ea1a",
+        "stake_signature": "af6f4106001666277afeadd075d2fdda85f3f1e666e000631bcfa22e323511b0e8ce3e3535f41de8de6c2e090fafeb2d4827e54d34483580cb6c725cc80ad7dc"
+      }
+    },
+    {
+      "supply_account": {
+        "account_id": "6iArKUXxhUJqS7kCaPNhwMWt3ro71PDyBj7jwAyE2VQV",
+        "balance": 10000
+      }
+    },
+    {
+      "supply_account": {
+        "account_id": "7wHg9sbJwc6h3NP1S9bekfAzB8CHifEcxKswCKUt3YQo",
+        "balance": 20000
+      }
+    },
+    {
+      "supply_account": {
+        "account_id": "61EsoYN6gvTLkveh1YSTMG3yJkncpHy5EGmxhSK4ew29",
+        "balance": 10000
+      }
+    },
+    {
+      "supply_account": {
+        "account_id": "3m6HQmCgmAvsxZtxAHPqqEqoBG4335fCG8TzxigyW7rE",
+        "balance": 20000
+      }
+    }
+  ],
+  "cross_zone": null,
+  "metrics_address": "0.0.0.0:9000",
+  "gossip": {
+    "listen_addr": "/ip4/0.0.0.0/udp/0/quic-v1",
+    "bootstrap_peers": []
+  }
+}

@@ -1,16 +1,22 @@
 ---
-# Logos Execution Zone - Testnet
-lez_name: 'testnet'
-lez_cont_tag: 'v0.2.4'
-lez_blockchain_cont_tag: '0.2.4'
-lez_explorer_cont_port: 8081
-lez_sequencer_cont_base_port: 3040
-lez_indexer_cont_port: 8779
-lez_blockchain_cont_api_port: 8080
-lez_blockchain_cont_swarm_port: 3000
+# Logos Execution Zone - Classic(old) Testnet version
+lez_name: 'testnet-classic'
+lez_channel_id: '0202020202020202020202020202020202020202020202020202020202020202'
+# Sourced from PoWClaim in blockchain keystore.yaml.
+lez_funding_key: '89cf7a128d32856611e48e03c40cbd443837dbb3aabf9a01d9eee2999c57c818'
+lez_cont_tag: 'lez-classic'
+lez_blockchain_cont_tag: '0.3.0'
+lez_explorer_cont_port:          18081
+lez_sequencer_cont_base_port:    13040
+lez_sequencer_metrics_base_port: 19000
+lez_indexer_cont_port:           18779
+lez_blockchain_cont_api_port:    18080
+lez_blockchain_cont_swarm_port:  13000
 lez_sequencer_count: 1
 lez_sequencer_image: 'harbor.status.im/logos-blockchain/logos-execution-zone/sequencer_service:{{ lez_cont_tag }}'
-lez_sequencer_keys: []
+lez_sequencer_keys:
+  - signing_key:         '{{ lookup("vault", "lez/"+lez_name+"/sequencer/seq-0", field="signing_key") }}'
+    bedrock_signing_key: '{{ lookup("vault", "lez/"+lez_name+"/sequencer/seq-0", field="bedrock_signing_key") }}'
 lez_blockchain_initial_peers:
   - '/ip4/65.109.51.37/udp/3000/quic-v1/p2p/12D3KooWFrouXfmrR4nsLMtE7wu15DoMJ6VtoUtHinREZCvbWHar'
   - '/ip4/65.109.51.37/udp/3001/quic-v1/p2p/12D3KooWJRGau8M1rjT7R5e4YYsgdFhsMX35nRDtMwCDjxQkXAHz'
@@ -19,7 +25,7 @@ lez_blockchain_initial_peers:
 
 # Nginx
 nginx_sites:
-  lez_testnet_rpc_https:
+  lez_testnet_classic_rpc_https:
     - listen 443 ssl
     - server_name {{ lez_rpc_domain }}
     - ssl_certificate     /etc/letsencrypt/live/{{ lez_rpc_domain }}/fullchain.pem
@@ -28,7 +34,7 @@ nginx_sites:
         proxy_pass http://localhost:{{ lez_sequencer_cont_base_port }}/;
       }
 
-  lez_testnet_explorer_https:
+  lez_testnet_classic_explorer_https:
     - listen 443 ssl
     - server_name {{ lez_explorer_domain }}
     - ssl_certificate     /etc/letsencrypt/live/{{ lez_rpc_domain }}/fullchain.pem
@@ -43,7 +49,7 @@ open_ports_list:
   nginx:
     - { port: [80, 443], proto: 'tcp', comment: 'Nginx and Certbot' }
 
-  lez-testnet-blockchain:
+  lez-testnet-classic-blockchain:
     - { port: '{{ lez_blockchain_cont_swarm_port }}', proto: tcp, comment: 'Logos Blockchain Swarm' }
     - { port: '{{ lez_blockchain_cont_api_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
     - { port: '{{ lez_sequencer_cont_base_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
@@ -52,5 +58,5 @@ open_ports_list:
     - { port: '{{ lez_sequencer_cont_base_port }}', ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
     - { port: '{{ lez_indexer_cont_port }}',        ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
 
-  lez-testnet-sequencer:
+  lez-testnet-classic-sequencer:
     - { port: '9000-9003', comment: 'Sequencer metrics', ipset: 'hq.metrics', iifname: 'wg0' }

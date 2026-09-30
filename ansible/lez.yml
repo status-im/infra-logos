@@ -12,7 +12,7 @@
 - name: Configure Logos Execution Zone
   serial: '{{ serial|default(1) }}'
   hosts: lez
-  vars_files: 'lez/devnet.yml'
+  vars_files: 'lez/{{ stage }}net.yml'
   pre_tasks:
     - name: Enable Maintenance Mode
       command: 'maintenance Ansible run by {{ lookup("env", "USER") }}'

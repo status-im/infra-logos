@@ -1,0 +1,9 @@
+{
+  "consensus_info_polling_interval": "1s",
+  "bedrock_config": {
+    "addr": "http://blockchain:{{ lez_blockchain_cont_api_port }}"
+  },
+  "channel_id": "{{ lez_channel_id | mandatory }}",
+  "allow_chain_reset": true,
+  "event_filter": "archival"
+}
