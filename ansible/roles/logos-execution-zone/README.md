@@ -6,6 +6,9 @@ This role configures [Logos Execution Zone](https://github.com/logos-blockchain/
 
 Basic configuration should include sequencer and indexer configs as well as initial peers:
 ```yaml
+# Sourced from PoWClaim in blockchain keystore.yaml.
+lez_sequencer_funding_key: '8888888888888888888888888888888888888888888888888888888888888888'
+lez_sequencer_channel_id:  '0202020202020202020202020202020202020202020202020202020202020202'
 lez_cont_tag: 'v0.2.1'
 lez_blockchain_cont_tag: '0.2.1'
 lez_sequencer_config: '{{ lookup("file", "files/sequencer_config.json") }}'
@@ -20,7 +23,7 @@ This generates files in `conf` directory:
 ```bash
  > find /docker/logos-exec-zone/conf -type f 
 /docker/logos-exec-zone-devnet/conf/indexer/config.json
-/docker/logos-exec-zone-devnet/conf/sequencer/config.json
+/docker/logos-exec-zone-devnet/conf/sequencer/seq-0/config.json
 /docker/logos-exec-zone-devnet/conf/blockchain/deployment.yaml
 /docker/logos-exec-zone-devnet/conf/blockchain/keystore.yaml
 /docker/logos-exec-zone-devnet/conf/blockchain/config.yaml
@@ -37,7 +40,7 @@ NAME                                IMAGE                                       
 logos-exec-zone-devnet-blockchain   ghcr.io/logos-blockchain/logos-blockchain:0.2.1-rc.3                              "/usr/bin/logos-bloc…"   blockchain   6 minutes ago   Up 6 minutes             80/tcp, 0.0.0.0:3000->3000/tcp, 8000/tcp, 8090/tcp, 9000/tcp, 18080/tcp, 60000/tcp, 0.0.0.0:8080->8080/tcp
 logos-exec-zone-devnet-explorer     harbor.status.im/logos-blockchain/logos-execution-zone/explorer_service:v0.2.1    "/explorer_service/e…"   explorer     6 minutes ago   Up 6 minutes             8080/tcp, 0.0.0.0:8081->8081/tcp
 logos-exec-zone-devnet-indexer      harbor.status.im/logos-blockchain/logos-execution-zone/indexer_service:v0.2.1     "indexer_service /et…"   indexer      6 minutes ago   Up 6 minutes (healthy)   0.0.0.0:8779->8779/tcp
-logos-exec-zone-devnet-sequencer    harbor.status.im/logos-blockchain/logos-execution-zone/sequencer_service:v0.2.1   "sequencer_service /…"   sequencer    6 minutes ago   Up 6 minutes (healthy)   0.0.0.0:3040->3040/tcp
+logos-exec-zone-devnet-sequencer-0  harbor.status.im/logos-blockchain/logos-execution-zone/sequencer_service:v0.2.1   "sequencer_service /…"   sequencer    6 minutes ago   Up 6 minutes (healthy)   0.0.0.0:3040->3040/tcp
 ```
 
 # References

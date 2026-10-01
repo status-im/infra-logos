@@ -1,15 +1,11 @@
 {
-  "home": "/var/lib/sequencer_service",
   "max_num_tx_in_block": 20,
   "max_block_size": "1.0 MiB",
   "mempool_max_size": 10000,
   "block_create_timeout": "10s",
   "retry_pending_blocks_timeout": "7s",
   "bedrock_config": {
-    "channel_id": "{{ lez_channel_id | mandatory }}",
-    "node_url": "http://blockchain:{{ lez_blockchain_cont_api_port }}/",
     "auth": null,
-    "funding_key": "{{ lez_funding_key | mandatory }}",
     "priority_fee_percent": 12,
     "channel_params": {
       "minimum_sequencer_stake": 149,
@@ -203,10 +199,5 @@
       }
     }
   ],
-  "cross_zone": null,
-  "metrics_address": "0.0.0.0:9000",
-  "gossip": {
-    "listen_addr": "/ip4/0.0.0.0/udp/0/quic-v1",
-    "bootstrap_peers": []
-  }
+  "cross_zone": null
 }

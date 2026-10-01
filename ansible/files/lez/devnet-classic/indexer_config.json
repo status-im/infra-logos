@@ -4,5 +4,5 @@
     "bedrock_config": {
         "addr": "http://blockchain:{{ lez_blockchain_cont_api_port }}"
     },
-    "channel_id": "{{ lez_channel_id | mandatory }}"
+    "channel_id": "{{ lez_sequencer_channel_id | mandatory }}"
 }

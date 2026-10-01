@@ -78,17 +78,18 @@ services:
       - indexer
       - blockchain
     ports:
-      - '{{ lez_sequencer_cont_base_port + i }}:{{ lez_sequencer_cont_base_port + i }}/tcp'
+      - '{{ lez_sequencer_rpc_base_port + i }}:{{ lez_sequencer_rpc_base_port + i }}/tcp'
+      - '{{ lez_sequencer_libp2p_base_port + i }}:{{ lez_sequencer_libp2p_base_port + i }}/udp'
       - '{{ lez_sequencer_metrics_base_port + i }}:{{ lez_sequencer_metrics_base_port + i }}/tcp'
     volumes:
-      - { source: '{{ lez_sequencer_config_path }}',                                  target: '/etc/sequencer_service/sequencer_config.json',   type: bind, bind: {create_host_path: false}, read_only: true }
-      - { source: '{{ lez_service_conf }}/sequencer/seq-{{ i }}/signing_key',         target: '/etc/sequencer_service/signing_key',             type: bind, bind: {create_host_path: false}, read_only: true }
-      - { source: '{{ lez_service_conf }}/sequencer/seq-{{ i }}/bedrock_signing_key', target: '/var/lib/sequencer_service/bedrock_signing_key', type: bind, bind: {create_host_path: false}, read_only: true }
-      - { source: '{{ lez_service_data }}/sequencer/seq-{{ i }}',                     target: '/var/lib/sequencer_service',                     type: bind, bind: {create_host_path: false}                  }
+      - { source: '{{ lez_service_conf }}/sequencer/seq-{{ i }}/sequencer_config.json', target: '/etc/sequencer_service/sequencer_config.json',   type: bind, bind: {create_host_path: false}, read_only: true }
+      - { source: '{{ lez_service_conf }}/sequencer/seq-{{ i }}/signing_key',           target: '/etc/sequencer_service/signing_key',             type: bind, bind: {create_host_path: false}, read_only: true }
+      - { source: '{{ lez_service_conf }}/sequencer/seq-{{ i }}/bedrock_signing_key',   target: '/var/lib/sequencer_service/bedrock_signing_key', type: bind, bind: {create_host_path: false}, read_only: true }
+      - { source: '{{ lez_service_data }}/sequencer/seq-{{ i }}',                       target: '/var/lib/sequencer_service',                     type: bind, bind: {create_host_path: false}                  }
     environment:
       RUST_LOG: '{{ lez_sequencer_log_level }}'
     healthcheck:
-      test: ['CMD-SHELL', 'curl -sf -X POST -H "Content-Type: application/json" -d "{}" http://localhost:{{ lez_sequencer_cont_base_port + i }}/']
+      test: ['CMD-SHELL', 'curl -sf -X POST -H "Content-Type: application/json" -d "{}" http://localhost:{{ lez_sequencer_rpc_base_port + i }}/']
       interval: 10s
       timeout: 5s
       retries: 3
@@ -97,7 +98,7 @@ services:
       - 'sequencer_service'
       - '/etc/sequencer_service/sequencer_config.json'
       - '--signing-key=/etc/sequencer_service/signing_key'
-      - '--port={{ lez_sequencer_cont_base_port + i }}'
+      - '--port={{ lez_sequencer_rpc_base_port + i }}'
       - '--metrics-address=0.0.0.0:{{ lez_sequencer_metrics_base_port + i }}'
 
 {% endfor %}

@@ -33,14 +33,38 @@ lez_sequencer_cont_name: '{{ lez_service_name }}-sequencer'
 lez_sequencer_cont_tag: '{{ lez_cont_tag }}'
 lez_sequencer_cont_image: 'harbor.status.im/logos-blockchain/logos-execution-zone/sequencer_service:{{ lez_sequencer_cont_tag }}'
 lez_sequencer_count: 1
-lez_sequencer_cont_base_port: 3040
+lez_sequencer_rpc_base_port: 3040
+lez_sequencer_libp2p_base_port: 4040
 lez_sequencer_metrics_base_port: 9000
 lez_sequencer_keys: []
 lez_sequencer_health_path: '/health'
 lez_sequencer_vol: '{{ lez_service_data }}/sequencer'
-lez_sequencer_config_path: '{{ lez_service_conf }}/sequencer/config.json'
-lez_sequencer_config: {}
+lez_sequencer_extra_config: {}
 lez_sequencer_log_level: 'info'
+# Unique Channel ID for sequencers
+#lez_sequencer_channel_id: ~
+# Sourced from PoWClaim in blockchain keystore.yaml.
+#lez_sequencer_funding_key: ~
+lez_sequencer_public_ip: '{{ ansible_default_ipv4.address }}'
+lez_sequencer_config_path: '{{ lez_service_conf }}/sequencer/config.json'
+lez_sequencer_config_extra: {}
+lez_sequencer_config_overrides:
+  home: '/var/lib/sequencer_service'
+  bedrock_config:
+    channel_id:  '{{ lez_sequencer_channel_id  | mandatory }}'
+    funding_key: '{{ lez_sequencer_funding_key | mandatory }}'
+    node_url:    'http://blockchain:{{ lez_blockchain_cont_api_port}}'
+  gossip:
+    listen_addr: '/ip4/0.0.0.0/udp/{{ lez_sequencer_libp2p_base_port + (idx|mandatory) }}/quic-v1'
+    bootstrap_peers: >-
+      {{
+        query(
+          'ansible.builtin.sequence',
+          'start=' ~ lez_sequencer_libp2p_base_port
+          ~ ' end=' ~ (lez_sequencer_libp2p_base_port + lez_sequencer_count - 1)
+          ~ ' format=/ip4/' ~ lez_sequencer_public_ip ~ '/udp/%d/quic-v1'
+        )
+      }}
 
 # Indexer
 lez_indexer_cont_name: '{{ lez_service_name }}-indexer'

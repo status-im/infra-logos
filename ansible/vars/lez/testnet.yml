@@ -1,17 +1,17 @@
 ---
 # Logos Execution Zone - Testnet
 lez_name: 'testnet'
-lez_channel_id: '0303030303030303030303030303030303030303030303030303030303030303'
-# Sourced from PoWClaim in blockchain keystore.yaml.
-lez_funding_key: '677633bf03fecfd54aa4620a671976b5cd7ef9b6851c3eb024ac74129d132604'
 lez_cont_tag: 'v0.3.0'
 lez_blockchain_cont_tag: '0.3.0'
 lez_explorer_cont_port:          8081
-lez_sequencer_cont_base_port:    3040
+lez_sequencer_rpc_base_port:     3040
+lez_sequencer_libp2p_base_port:  4040
 lez_sequencer_metrics_base_port: 9000
 lez_indexer_cont_port:           8779
 lez_blockchain_cont_api_port:    8080
 lez_blockchain_cont_swarm_port:  3000
+lez_sequencer_funding_key: '677633bf03fecfd54aa4620a671976b5cd7ef9b6851c3eb024ac74129d132604'
+lez_sequencer_channel_id:  '0303030303030303030303030303030303030303030303030303030303030303'
 lez_sequencer_count: 4
 lez_sequencer_image: 'harbor.status.im/logos-blockchain/logos-execution-zone/sequencer_service:{{ lez_cont_tag }}'
 lez_sequencer_keys:
@@ -37,7 +37,7 @@ nginx_sites:
     - ssl_certificate     /etc/letsencrypt/live/{{ lez_rpc_domain }}/fullchain.pem
     - ssl_certificate_key /etc/letsencrypt/live/{{ lez_rpc_domain }}/privkey.pem
     - location / {
-        proxy_pass http://localhost:{{ lez_sequencer_cont_base_port }}/;
+        proxy_pass http://localhost:{{ lez_sequencer_rpc_base_port }}/;
       }
 
   lez_testnet_explorer_https:
@@ -56,13 +56,16 @@ open_ports_list:
     - { port: [80, 443], proto: 'tcp', comment: 'Nginx and Certbot' }
 
   lez-testnet-blockchain:
-    - { port: '{{ lez_blockchain_cont_swarm_port }}', proto: tcp, comment: 'Logos Blockchain Swarm' }
-    - { port: '{{ lez_blockchain_cont_api_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
-    - { port: '{{ lez_sequencer_cont_base_port }}', ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
-    - { port: '{{ lez_indexer_cont_port }}',        ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
-    - { port: '{{ lez_blockchain_cont_api_port }}', ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
-    - { port: '{{ lez_sequencer_cont_base_port }}', ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
-    - { port: '{{ lez_indexer_cont_port }}',        ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
+    - { port: '{{ lez_blockchain_cont_swarm_port }}', proto: tcp, comment: 'Logos Blockchain Swarm ({{ lez_name }})' }
+    - { port: '{{ lez_blockchain_cont_api_port }}',   ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction ({{ lez_name }})' }
+    - { port: '{{ lez_sequencer_rpc_base_port }}',    ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction ({{ lez_name }})' }
+    - { port: '{{ lez_indexer_cont_port }}',          ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction ({{ lez_name }})' }
+    - { port: '{{ lez_blockchain_cont_api_port }}',   ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction ({{ lez_name }})' }
+    - { port: '{{ lez_sequencer_rpc_base_port }}',    ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction ({{ lez_name }})' }
+    - { port: '{{ lez_indexer_cont_port }}',          ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction ({{ lez_name }})' }
 
   lez-testnet-sequencer:
-    - { port: '9000-9003', comment: 'Sequencer metrics', ipset: 'hq.metrics', iifname: 'wg0' }
+    - { port: '{{ lez_sequencer_libp2p_base_port }}-{{ lez_sequencer_libp2p_base_port + lez_sequencer_count }}',
+        comment: 'Sequencer libp2p ({{ lez_name }})',  proto: udp }
+    - { port: '{{ lez_sequencer_metrics_base_port }}-{{ lez_sequencer_metrics_base_port + lez_sequencer_count }}',
+        comment: 'Sequencer metrics ({{ lez_name }})', ipset: 'hq.metrics', iifname: 'wg0' }

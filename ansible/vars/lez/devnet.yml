@@ -1,15 +1,16 @@
 ---
 # Logos Execution Zone - Devnet
 lez_name: 'devnet'
-lez_channel_id: 'abababababababababababababababababababababababababababababababab'
 lez_cont_tag: 'v0.3.0-rc1'
 lez_blockchain_cont_tag: '0.3.0-rc.5'
 lez_explorer_cont_port:          8081
-lez_sequencer_cont_base_port:    3040
+lez_sequencer_rpc_base_port:     3040
 lez_sequencer_metrics_base_port: 9000
 lez_indexer_cont_port:           8779
 lez_blockchain_cont_api_port:    8080
 lez_blockchain_cont_swarm_port:  3000
+lez_sequencer_funding_key: 'cf879934b9559946e17237fb3d509c0cc1db9a77d60ae1171a10085d8abf1523'
+lez_sequencer_channel_id:  'abababababababababababababababababababababababababababababababab'
 lez_sequencer_log_level: 'debug,kameo=info'
 lez_sequencer_count: 4
 lez_sequencer_cont_image: 'harbor.status.im/logos-blockchain/logos-execution-zone/sequencer_service-mdns:{{ lez_cont_tag }}'
@@ -36,7 +37,7 @@ nginx_sites:
     - ssl_certificate     /etc/letsencrypt/live/{{ lez_rpc_domain }}/fullchain.pem
     - ssl_certificate_key /etc/letsencrypt/live/{{ lez_rpc_domain }}/privkey.pem
     - location / {
-        proxy_pass http://localhost:{{ lez_sequencer_cont_base_port }}/;
+        proxy_pass http://localhost:{{ lez_sequencer_rpc_base_port }}/;
       }
 
   lez_devnet_explorer_https:
@@ -56,10 +57,10 @@ open_ports_list:
   lez-devnet-blockchain:
     - { port: '{{ lez_blockchain_cont_swarm_port }}', proto: tcp, comment: 'Logos Blockchain Swarm' }
     - { port: '{{ lez_blockchain_cont_api_port }}',   ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
-    - { port: '{{ lez_sequencer_cont_base_port }}',   ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
+    - { port: '{{ lez_sequencer_rpc_base_port }}',    ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
     - { port: '{{ lez_indexer_cont_port }}',          ipset: 'bi.test', iifname: 'wg0', comment: 'BI data extraction' }
     - { port: '{{ lez_blockchain_cont_api_port }}',   ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
-    - { port: '{{ lez_sequencer_cont_base_port }}',   ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
+    - { port: '{{ lez_sequencer_rpc_base_port }}',    ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
     - { port: '{{ lez_indexer_cont_port }}',          ipset: 'bi.prod', iifname: 'wg0', comment: 'BI data extraction' }
 
   lez-devnet-sequencer:
