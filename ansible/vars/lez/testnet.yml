@@ -1,7 +1,7 @@
 ---
 # Logos Execution Zone - Testnet
 lez_name: 'testnet'
-lez_channel_id: '0101010101010101010101010101010101010101010101010101010101010101'
+lez_channel_id: '0303030303030303030303030303030303030303030303030303030303030303'
 # Sourced from PoWClaim in blockchain keystore.yaml.
 lez_funding_key: '677633bf03fecfd54aa4620a671976b5cd7ef9b6851c3eb024ac74129d132604'
 lez_cont_tag: 'v0.3.0'
