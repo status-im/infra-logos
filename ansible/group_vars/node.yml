@@ -73,8 +73,11 @@ logos_node_storage_disc_port: 9090
 logos_node_storage_nat: 'extip:{{ logos_node_public_address }}'
 logos_node_storage_max_peers: 160
 
+# RS nodes only, upload endpoint for package CI
+logos_node_storage_api_enabled: "{{ logos_node_storage_role == 'rs' }}"
 logos_node_storage_api_port: 8091
 logos_node_storage_api_bindaddr: '0.0.0.0'
+logos_node_storage_api_domain: '{{ dns_entry }}'
 
 logos_node_storage_data_dir: '/data'
 logos_node_storage_quota: 21474836480
@@ -151,32 +154,61 @@ logos_node_consul_success_before_passing: 1
 logos_node_consul_failures_before_warning: 2
 logos_node_consul_failures_before_critical: 20
 
-# --- LetsEncrypt via Certbot ---
-
+# LetsEncrypt via Certbot
 certbot_docker_enabled: true
 certbot_admin_email: 'devops@status.im'
-certbot_containers_to_stop: ['{{ logos_node_cont_name }}']
+certbot_services_to_stop: ['nginx']
 certbot_certs:
   - domains:
-    - '{{ logos_node_delivery_websocket_domain }}'
+    - '{{ logos_node_storage_api_domain }}'
 
-conn_limit_dport: '{{ logos_node_delivery_websocket_port }}'
+nginx_auth_basic_files:
+  storage-api:
+    - '{{ lookup("vault", "node/storage/api", field="user") }}:{{ lookup("vault", "node/storage/api", field="pass-hash") }}'
+
+nginx_configs:
+  proxy:
+    - proxy_set_header Host $host
+    - proxy_set_header X-Real-IP $remote_addr
+    - proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for
+
+nginx_sites:
+  storage-api:
+    - listen 443 ssl
+    - server_name {{ logos_node_storage_api_domain }}
+    - ssl_certificate /etc/letsencrypt/live/{{ logos_node_storage_api_domain }}/fullchain.pem
+    - ssl_certificate_key /etc/letsencrypt/live/{{ logos_node_storage_api_domain }}/privkey.pem
+    - client_max_body_size 512m
+    - client_body_timeout 600s
+    - proxy_request_buffering off
+    - |
+      location /api/storage/v1/data {
+        auth_basic            "logos-storage";
+        auth_basic_user_file  auth_basic/storage-api;
+        proxy_pass            http://127.0.0.1:{{ logos_node_storage_api_port }};
+        proxy_read_timeout    600s;
+        proxy_send_timeout    600s;
+      }
+    - location / { return 404; }
 
 # --- Open Ports ---
 
+logos_node_storage_api_ports:
+  - { port: '80',  comment: 'Certbot'     }
+  - { port: '443', comment: 'storage API' }
+
+logos_node_base_ports:
+  - { port: '{{ logos_node_metrics_port }}',             comment: 'logos node metrics',    ipset: 'hq.metrics', iifname: 'wg0' }
+  - { port: '{{ logos_node_delivery_p2p_tcp_port }}',    comment: 'delivery libp2p' }
+  - { port: '{{ logos_node_delivery_discv5_udp_port }}', comment: 'delivery discv5',       protocol: 'udp' }
+  - { port: '{{ logos_node_delivery_websocket_port }}',  comment: 'delivery WSS' }
+  - { port: '{{ logos_node_storage_tcp_port }}',         comment: 'storage libp2p' }
+  - { port: '{{ logos_node_blockchain_swarm_port }}',    comment: 'blockchain swarm',      protocol: 'udp' }
+  - { port: '{{ logos_node_blockchain_blend_port }}',    comment: 'blockchain blend',      protocol: 'udp' }
+  - { port: '{{ logos_node_blockchain_api_port }}',      comment: 'blockchain API for BI', ipset: 'bi.prod', iifname: 'wg0' }
+  - { port: '{{ logos_node_blockchain_api_port }}',      comment: 'blockchain API for BI', ipset: 'bi.test', iifname: 'wg0' }
+
 open_ports_list:
-  certbot:
-    - { port: '80', comment: 'Certbot' }
-  logos-node:
-    - { port: '{{ logos_node_metrics_port }}',             comment: 'logos node metrics',      ipset: 'hq.metrics', iifname: 'wg0' }
-    - { port: '{{ logos_node_delivery_p2p_tcp_port }}',    comment: 'delivery libp2p' }
-    - { port: '{{ logos_node_delivery_discv5_udp_port }}', comment: 'delivery discv5',         protocol: 'udp' }
-    - { port: '{{ logos_node_delivery_websocket_port }}',  comment: 'delivery WSS' }
-    - { port: '{{ logos_node_storage_tcp_port }}',         comment: 'storage libp2p' }
-    - { port: '{{ logos_node_storage_metrics_port }}',     comment: 'storage metrics',         ipset: 'hq.metrics', iifname: 'wg0' }
-    - { port: '{{ logos_node_blockchain_swarm_port }}',    comment: 'blockchain swarm',        protocol: 'udp' }
-    - { port: '{{ logos_node_blockchain_blend_port }}',    comment: 'blockchain blend',        protocol: 'udp' }
-    - { port: '{{ logos_node_blockchain_api_port }}',      comment: 'blockchain API for BI',   ipset: 'bi.prod', iifname: 'wg0' }
-    - { port: '{{ logos_node_blockchain_api_port }}',      comment: 'blockchain API for BI',   ipset: 'bi.test', iifname: 'wg0' }
-    - { port: '{{ logos_node_storage_api_port }}',         comment: 'storage API for BI',      ipset: 'bi.prod', iifname: 'wg0' }
-    - { port: '{{ logos_node_storage_api_port }}',         comment: 'storage API for BI',      ipset: 'bi.test', iifname: 'wg0' }
+  logos-node: >-
+    {{ logos_node_base_ports +
+       (logos_node_storage_api_ports if logos_node_storage_api_enabled | bool else []) }}
