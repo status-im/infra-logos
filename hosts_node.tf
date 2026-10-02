@@ -26,11 +26,11 @@ module "node" {
 
   open_tcp_ports = [
     "80",    /* certbot */
+    "443",   /* storage API */
     "8000",  /* delivery WSS */
     "8008",  /* storage metrics */
     "8070",  /* storage libp2p */
     "8080",  /* blockchain REST API */
-    "8091",  /* storage REST API */
     "30303", /* delivery libp2p */
   ]
   open_udp_ports = [
