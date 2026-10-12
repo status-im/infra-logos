@@ -1,21 +1,38 @@
 ---
 - name: Create sequencer key directories
   file:
-    path: '{{ lez_service_conf }}/sequencer/seq-{{ item }}'
+    path:  '{{ lez_service_conf }}/sequencer/seq-{{ item }}'
     owner: '{{ lez_host_uid }}'
-    group: dockremap
-    state: directory
-    mode: '0775'
+    group: 'dockremap'
+    state: 'directory'
+    mode:  '0775'
   loop: '{{ range(lez_sequencer_count) | list }}'
 
 - name: Create sequencer data directories
   file:
-    path: '{{ lez_service_data }}/sequencer/seq-{{ item }}'
+    path:  '{{ lez_service_data }}/sequencer/seq-{{ item }}'
     owner: '{{ lez_host_uid }}'
-    group: dockremap
-    state: directory
-    mode: '0775'
+    group: 'dockremap'
+    state: 'directory'
+    mode:  '0775'
   loop: '{{ range(lez_sequencer_count) | list }}'
+
+- name: Create sequencer config files
+  register: lez_sequencer_config_files
+  template:
+    src:   'config.json.j2'
+    dest:  '{{ seq_config_path }}'
+    owner: '{{ lez_host_uid }}'
+    group: 'dockremap'
+    mode:  '0o660'
+  vars:
+    seq_config_path: '{{ lez_service_conf }}/sequencer/seq-{{ idx }}/sequencer_config.json'
+    lez_config_content: >
+      {{ lez_sequencer_config_extra | combine(lez_sequencer_config_overrides, recursive=true) }}
+  loop: '{{ lez_sequencer_keys }}'
+  loop_control:
+    index_var: idx
+    label: '{{ seq_config_path }}'
 
 - name: Create sequencer health check script
   template:
@@ -32,6 +49,7 @@
     owner: '{{ lez_host_uid }}'
     group: dockremap
     mode: '0600'
+  when: item.signing_key is defined
   loop: '{{ lez_sequencer_keys }}'
   loop_control:
     index_var: idx

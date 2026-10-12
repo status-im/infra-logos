@@ -1,8 +1,8 @@
 ---
 # Logos Execution Zone - Testnet
 lez_name: 'testnet'
-lez_cont_tag: 'v0.3.0'
-lez_blockchain_cont_tag: '0.3.0'
+lez_cont_tag: 'v0.3.1'
+lez_blockchain_cont_tag: '0.3.1'
 lez_explorer_cont_port:          8081
 lez_sequencer_rpc_base_port:     3040
 lez_sequencer_libp2p_base_port:  4040
@@ -11,18 +11,14 @@ lez_indexer_cont_port:           8779
 lez_blockchain_cont_api_port:    8080
 lez_blockchain_cont_swarm_port:  3000
 lez_sequencer_funding_key: '677633bf03fecfd54aa4620a671976b5cd7ef9b6851c3eb024ac74129d132604'
-lez_sequencer_channel_id:  '0303030303030303030303030303030303030303030303030303030303030303'
+lez_sequencer_channel_id:  '0101010101010101010101010101010101010101010101010101010101010101'
 lez_sequencer_count: 4
 lez_sequencer_image: 'harbor.status.im/logos-blockchain/logos-execution-zone/sequencer_service:{{ lez_cont_tag }}'
 lez_sequencer_keys:
-  - signing_key:         '{{ lookup("vault", "lez/"+lez_name+"/sequencer/seq-0", field="signing_key") }}'
-    bedrock_signing_key: '{{ lookup("vault", "lez/"+lez_name+"/sequencer/seq-0", field="bedrock_signing_key") }}'
-  - signing_key:         '{{ lookup("vault", "lez/"+lez_name+"/sequencer/seq-1", field="signing_key") }}'
-    bedrock_signing_key: '{{ lookup("vault", "lez/"+lez_name+"/sequencer/seq-1", field="bedrock_signing_key") }}'
-  - signing_key:         '{{ lookup("vault", "lez/"+lez_name+"/sequencer/seq-2", field="signing_key") }}'
-    bedrock_signing_key: '{{ lookup("vault", "lez/"+lez_name+"/sequencer/seq-2", field="bedrock_signing_key") }}'
-  - signing_key:         '{{ lookup("vault", "lez/"+lez_name+"/sequencer/seq-3", field="signing_key") }}'
-    bedrock_signing_key: '{{ lookup("vault", "lez/"+lez_name+"/sequencer/seq-3", field="bedrock_signing_key") }}'
+  - bedrock_signing_key: '{{ lookup("vault", "lez/"+lez_name+"/sequencer/seq-0", field="bedrock_signing_key") }}'
+  - bedrock_signing_key: '{{ lookup("vault", "lez/"+lez_name+"/sequencer/seq-1", field="bedrock_signing_key") }}'
+  - bedrock_signing_key: '{{ lookup("vault", "lez/"+lez_name+"/sequencer/seq-2", field="bedrock_signing_key") }}'
+  - bedrock_signing_key: '{{ lookup("vault", "lez/"+lez_name+"/sequencer/seq-3", field="bedrock_signing_key") }}'
 lez_blockchain_initial_peers:
   - '/ip4/65.109.51.37/udp/3000/quic-v1/p2p/12D3KooWFrouXfmrR4nsLMtE7wu15DoMJ6VtoUtHinREZCvbWHar'
   - '/ip4/65.109.51.37/udp/3001/quic-v1/p2p/12D3KooWJRGau8M1rjT7R5e4YYsgdFhsMX35nRDtMwCDjxQkXAHz'

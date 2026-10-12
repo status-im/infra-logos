@@ -83,7 +83,9 @@ services:
       - '{{ lez_sequencer_metrics_base_port + i }}:{{ lez_sequencer_metrics_base_port + i }}/tcp'
     volumes:
       - { source: '{{ lez_service_conf }}/sequencer/seq-{{ i }}/sequencer_config.json', target: '/etc/sequencer_service/sequencer_config.json',   type: bind, bind: {create_host_path: false}, read_only: true }
+{% if lez_sequencer_keys | selectattr('signing_key', 'defined') | list | length > 0 %}
       - { source: '{{ lez_service_conf }}/sequencer/seq-{{ i }}/signing_key',           target: '/etc/sequencer_service/signing_key',             type: bind, bind: {create_host_path: false}, read_only: true }
+{% endif %}
       - { source: '{{ lez_service_conf }}/sequencer/seq-{{ i }}/bedrock_signing_key',   target: '/var/lib/sequencer_service/bedrock_signing_key', type: bind, bind: {create_host_path: false}, read_only: true }
       - { source: '{{ lez_service_data }}/sequencer/seq-{{ i }}',                       target: '/var/lib/sequencer_service',                     type: bind, bind: {create_host_path: false}                  }
     environment:
@@ -97,7 +99,9 @@ services:
     command:
       - 'sequencer_service'
       - '/etc/sequencer_service/sequencer_config.json'
+{% if lez_sequencer_keys | selectattr('signing_key', 'defined') | list | length > 0 %}
       - '--signing-key=/etc/sequencer_service/signing_key'
+{% endif %}
       - '--port={{ lez_sequencer_rpc_base_port + i }}'
       - '--metrics-address=0.0.0.0:{{ lez_sequencer_metrics_base_port + i }}'
 
