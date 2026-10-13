@@ -31,15 +31,6 @@
   stat:
     path: '{{ lez_blockchain_config_file_path }}'
 
-- name: Create blockchain deployment settings
-  when: lez_blockchain_deployment_config is defined
-  copy:
-    dest:    '{{ lez_blockchain_deployment_path }}'
-    content: '{{ lez_blockchain_deployment_config }}'
-    owner:   '{{ lez_host_uid }}'
-    group:   'dockremap'
-    mode:    '0644'
-
 - name: Create blockchain keystore config
   when:
     - lez_blockchain_keystore_config is defined

@@ -21,8 +21,6 @@ lez_blockchain_config_path: '{{ lez_service_conf }}/blockchain'
 lez_blockchain_config_file_path: '{{ lez_blockchain_config_path }}/config.yaml'
 lez_blockchain_keystore_file_path: '{{ lez_blockchain_config_path }}/keystore.yaml'
 #lez_blockchain_keystore_config: ~
-lez_blockchain_deployment_path: '{{ lez_blockchain_config_path }}/deployment.yaml'
-#lez_blockchain_deployment_config: ~
 lez_blockchain_initial_peers: []
 lez_blockchain_healthcheck_script: '{{ lez_blockchain_config_path }}/healthcheck.sh'
 lez_blockchain_pow_mining_start_script: '{{ lez_blockchain_config_path }}/start_mining.sh'

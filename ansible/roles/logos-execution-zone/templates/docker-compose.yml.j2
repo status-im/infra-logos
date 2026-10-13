@@ -44,9 +44,6 @@ services:
       retries: 3
       start_period: 30s
     command: |
-{% if lez_blockchain_deployment_config is defined %}
-      --deployment='{{ lez_blockchain_deployment_path }}'
-{% endif %}
       '{{ lez_blockchain_config_file_path }}'
 {% if lez_blockchain_pow_mining_start %}
     post_start:
