@@ -65,10 +65,11 @@ services:
       - 'indexer_service'
       - '/etc/indexer_service/indexer_config.json'
       - '--data-dir=/var/lib/indexer_service'
+      - '--port={{ lez_indexer_cont_port }}'
 
 {% for i in range(lez_sequencer_count) %}
   sequencer-{{ i }}:
-    container_name: '{{ lez_sequencer_cont_name }}{% if lez_sequencer_count > 1 %}-{{ i }}{% endif %}'
+    container_name: '{{ lez_sequencer_cont_name }}-{{ i }}'
     image: '{{ lez_sequencer_cont_image }}'
     restart: 'always'
     depends_on:
