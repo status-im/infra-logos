@@ -68,7 +68,7 @@ services:
 
 {% for i in range(lez_sequencer_count) %}
   sequencer-{{ i }}:
-    container_name: '{{ lez_sequencer_cont_name }}{% if lez_sequencer_count > 1 %}-{{ i }}{% endif %}'
+    container_name: '{{ lez_sequencer_cont_name }}-{{ i }}'
     image: '{{ lez_sequencer_cont_image }}'
     restart: 'always'
     depends_on:

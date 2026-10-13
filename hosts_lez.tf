@@ -30,7 +30,7 @@ resource "cloudflare_record" "lez_rpc" {
 
 resource "cloudflare_record" "lez_classic_explorer" {
   zone_id = lookup(local.zones, "logos.co")
-  name    = "explorer.${terraform.workspace}net-classic.lez"
+  name    = "explorer.${terraform.workspace}net-${terraform.workspace == "test" ? "legacy" : "classic"}.lez"
   value   = module.lez.public_ips[0]
   type    = "A"
   proxied = false
@@ -38,7 +38,7 @@ resource "cloudflare_record" "lez_classic_explorer" {
 
 resource "cloudflare_record" "lez_classic_rpc" {
   zone_id = lookup(local.zones, "logos.co")
-  name    = "${terraform.workspace}net-classic.lez"
+  name    = "${terraform.workspace}net-${terraform.workspace == "test" ? "legacy" : "classic"}.lez"
   value   = module.lez.public_ips[0]
   type    = "A"
   proxied = false

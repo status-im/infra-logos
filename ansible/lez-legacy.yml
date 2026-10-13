@@ -1,0 +1,33 @@
+---
+- name: Verify Ansible versions
+  hosts: all
+  tags: always
+  become: false
+  run_once: true
+  gather_facts: false
+  tasks:
+    - local_action: command ./roles.py --check
+      changed_when: false
+
+- name: Configure Logos Legacy Execution Zone
+  serial: '{{ serial|default(1) }}'
+  hosts: lez
+  vars_files: 'lez/{{ stage }}net-legacy.yml'
+  pre_tasks:
+    - name: Validate production configuration
+      tags: always
+      assert:
+        that: stage == "test"
+        fail_msg: 'This playbook works only for test stage'
+    - name: Enable Maintenance Mode
+      command: 'maintenance Ansible run by {{ lookup("env", "USER") }}'
+  post_tasks:
+    - name: Disable Maintenance Mode
+      command: 'maintenance disable'
+      tags: always
+  roles:
+    - { role: infra-role-swap-file,   tags: swap-file  }
+    - { role: infra-role-open-ports,  tags: open-ports }
+    - { role: logos-execution-zone,   tags: lez        }
+    - { role: infra-role-certbot,     tags: certbot    }
+    - { role: infra-role-nginx,       tags: nginx      }

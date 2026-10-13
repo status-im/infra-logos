@@ -21,7 +21,7 @@ Current state of fleets: https://fleets.logos.co/
 | Classic | <https://explorer.devnet-classic.lez.logos.co/>  | <https://devnet-classic.lez.logos.co/>  |
 |         |                                                  |                                         |
 | Current | <https://explorer.testnet.lez.logos.co/>         | <https://testnet.lez.logos.co/>         |
-| Classic | <https://explorer.testnet-classic.lez.logos.co/> | <https://testnet-classic.lez.logos.co/> |
+| Classic | <https://explorer.testnet-legacy.lez.logos.co/>  | <https://testnet-legacy.lez.logos.co/>  |
 
 # Layout
 

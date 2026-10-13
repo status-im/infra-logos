@@ -1,0 +1,77 @@
+{
+  "max_num_tx_in_block": 20,
+  "max_block_size": "1.0 MiB",
+  "mempool_max_size": 10000,
+  "block_create_timeout": "60s",
+  "retry_pending_blocks_timeout": "30s",
+  "signing_key": [
+    33,
+    106,
+    211,
+    55,
+    194,
+    138,
+    176,
+    97,
+    176,
+    76,
+    254,
+    1,
+    164,
+    207,
+    170,
+    248,
+    239,
+    183,
+    213,
+    185,
+    104,
+    106,
+    43,
+    40,
+    243,
+    246,
+    204,
+    67,
+    77,
+    156,
+    197,
+    93
+  ],
+  "bedrock_config": {
+    "auth": null,
+    "priority_fee_percent": 24
+  },
+  "genesis": [
+    {
+      "supply_bridge_account": {
+        "balance": 1000000
+      }
+    },
+    {
+      "supply_account": {
+        "account_id": "6iArKUXxhUJqS7kCaPNhwMWt3ro71PDyBj7jwAyE2VQV",
+        "balance": 10000
+      }
+    },
+    {
+      "supply_account": {
+        "account_id": "7wHg9sbJwc6h3NP1S9bekfAzB8CHifEcxKswCKUt3YQo",
+        "balance": 20000
+      }
+    },
+    {
+      "supply_account": {
+        "account_id": "61EsoYN6gvTLkveh1YSTMG3yJkncpHy5EGmxhSK4ew29",
+        "balance": 10000
+      }
+    },
+    {
+      "supply_account": {
+        "account_id": "3m6HQmCgmAvsxZtxAHPqqEqoBG4335fCG8TzxigyW7rE",
+        "balance": 20000
+      }
+    }
+  ],
+  "cross_zone": null
+}
