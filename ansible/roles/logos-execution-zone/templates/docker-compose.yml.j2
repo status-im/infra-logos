@@ -101,6 +101,7 @@ services:
       - '--signing-key=/etc/sequencer_service/signing_key'
 {% endif %}
       - '--port={{ lez_sequencer_rpc_base_port + i }}'
+      - '--listen-address=0.0.0.0'
       - '--metrics-address=0.0.0.0:{{ lez_sequencer_metrics_base_port + i }}'
 
 {% endfor %}
