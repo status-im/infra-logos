@@ -30,6 +30,7 @@ module "delivery" {
     "80",    /* certbot */
     "8000",  /* p2p websocket */
     "30303", /* libp2p main */
+    "30304", /* kademlia discovery */
   ]
   open_udp_ports = [
     "9000",  /* discovery v5 */

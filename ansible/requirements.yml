@@ -25,7 +25,7 @@
 
 - name: infra-role-nim-waku
   src: git@github.com:status-im/infra-role-nim-waku.git
-  version: 169a31b61a47bff10436647029955f237be34719
+  version: ef2fb8f244c6256561d00571bb620847db4c4022
 
 - name: infra-role-postgres-ha
   src: git@github.com:status-im/infra-role-postgres-ha.git
@@ -33,7 +33,7 @@
 
 - name: infra-role-logos-node
   src: git@github.com:status-im/infra-role-logos-node.git
-  version: 28eedb5a59a5a63ee42e6cee00b0aaeed4c02e9e
+  version: 0c47d43c0ef68cbb18ec27ae6ec1d5a68de4a57b
 
 - name: infra-role-wazuh-agent
   src: git@github.com:status-im/infra-role-wazuh-agent.git
