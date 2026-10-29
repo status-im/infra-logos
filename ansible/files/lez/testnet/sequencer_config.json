@@ -2,8 +2,8 @@
   "max_num_tx_in_block": 20,
   "max_block_size": "1.0 MiB",
   "mempool_max_size": 10000,
-  "block_create_timeout": "10s",
-  "retry_pending_blocks_timeout": "7s",
+  "block_create_timeout": "60s",
+  "retry_pending_blocks_timeout": "30s",
   "bedrock_config": {
     "auth": null,
     "priority_fee_percent": 12,

@@ -1,8 +1,8 @@
 ---
 # Logos Execution Zone - Testnet
 lez_name: 'testnet'
-lez_cont_tag: 'v0.3.1'
-lez_blockchain_cont_tag: '0.3.1'
+lez_cont_tag: 'v0.3.2'
+lez_blockchain_cont_tag: '0.3.2'
 lez_explorer_cont_port:          8081
 lez_sequencer_rpc_base_port:     3040
 lez_sequencer_libp2p_base_port:  4040
