@@ -11,7 +11,7 @@ logos_node_log_level: 'DEBUG'
 logos_node_watchtower_enabled: true
 
 # Node identity
-logos_node_storage_key: '{{ lookup("vault", "storage/nodekeys", field=hostname) }}'
+logos_node_storage_key: '{{ lookup("vault", "storage/nodekeys", field=inventory_hostname) }}'
 
 # Modules: storage only
 logos_node_modules: ['storage_module']

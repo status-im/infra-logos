@@ -26,8 +26,8 @@ logos_node_metrics_port: 8008
 
 # --- Delivery ---
 
-logos_node_delivery_key: '{{ lookup("vault", "node/delivery/nodekeys", field=hostname) }}'
-logos_node_delivery_mix_key: '{{ lookup("vault", "node/delivery/mixkeys", field=hostname) }}'
+logos_node_delivery_key: '{{ lookup("vault", "node/delivery/nodekeys", field=inventory_hostname) }}'
+logos_node_delivery_mix_key: '{{ lookup("vault", "node/delivery/mixkeys", field=inventory_hostname) }}'
 
 logos_node_delivery_cluster_id: 2
 logos_node_delivery_num_shards_in_network: 8
@@ -66,7 +66,7 @@ logos_node_delivery_kad_bootstrap_nodes:
 
 # --- Storage ---
 
-logos_node_storage_key: '{{ lookup("vault", "node/storage/nodekeys", field=hostname) }}'
+logos_node_storage_key: '{{ lookup("vault", "node/storage/nodekeys", field=inventory_hostname) }}'
 
 logos_node_storage_tcp_port: 8070
 logos_node_storage_disc_port: 9090
@@ -132,15 +132,15 @@ logos_node_storage_preload_content:
 logos_node_blockchain_deployment: 'testnet'
 logos_node_blockchain_peer_response_timeout: 30000
 
-logos_node_blockchain_node_key: '{{ lookup("vault", "node/blockchain/nodekeys", field=hostname) }}'
-logos_node_blockchain_blend_signing_key: '{{ lookup("vault", "node/blockchain/blend-signing", field=hostname) }}'
-logos_node_blockchain_blend_zk_key: '{{ lookup("vault", "node/blockchain/blend-zk", field=hostname) }}'
-logos_node_blockchain_funding_pk: '{{ lookup("vault", "node/blockchain/funding", field=hostname) }}'
-logos_node_blockchain_voucher_master_key: '{{ lookup("vault", "node/blockchain/voucher", field=hostname) }}'
-logos_node_blockchain_kms_blend_signing: '{{ lookup("vault", "node/blockchain/kms-blend-signing", field=hostname) }}'
-logos_node_blockchain_kms_funding: '{{ lookup("vault", "node/blockchain/kms-funding", field=hostname) }}'
-logos_node_blockchain_kms_voucher: '{{ lookup("vault", "node/blockchain/kms-voucher", field=hostname) }}'
-logos_node_blockchain_kms_blend_zk: '{{ lookup("vault", "node/blockchain/kms-blend-zk", field=hostname) }}'
+logos_node_blockchain_node_key: '{{ lookup("vault", "node/blockchain/nodekeys", field=inventory_hostname) }}'
+logos_node_blockchain_blend_signing_key: '{{ lookup("vault", "node/blockchain/blend-signing", field=inventory_hostname) }}'
+logos_node_blockchain_blend_zk_key: '{{ lookup("vault", "node/blockchain/blend-zk", field=inventory_hostname) }}'
+logos_node_blockchain_funding_pk: '{{ lookup("vault", "node/blockchain/funding", field=inventory_hostname) }}'
+logos_node_blockchain_voucher_master_key: '{{ lookup("vault", "node/blockchain/voucher", field=inventory_hostname) }}'
+logos_node_blockchain_kms_blend_signing: '{{ lookup("vault", "node/blockchain/kms-blend-signing", field=inventory_hostname) }}'
+logos_node_blockchain_kms_funding: '{{ lookup("vault", "node/blockchain/kms-funding", field=inventory_hostname) }}'
+logos_node_blockchain_kms_voucher: '{{ lookup("vault", "node/blockchain/kms-voucher", field=inventory_hostname) }}'
+logos_node_blockchain_kms_blend_zk: '{{ lookup("vault", "node/blockchain/kms-blend-zk", field=inventory_hostname) }}'
 
 logos_node_blockchain_swarm_port: 3000
 logos_node_blockchain_blend_port: 3400

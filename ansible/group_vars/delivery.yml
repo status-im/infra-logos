@@ -20,9 +20,9 @@ logos_node_module_calls:
   - 'delivery_module start'
 
 # Node identity
-logos_node_delivery_key:     '{{ lookup("vault", "delivery/nodekeys",   field=hostname) }}'
-logos_node_delivery_mix_key: '{{ lookup("vault", "delivery/mixkeys",    field=hostname) }}'
-logos_node_libp2p_key:       '{{ lookup("vault", "delivery/libp2pkeys", field=hostname) }}'
+logos_node_delivery_key:     '{{ lookup("vault", "delivery/nodekeys",   field=inventory_hostname) }}'
+logos_node_delivery_mix_key: '{{ lookup("vault", "delivery/mixkeys",    field=inventory_hostname) }}'
+logos_node_libp2p_key:       '{{ lookup("vault", "delivery/libp2pkeys", field=inventory_hostname) }}'
 
 # Network
 logos_node_delivery_cluster_id: 3
