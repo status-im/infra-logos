@@ -8,10 +8,10 @@ bootstrap__logrotate_count: 72
 bootstrap__logrotate_mbytes: 500
 
 # Docker registry
-bootstrap__docker_registries:
-  - url:      'https://harbor.status.im'
-    username: 'robot$wakuorg+infra-waku'
-    password: '{{ lookup("vault", "robot", field="robot$wakuorg+infra-waku", env="ci", stage="harbor")}}'
+#bootstrap__docker_registries:
+#  - url:      'https://harbor.status.im'
+#    username: 'robot$wakuorg+infra-waku'
+#    password: '{{ lookup("vault", "robot", field="robot$wakuorg+infra-waku", env="ci", stage="harbor")}}'
 
 # Custom SSH accounts, should start from UID 8000.
 bootstrap__active_extra_users:
