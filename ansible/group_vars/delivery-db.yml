@@ -7,13 +7,14 @@ postgres_ha_replica_enabled: false
 postgres_ha_replica_allowed_addresses: []
 
 postgres_ha_admin_user: 'postgres'
+# generate: openssl rand -hex 32
 postgres_ha_admin_pass: '{{lookup("vault", "delivery/database", field="db-admin-password")}}'
 
+# generate: openssl rand -hex 32
 postgres_ha_databases:
   - name: 'delivery'
     user: 'delivery'
     pass: '{{lookup("vault", "delivery/database", field="db-password")}}'
-
 
 postgres_ha_backup: false
 postgres_ha_backup_enabled: false

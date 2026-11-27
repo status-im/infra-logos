@@ -11,7 +11,8 @@ logos_node_log_level: 'DEBUG'
 logos_node_watchtower_enabled: true
 
 # Node identity
-logos_node_storage_key: '{{ lookup("vault", "storage/nodekeys", field=hostname) }}'
+# NOTE: generate: printf '08021220'; openssl rand -hex 32
+logos_node_storage_key: '{{ lookup("vault", "storage/nodekeys", field=inventory_hostname) }}'
 
 # Modules: storage only
 logos_node_modules: ['storage_module']
@@ -46,14 +47,14 @@ logos_node_storage_no_bootstrap: "{{ inventory_hostname == logos_node_storage_fi
 
 # Bootstrap SPR (from logos_node_storage_first_node)
 logos_node_storage_bootstrap_nodes:
-  - 'spr:CiUIAhIhA11LamlswboRlyrpEXBubPQAr2WRmqjgWRC4JsvFptrCEgIDARpJCicAJQgCEiEDXUtqaWzBuhGXKukRcG5s9ACvZZGaqOBZELgmy8Wm2sIQxJeK0gYaCwoJBBiQTsiRAiOCGgsKCQQYkE7IkQIjgipHMEUCIQDOuJ51pGEw3Vj8p3n5UBxNuR5RyBVZ6LtkQi5saCFrtwIgAx6bF95oE6icVUFg4tp8AWDFHhAv3o2iGGNy_qQV5TY'
+  - 'spr:CiUIAhIhAquj7-XVsT-kfKMEXmHDfRQk1Koot1HvyHts3QZXxU9bEgIDARqNAQonACUIAhIhAquj7-XVsT-kfKMEXmHDfRQk1Koot1HvyHts3QZXxU9bEJ_pmtgGGgoKCATJT0TVBh-QGlAKTgTJT0TVBh-QgYDAAUECq6Pv5dWxP6R8owReYcN9FCTUqii3Ue_Ie2zdBlfFT1u1Fddy9i7mocqqv8OhgZPG8raQgwVm0mSCMtbiqcgDACpHMEUCIQC9trz7_rV8NFGQDNrOMhPFUkOSC2EbFgIbEhj2hk5F4QIgeIyHCntYI-A9M3pwPzBEVOrd1z8Ht8RZP8J55nYXRhU'
 
 # TCP SPRs from all MP nodes (for RS dht-mix-proxy)
 logos_node_storage_dht_mix_proxy:
-  - 'spr:CiUIAhIhA11LamlswboRlyrpEXBubPQAr2WRmqjgWRC4JsvFptrCEgIDARpHCicAJQgCEiEDXUtqaWzBuhGXKukRcG5s9ACvZZGaqOBZELgmy8Wm2sIQxJeK0gYaCgoIBBiQTsgGH5AaCgoIBBiQTsgGH5AqRjBEAiBky7e5AIKAV0xeWqshEKBNxAtaJes1XZA4HWEPOsBn7wIgGv9SO_M9xg11BndxFogxTwyX1PBgyEmN-dERKSufOcs'
-  - 'spr:CiUIAhIhAzZMgD-qjJe5tlKjSoF78qo7MM4sxRSLWPmgkye9R6YsEgIDARpHCicAJQgCEiEDNkyAP6qMl7m2UqNKgXvyqjswzizFFItY-aCTJ71HpiwQm5mK0gYaCgoIBLymyHcGH5AaCgoIBLymyHcGH5AqRjBEAiBPTZUvON0ylEwPI-V5ssAxoG_jaeB2frlYR9DWUKTlxQIgcWal583gfSZWyispl9zJmu6UoKtsI4npImnWzSBPlDY'
-  - 'spr:CiUIAhIhAwi_g5xHmn-aLe9OVMxOaBADpkjm2uiQItF5cUbCqLQ9EgIDARpHCicAJQgCEiEDCL-DnEeaf5ot705UzE5oEAOmSOba6JAi0XlxRsKotD0QjpiK0gYaCgoIBCIq5jsGH5AaCgoIBCIq5jsGH5AqRjBEAiA0Za6KcO4hPCiDAIFgrrm9nUXTUOh3NcQa5uDzPjLpPQIgA4XJdVFfwpvSLWla3orH81N5dByZezALyTinuuIzsKE'
-  - 'spr:CiUIAhIhAuc7v0KnrAyWlwcAw72SvOxVDRG0yAA3ldfwAz6ArdCOEgIDARpHCicAJQgCEiEC5zu_QqesDJaXBwDDvZK87FUNEbTIADeV1_ADPoCt0I4Q_ZaK0gYaCgoIBC_u5W8GH5AaCgoIBC_u5W8GH5AqRzBFAiEAyghuJc4f916ZLwha7n0aoKHPEYcoChf9QHaewcgHtCsCIHVFatemdA3GTmlijPafVtuuMbUMhKp6FxVMtXA-Sr7O'
+  - 'spr:CiUIAhIhAquj7-XVsT-kfKMEXmHDfRQk1Koot1HvyHts3QZXxU9bEgIDARqNAQonACUIAhIhAquj7-XVsT-kfKMEXmHDfRQk1Koot1HvyHts3QZXxU9bEJ_pmtgGGgoKCATJT0TVBh-QGlAKTgTJT0TVBh-QgYDAAUECq6Pv5dWxP6R8owReYcN9FCTUqii3Ue_Ie2zdBlfFT1u1Fddy9i7mocqqv8OhgZPG8raQgwVm0mSCMtbiqcgDACpHMEUCIQC9trz7_rV8NFGQDNrOMhPFUkOSC2EbFgIbEhj2hk5F4QIgeIyHCntYI-A9M3pwPzBEVOrd1z8Ht8RZP8J55nYXRhU'
+  - 'spr:CiUIAhIhA1u1e3t8zQdkTnoZzzWXuRVma4T5hMiGU0MMK4tjBSD_EgIDARqNAQonACUIAhIhA1u1e3t8zQdkTnoZzzWXuRVma4T5hMiGU0MMK4tjBSD_EL_Dn9gGGgoKCAS8psh3Bh-QGlAKTgS8psh3Bh-QgYDAAUEDW7V7e3zNB2ROehnPNZe5FWZrhPmEyIZTQwwri2MFIP80oVcTKM5jei2B9HYWPq7tOU42E62Sn4WXfnAL-KqFAipGMEQCIDV9b9eYrxuy6lXkuZjQrs2rpB0cWYBiZm9h6j--9OT3AiAffCEzAHTfDFabDhX52vprtt0nbYe4XjUSz9wH_sHGeA'
+  - 'spr:CiUIAhIhAlbLT6bXOloyTB43fnwq-CfndNZui_9boUBckEFMKG2uEgIDARqNAQonACUIAhIhAlbLT6bXOloyTB43fnwq-CfndNZui_9boUBckEFMKG2uELbzn9gGGgoKCAQiKuY7Bh-QGlAKTgQiKuY7Bh-QgYDAAUECVstPptc6WjJMHjd-fCr4J-d01m6L_1uhQFyQQUwoba71hjAQ6ljTaIYNZQ_V3F7UTILqlRUbv__VD5I4718nUipHMEUCIQDne5FUJEUZPgO6hvSqV3Xb9YJAobV5Ij0k-xZr1nCIoQIgZhtAVus73zGUJZxjAnjD8Sw_BalwG02Esp_SurhrW3c'
+  - 'spr:CiUIAhIhA4ZWxSWemhXhl49ZlRS5jAy_CCATr9rZgASBpEafHWgsEgIDARqNAQonACUIAhIhA4ZWxSWemhXhl49ZlRS5jAy_CCATr9rZgASBpEafHWgsEKiPodgGGgoKCAQv7uVvBh-QGlAKTgQv7uVvBh-QgYDAAUEDhlbFJZ6aFeGXj1mVFLmMDL8IIBOv2tmABIGkRp8daCyThum7Y0SZgzsB-D23hcRF5wyFb-SBeJU1yEeg7vwFNipGMEQCIBuCL9tLpt8RCEonsmW6J8oCQs03n0jhVvREpbU5kpNpAiBfB6GJeRMOCUvVAKnHPLKvGrMsupYUEcIIG1CRjzAz1g'
 
 # Mix pool relays (for RS mix-pool)
 logos_node_storage_mix_pool_relays:
@@ -91,9 +92,14 @@ certbot_certs:
   - domains:
     - '{{ logos_node_storage_api_domain }}'
 
+# NOTE: generate: openssl rand -base64 24
+# openssl rand -base64 24 | htpasswd -niB _ | cut -d: -f2
 nginx_auth_basic_files:
-  storage-api:
-    - '{{ lookup("vault", "storage/api", field="user") }}:{{ lookup("vault", "storage/api", field="pass-hash") }}'
+  storage-api: >-
+    {{ [
+      lookup('vault', 'storage/api', field='user') ~ ':' ~
+      lookup('vault', 'storage/api', field='pass-hash')
+    ] if logos_node_storage_api_enabled | bool else [] }}
 
 nginx_configs:
   proxy:

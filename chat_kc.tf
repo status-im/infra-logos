@@ -33,11 +33,3 @@ module "chat-kc" {
     "60000", /* logos-delivery discovery */
   ]
 }
-
-resource "cloudflare_record" "devnet_chat_kc" {
-  zone_id = lookup(local.zones, "logos.co")
-  name    = "devnet.chat-kc"
-  value   = module.chat-kc.public_ips[0]
-  type    = "A"
-  proxied = false
-}
