@@ -29,7 +29,7 @@
 
 - name: infra-role-postgres-ha
   src: git@github.com:status-im/infra-role-postgres-ha.git
-  version: a9408d3fac887343039c867fad3740bd5b3fcce6
+  version: b16e99e3a98406379aa3a70b7652d8b184e62b5e
 
 - name: infra-role-logos-node
   src: git@github.com:status-im/infra-role-logos-node.git
