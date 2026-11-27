@@ -1,79 +1,98 @@
 {
-    "max_num_tx_in_block": 20,
-    "max_block_size": "1 MiB",
-    "mempool_max_size": 10000,
-    "block_create_timeout": "30s",
-    "retry_pending_blocks_timeout": "30s",
-    "bedrock_config": {
-        "backoff": {
-            "start_delay": "100ms",
-            "max_retries": 5
-        },
-        "channel_params": {
-            "minimum_sequencer_stake": 25000000000,
-            "posting_timeframe": 900,
-            "posting_timeout": 150,
-            "exit_delay": 240
-        }
+  "home": "/var/lib/sequencer_service",
+  "max_num_tx_in_block": 20,
+  "mempool_max_size": 10000,
+  "mempool_max_per_account": 16,
+  "block_create_timeout": "60s",
+  "retry_pending_blocks_timeout": "30s",
+  "bedrock_config": {
+    "auth": null,
+    "priority_fee_percent": 12,
+    "stale_refund_slots": 300,
+    "backfill_batch_slots": 10000
+  },
+  "genesis": {
+    "channel_params": {
+      "minimum_sequencer_stake": 25000000000,
+      "posting_timeframe": 900,
+      "posting_timeout": 150,
+      "max_block_size": 1048576,
+      "finality_depth": 1000
     },
-    "genesis": [
-        {
-            "supply_account": {
-                "account_id": "CbgR6tj5kWx5oziiFptM7jMvrQeYY3Mzaao6ciuhSr2r",
-                "balance": 10000000000000
-            }
-        },
-        {
-            "supply_account": {
-                "account_id": "2RHZhw9h534Zr3eq2RGhQete2Hh667foECzXPmSkGni2",
-                "balance": 20000000000000
-            }
-        },
-        {
-            "supply_account": {
-                "account_id": "5T7EJX45Vi8rYgVjeiiQbdgM2Eun4Hq5S8uMiupiwWY1",
-                "balance": 10000000000000
-            }
-        },
-        {
-            "supply_account": {
-                "account_id": "2ByFEVzfMKC13jvk1nZuFVGYoDVW1iAxvvFnqboV1aAg",
-                "balance": 20000000000000
-            }
+    "actions": [
+      {
+        "stake_sequencer": {
+          "sequencer_key": [185, 29, 97, 80, 252, 157, 108, 110, 27, 95, 229, 145, 161, 249, 218, 116, 248, 122, 49, 149, 111, 80, 52, 107, 180, 84, 32, 127, 5, 1, 127, 241],
+          "ownership_id": "5kW7icKREwpGH2Y3jE7hebyAzXnMAkSoG9HvsxSaCvQ3",
+          "stake_entry": {
+            "auth_data": "00488794e1fb7dd32fa64018fa83fc8a9c302435cfbfc8c6b27ef0e8edf72a650b74a6b41f69bec726b3eb54eebd63004f50d5f57dcc777456e91af4d628efbf9d9c977a4f292195e1407324401aa63ad81bd9a1da9826155cd2959855d04c7507f0ae12f573fd1c0fa20e5a86a1ad705a3fa71f0e4cb30092cb22bdf6ae8f68f8",
+            "next": "00e4132cbfef34d374b7d31c44d9031e9770b75b180b010b81ac85bc5a9ef19397"
+          }
         }
-    ],
-    "signing_key": [
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37,
-        37
+      },
+      {
+        "stake_sequencer": {
+          "sequencer_key": [11, 59, 237, 53, 114, 208, 123, 34, 226, 143, 111, 206, 107, 123, 201, 138, 178, 243, 220, 32, 74, 147, 37, 227, 250, 89, 206, 157, 202, 167, 98, 65],
+          "ownership_id": "8CYF56rLwZhMY4mC4Kqvc7FHKsGtZ9aMNefWmTLAF1ps",
+          "stake_entry": {
+            "auth_data": "00d3edd4d7ba20c3c8def652fc6bd3419041be8054c1293ecc3b105729bb02f1fddfe6e168121ac8a3079be830e66cc3ac59d295b0f2bc69bab1d9289c6971a0deb0c4e36c81fa5dbcfec029f8a63b6667c5d163a15fef96318875068b6708edebbac13216e3b509ebf36bca858c3655e2ab8c3eb18b2e647488a88b29c65c1d6c",
+            "next": "007252f538586d1769da6164410421ef8262fbb7e8bac7cd707ac922fc9b0cbfe4"
+          }
+        }
+      },
+      {
+        "stake_sequencer": {
+          "sequencer_key": [42, 107, 198, 51, 151, 56, 213, 10, 138, 105, 162, 31, 251, 48, 173, 113, 75, 208, 239, 68, 189, 179, 187, 36, 34, 67, 8, 49, 131, 247, 214, 57],
+          "ownership_id": "CSBxFKt8fSfxKKA7qpcpuSMRBWhYabe1a5FkN5dGytKL",
+          "stake_entry": {
+            "auth_data": "003bde601cce869d8def9f453b386dbc1398f00efba1fb6312c2a22fb65327fca9c70551b460f9874e8c44407e6d7715ab860f18ab3a096a0fc2e0baba2d1ab6f2fe20893a7cf8004da7ca587af73e8c0e788d2ca077576affb12fc19622df82f5cfd1f6b7b17c5a67a5c6814937ecf84b1ca8e59079772a7f65b447cd84d00269",
+            "next": "00296359b67d94c789bf70f4a20c998ae8ca88a43618a67a2c4b146999915323d5"
+          }
+        }
+      },
+      {
+        "stake_sequencer": {
+          "sequencer_key": [178, 246, 25, 77, 168, 175, 236, 120, 79, 150, 157, 21, 88, 217, 221, 94, 123, 148, 244, 210, 168, 23, 134, 219, 163, 21, 30, 154, 34, 80, 232, 6],
+          "ownership_id": "DnwesYKk4a2kiJ4M3uCxWP5wADFS8pFX1aPp4cA4Bo8D",
+          "stake_entry": {
+            "auth_data": "00b156ec773fcb0e6f0683f1ce9a1b7a6712920b4c175a070568c862fef2609c9519782bd0707368bec479577a5c1d9caf34a3eae6a1144bbbd012b9d996bbcb70c8d43485acf0cf45309bfa3c6f9add1ceb7ea0a17d12726f26f5c91c5a58217abc0d77df7d9a6d9047acf7149d3da8f750deb012c75133347bf359197ca09abb",
+            "next": "005389318c9a9739c2e2c8fad042f9e2df50d822f8c601b7dd07c74583c07b4ebb"
+          }
+        }
+      },
+      {
+        "supply_account": {
+          "recipient": {
+            "identified": {
+              "key": "00f00d1e62fa5278307fbde46d84a022f571caff20c157b2831884cc3cc2ae4c29"
+            }
+          },
+          "balance": 10000
+        }
+      },
+      {
+        "supply_account": {
+          "recipient": {
+            "identified": {
+              "key": "000223ea30d102c2f066dca058325ee30af21c23cf4dd9a16c3e4ab190ba0b49cb"
+            }
+          },
+          "balance": 20000
+        }
+      },
+      {
+        "supply_private_account": {
+          "address": "44KVvzvh2ephQU9aR5snboGUXKgS1FnPYh1W4KZKwmhm",
+          "balance": 10000000000000
+        }
+      },
+      {
+        "supply_private_account": {
+          "address": "478hD6LXFTYu5gRRkWkCyXPRsWgCwAfRredoCUfxr5b9",
+          "balance": 20000000000000
+        }
+      }
     ]
+  },
+  "metrics_listen_address": "0.0.0.0:9000"
 }

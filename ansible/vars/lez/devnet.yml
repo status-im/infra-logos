@@ -1,28 +1,24 @@
 ---
 # Logos Execution Zone - Devnet
 lez_name: 'devnet'
-lez_cont_tag: 'v0.3.0-rc1'
-lez_blockchain_cont_tag: '0.3.0-rc.5'
+lez_cont_tag: 'v0.4.0-rc.4'
+lez_blockchain_cont_tag: '0.4.0-rc.4'
 lez_explorer_cont_port:          8081
 lez_sequencer_rpc_base_port:     3040
 lez_sequencer_metrics_base_port: 9000
 lez_indexer_cont_port:           8779
 lez_blockchain_cont_api_port:    8080
 lez_blockchain_cont_swarm_port:  3000
-lez_sequencer_funding_key: 'cf879934b9559946e17237fb3d509c0cc1db9a77d60ae1171a10085d8abf1523'
-lez_sequencer_channel_id:  'abababababababababababababababababababababababababababababababab'
+lez_sequencer_funding_key: '599d456412e0ceda9eba53b51248512ec539825a2544d20b641d53de4b14af0f'
+lez_sequencer_channel_id:  'a404040404040404040404040404040404040404040404040404040404040404'
 lez_sequencer_log_level: 'debug,kameo=info'
 lez_sequencer_count: 4
 lez_sequencer_cont_image: 'harbor.status.im/logos-blockchain/logos-execution-zone/sequencer_service-mdns:{{ lez_cont_tag }}'
 lez_sequencer_keys:
-  - signing_key:         '{{ lookup("vault", "lez/devnet/sequencer/seq-0", field="signing_key") }}'
-    bedrock_signing_key: '{{ lookup("vault", "lez/devnet/sequencer/seq-0", field="bedrock_signing_key") }}'
-  - signing_key:         '{{ lookup("vault", "lez/devnet/sequencer/seq-1", field="signing_key") }}'
-    bedrock_signing_key: '{{ lookup("vault", "lez/devnet/sequencer/seq-1", field="bedrock_signing_key") }}'
-  - signing_key:         '{{ lookup("vault", "lez/devnet/sequencer/seq-2", field="signing_key") }}'
-    bedrock_signing_key: '{{ lookup("vault", "lez/devnet/sequencer/seq-2", field="bedrock_signing_key") }}'
-  - signing_key:         '{{ lookup("vault", "lez/devnet/sequencer/seq-3", field="signing_key") }}'
-    bedrock_signing_key: '{{ lookup("vault", "lez/devnet/sequencer/seq-3", field="bedrock_signing_key") }}'
+  - bedrock_signing_key: '{{ lookup("vault", "lez/devnet/sequencers", field="seq-0") }}'
+  - bedrock_signing_key: '{{ lookup("vault", "lez/devnet/sequencers", field="seq-1") }}'
+  - bedrock_signing_key: '{{ lookup("vault", "lez/devnet/sequencers", field="seq-2") }}'
+  - bedrock_signing_key: '{{ lookup("vault", "lez/devnet/sequencers", field="seq-3") }}'
 lez_blockchain_initial_peers:
   - '/ip4/65.108.203.235/udp/3000/quic-v1/p2p/12D3KooWNbZTQ86TZ9MrZ2wm6iUFFj25AFTzFLUD7i6XkZHoUzU8'
   - '/ip4/65.108.203.235/udp/3001/quic-v1/p2p/12D3KooWNhXaH4XTX6Pp66NDQZxZpXYQzeruwwraMvTxojz1QXPJ'
